@@ -1,0 +1,23 @@
+{
+  "name": "@keel/behaviors",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-agnostic DOM behaviour assertions shared by every Keel framework package. Test infrastructure \u2014 never published.",
+  "type": "module",
+  "exports": {
+    "./button": "./src/button.behaviors.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@keel/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doosemavis/keel.git"
+  }
+}

@@ -1,0 +1,86 @@
+.keel-RadioGroup-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--keel-space-75);
+}
+
+.keel-RadioGroup-items[data-orientation='horizontal'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--keel-space-300);
+}
+
+.keel-Radio-circle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  margin-block-start: 0.0625rem;
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-surface);
+  transition: border-color var(--keel-duration-fast) ease;
+}
+
+.keel-Choice[data-size='sm'] .keel-Radio-circle {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Radio-circle { transition: none; }
+}
+
+.keel-Radio-dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-accent);
+  scale: 0;
+  transition: scale var(--keel-duration-fast) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Radio-dot { transition: none; }
+}
+
+/* The dot appears and the ring darkens together — two signals, not one. */
+.keel-Choice[data-selected] .keel-Radio-circle {
+  border-color: var(--keel-color-bg-accent);
+}
+
+.keel-Choice[data-selected] .keel-Radio-dot {
+  scale: 1;
+}
+
+.keel-Choice[data-hovered]:not([aria-disabled='true']) .keel-Radio-circle {
+  border-color: var(--keel-color-border-strong);
+}
+
+.keel-Choice[data-focus-visible] .keel-Radio-circle {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+}
+
+.keel-Choice[data-invalid] .keel-Radio-circle {
+  border-color: var(--keel-color-border-danger);
+}
+
+.keel-Choice[aria-disabled='true'] .keel-Radio-circle,
+.keel-Choice[data-disabled] .keel-Radio-circle {
+  background: var(--keel-color-bg-disabled);
+  border-color: var(--keel-color-border-disabled);
+}
+
+.keel-Choice[data-selected][aria-disabled='true'] .keel-Radio-dot,
+.keel-Choice[data-selected][data-disabled] .keel-Radio-dot {
+  background: var(--keel-color-fg-disabled);
+}
+
+@media (forced-colors: active) {
+  .keel-Radio-circle { border-color: ButtonBorder; }
+  .keel-Radio-dot { background: Highlight; }
+  .keel-Choice[data-focus-visible] .keel-Radio-circle { outline-color: Highlight; }
+}

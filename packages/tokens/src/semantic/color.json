@@ -1,0 +1,52 @@
+{
+  "$description": "Semantic color roles for the LIGHT theme. This is the base theme — the dark theme is expressed as a diff against it in color.dark.json, so a role that reads the same in both is defined exactly once, here. Components reference only these roles, never the primitive ramps. Measured contrast ratios are not repeated in these descriptions on purpose: `pnpm contrast` generates the authoritative report, and a number written by hand here would eventually be a lie.",
+  "color": {
+    "$type": "color",
+    "bg": {
+      "canvas":  { "$value": "{color.neutral.0}",   "$description": "The page behind everything." },
+      "surface": { "$value": "{color.neutral.0}",   "$description": "Raised surfaces: cards, dialogs, menus." },
+      "subtle":  { "$value": "{color.neutral.50}",  "$description": "Quietly separated regions: table stripes, well backgrounds." },
+      "muted":   { "$value": "{color.neutral.100}", "$description": "Neutral control fill at rest." },
+      "mutedHover":  { "$value": "{color.neutral.200}" },
+      "mutedActive": { "$value": "{color.neutral.300}" },
+      "inverse": { "$value": "{color.neutral.900}", "$description": "Inverted surfaces: tooltips, toasts." },
+      "accent":       { "$value": "{color.blue.600}" },
+      "accentHover":  { "$value": "{color.blue.700}" },
+      "accentActive": { "$value": "{color.blue.800}" },
+      "accentSubtle": { "$value": "{color.blue.50}" },
+      "successSubtle": { "$value": "{color.green.50}" },
+      "warningSubtle": { "$value": "{color.amber.50}" },
+      "dangerSubtle":  { "$value": "{color.red.50}" },
+      "danger":        { "$value": "{color.red.600}" },
+      "dangerHover":   { "$value": "{color.red.700}" },
+      "dangerActive":  { "$value": "{color.red.900}" },
+      "disabled":      { "$value": "{color.neutral.100}" }
+    },
+    "fg": {
+      "default":  { "$value": "{color.neutral.900}", "$description": "Body text." },
+      "muted":    { "$value": "{color.neutral.600}", "$description": "Secondary text and help text. Carries AA body text." },
+      "subtle":   { "$value": "{color.neutral.500}", "$description": "Placeholder and de-emphasised metadata. The lightest foreground that still carries AA body text — anything lighter must not hold meaning." },
+      "onAccent": { "$value": "{color.neutral.0}",   "$description": "Text on an accent fill. Flips to a dark value in the dark theme, where the accent fill itself is light." },
+      "onDanger": { "$value": "{color.neutral.0}",   "$description": "Text on a danger fill. Split from onAccent because the two fills move in opposite directions between themes and one token cannot satisfy both." },
+      "onInverse":{ "$value": "{color.neutral.0}" },
+      "accent":   { "$value": "{color.blue.700}",    "$description": "Links and accent text on light surfaces." },
+      "success":  { "$value": "{color.green.700}" },
+      "warning":  { "$value": "{color.amber.700}" },
+      "danger":   { "$value": "{color.red.700}" },
+      "disabled": { "$value": "{color.neutral.400}", "$description": "Disabled text. Deliberately below AA — WCAG 1.4.3 exempts disabled controls, and lifting this reads as enabled." }
+    },
+    "border": {
+      "default": { "$value": "{color.neutral.300}", "$description": "Container edges and dividers. DECORATIVE ONLY — below 3:1 by design, so it must never be the sole indicator of an interactive boundary. Use border.control for that." },
+      "muted":   { "$value": "{color.neutral.200}", "$description": "The quietest divider. Decorative only." },
+      "control": { "$value": "{color.neutral.500}", "$description": "The boundary of an interactive control — input, select, checkbox. Enforced at 3:1 against every surface it sits on, per WCAG 1.4.11 non-text contrast." },
+      "strong":  { "$value": "{color.neutral.600}" },
+      "accent":  { "$value": "{color.blue.600}" },
+      "danger":  { "$value": "{color.red.600}" },
+      "disabled":{ "$value": "{color.neutral.200}" }
+    },
+    "focus": {
+      "ring":   { "$value": "{color.blue.500}", "$description": "Focus indicator. Enforced at 3:1 against every surface it can appear on." },
+      "onDark": { "$value": "{color.blue.300}" }
+    }
+  }
+}

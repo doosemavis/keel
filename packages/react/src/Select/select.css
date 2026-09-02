@@ -1,0 +1,142 @@
+.keel-Select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--keel-space-100);
+  inline-size: 100%;
+  min-height: var(--keel-size-control-md);
+  padding-inline: var(--keel-space-150);
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
+  border-radius: var(--keel-radius-md);
+  background: var(--keel-color-bg-surface);
+  color: var(--keel-color-fg-default);
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-sm);
+  line-height: var(--keel-font-line-height-tight);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--keel-duration-fast) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Select-trigger { transition: none; }
+}
+
+.keel-Select-trigger[data-size='sm'] {
+  min-height: var(--keel-size-control-sm);
+  padding-inline: var(--keel-space-100);
+  font-size: var(--keel-font-size-xs);
+}
+
+.keel-Select-trigger[data-size='lg'] {
+  min-height: var(--keel-size-control-lg);
+  padding-inline: var(--keel-space-200);
+  font-size: var(--keel-font-size-md);
+}
+
+.keel-Select-trigger[data-hovered] {
+  border-color: var(--keel-color-border-strong);
+}
+
+.keel-Select-trigger[data-focus-visible] {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+  border-color: var(--keel-color-border-accent);
+}
+
+.keel-Select-trigger[aria-invalid='true'] {
+  border-color: var(--keel-color-border-danger);
+}
+
+.keel-Select-trigger[aria-disabled='true'] {
+  background: var(--keel-color-bg-disabled);
+  border-color: var(--keel-color-border-disabled);
+  color: var(--keel-color-fg-disabled);
+  cursor: not-allowed;
+}
+
+/* Placeholder is styled as subtle so it reads as "nothing chosen yet" rather
+   than as a real value. */
+.keel-Select-value[data-placeholder] {
+  color: var(--keel-color-fg-subtle);
+}
+
+.keel-Select-chevron {
+  flex: none;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  color: var(--keel-color-fg-muted);
+  transition: rotate var(--keel-duration-fast) ease;
+}
+
+.keel-Select-trigger[aria-expanded='true'] .keel-Select-chevron {
+  rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Select-chevron { transition: none; }
+}
+
+/* ---- Popover ---- */
+
+.keel-Select-popover {
+  min-inline-size: var(--trigger-width, 12rem);
+  padding: var(--keel-space-50);
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-default);
+  border-radius: var(--keel-radius-lg);
+  background: var(--keel-color-bg-surface);
+  box-shadow: 0 4px 6px -2px rgb(0 0 0 / 0.1), 0 12px 24px -8px rgb(0 0 0 / 0.18);
+}
+
+.keel-Select-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-block-size: 16rem;
+  overflow-y: auto;
+  outline: none;
+}
+
+.keel-Select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--keel-space-100);
+  padding: var(--keel-space-75) var(--keel-space-100);
+  border-radius: var(--keel-radius-sm);
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-sm);
+  color: var(--keel-color-fg-default);
+  cursor: pointer;
+  outline: none;
+}
+
+/* React Aria drives this with data-focused rather than :hover, so keyboard
+   and pointer highlight identically — one highlighted option at a time. */
+.keel-Select-option[data-focused] {
+  background: var(--keel-color-bg-muted);
+}
+
+.keel-Select-option[data-selected] {
+  font-weight: var(--keel-font-weight-medium);
+}
+
+.keel-Select-option[data-selected]::after {
+  content: '';
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-accent);
+}
+
+.keel-Select-option[data-disabled] {
+  color: var(--keel-color-fg-disabled);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .keel-Select-trigger { border-color: ButtonBorder; }
+  .keel-Select-popover { border-color: ButtonBorder; }
+  .keel-Select-option[data-focused] { background: Highlight; color: HighlightText; }
+  .keel-Select-trigger[data-focus-visible] { outline-color: Highlight; }
+}

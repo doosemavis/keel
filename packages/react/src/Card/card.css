@@ -1,0 +1,69 @@
+.keel-Card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--keel-space-100);
+  border-radius: var(--keel-radius-lg);
+  background: var(--keel-color-bg-surface);
+  color: var(--keel-color-fg-default);
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-sm);
+  line-height: var(--keel-font-line-height-default);
+}
+
+/* Border OR shadow, never both. Each one already says "separate object";
+   spending both flattens the hierarchy the card exists to create. */
+.keel-Card[data-elevation='flat'] {
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-default);
+}
+
+.keel-Card[data-elevation='raised'] {
+  border: var(--keel-border-width-thin) solid transparent;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 20px -10px rgb(0 0 0 / 0.22);
+}
+
+.keel-Card[data-padding='none'] { padding: 0; }
+.keel-Card[data-padding='sm']   { padding: var(--keel-space-150); }
+.keel-Card[data-padding='md']   { padding: var(--keel-space-200); }
+.keel-Card[data-padding='lg']   { padding: var(--keel-space-300); }
+
+.keel-Card-title {
+  margin: 0;
+  font-size: var(--keel-font-size-md);
+  font-weight: var(--keel-font-weight-semibold);
+  line-height: var(--keel-font-line-height-tight);
+}
+
+.keel-Card-body {
+  margin: 0;
+  color: var(--keel-color-fg-muted);
+}
+
+/* ---- interactive ----
+   One focusable element for the whole card. Nested links inside a clickable
+   card produce invalid nested interactive content and trap keyboard users. */
+.keel-Card[data-interactive] {
+  cursor: pointer;
+  text-align: start;
+  transition:
+    border-color var(--keel-duration-fast) ease,
+    background-color var(--keel-duration-fast) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Card[data-interactive] { transition: none; }
+}
+
+.keel-Card[data-interactive][data-hovered] {
+  background: var(--keel-color-bg-subtle);
+  border-color: var(--keel-color-border-strong);
+}
+
+.keel-Card[data-interactive][data-focus-visible] {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+}
+
+@media (forced-colors: active) {
+  .keel-Card { border: 1px solid ButtonBorder; }
+  .keel-Card[data-interactive][data-focus-visible] { outline-color: Highlight; }
+}

@@ -1,0 +1,112 @@
+/* Field scaffolding — shared by TextField, Select and RadioGroup so a form
+   column lines up regardless of which control sits in it. */
+
+.keel-Field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--keel-space-75);
+  font-family: var(--keel-font-family-sans);
+  color: var(--keel-color-fg-default);
+}
+
+.keel-Field-label {
+  font-size: var(--keel-font-size-sm);
+  font-weight: var(--keel-font-weight-medium);
+  line-height: var(--keel-font-line-height-tight);
+  color: var(--keel-color-fg-default);
+}
+
+/* The asterisk is decorative — aria-required carries the meaning, so this is
+   aria-hidden in the markup and never the only signal. */
+.keel-Field-required {
+  color: var(--keel-color-fg-danger);
+  margin-inline-start: var(--keel-space-25);
+}
+
+.keel-Field-description {
+  font-size: var(--keel-font-size-xs);
+  color: var(--keel-color-fg-muted);
+  line-height: var(--keel-font-line-height-default);
+}
+
+.keel-Field-error {
+  font-size: var(--keel-font-size-xs);
+  color: var(--keel-color-fg-danger);
+  line-height: var(--keel-font-line-height-default);
+}
+
+.keel-Field[data-disabled] .keel-Field-label,
+.keel-Field[data-disabled] .keel-Field-description {
+  color: var(--keel-color-fg-disabled);
+}
+
+/* ---- Input ---- */
+
+.keel-Input {
+  inline-size: 100%;
+  min-height: var(--keel-size-control-md);
+  padding-inline: var(--keel-space-150);
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
+  border-radius: var(--keel-radius-md);
+  background: var(--keel-color-bg-surface);
+  color: var(--keel-color-fg-default);
+  font-family: inherit;
+  font-size: var(--keel-font-size-sm);
+  line-height: var(--keel-font-line-height-tight);
+  transition:
+    border-color var(--keel-duration-fast) ease,
+    background-color var(--keel-duration-fast) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Input { transition: none; }
+}
+
+.keel-Input::placeholder {
+  color: var(--keel-color-fg-subtle);
+}
+
+.keel-Input[data-hovered] {
+  border-color: var(--keel-color-border-strong);
+}
+
+.keel-Input[data-focused] {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+  border-color: var(--keel-color-border-accent);
+}
+
+.keel-Input[data-size='sm'] {
+  min-height: var(--keel-size-control-sm);
+  padding-inline: var(--keel-space-100);
+  font-size: var(--keel-font-size-xs);
+}
+
+.keel-Input[data-size='lg'] {
+  min-height: var(--keel-size-control-lg);
+  padding-inline: var(--keel-space-200);
+  font-size: var(--keel-font-size-md);
+}
+
+/* Invalid is signalled by the border AND the message below, never by the
+   border alone — a red outline with no explanation is not an error message. */
+.keel-Input[aria-invalid='true'] {
+  border-color: var(--keel-color-border-danger);
+}
+
+.keel-Input[aria-disabled='true'] {
+  background: var(--keel-color-bg-disabled);
+  border-color: var(--keel-color-border-disabled);
+  color: var(--keel-color-fg-disabled);
+  cursor: not-allowed;
+}
+
+.keel-Input[readonly] {
+  background: var(--keel-color-bg-subtle);
+}
+
+@media (forced-colors: active) {
+  .keel-Input { border-color: ButtonBorder; }
+  .keel-Input[data-focused] { outline-color: Highlight; }
+  .keel-Input[aria-disabled='true'] { color: GrayText; border-color: GrayText; }
+}

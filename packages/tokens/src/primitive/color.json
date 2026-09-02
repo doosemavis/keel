@@ -1,0 +1,61 @@
+{
+  "$description": "Primitive color ramps. These are raw values with no meaning attached — never reference them directly from a component. Components use the semantic tokens, which alias these.",
+  "color": {
+    "$type": "color",
+    "neutral": {
+      "0":    { "$value": "#ffffff" },
+      "50":   { "$value": "#f7f8f9" },
+      "100":  { "$value": "#eceef1" },
+      "200":  { "$value": "#dfe2e7" },
+      "300":  { "$value": "#c7ccd4" },
+      "400":  { "$value": "#9aa2ae" },
+      "500":  { "$value": "#6b7481", "$description": "Tuned to clear 4.5:1 on neutral.0 so it can carry AA body text as fg.subtle." },
+      "600":  { "$value": "#525a66" },
+      "700":  { "$value": "#3b424c" },
+      "800":  { "$value": "#272c34" },
+      "900":  { "$value": "#181c22" },
+      "950":  { "$value": "#0e1115" },
+      "1000": { "$value": "#000000" }
+    },
+    "blue": {
+      "50":  { "$value": "#eef4ff" },
+      "100": { "$value": "#d9e6ff" },
+      "200": { "$value": "#bcd3ff" },
+      "300": { "$value": "#8eb6ff" },
+      "400": { "$value": "#5a90fb" },
+      "500": { "$value": "#356af0" },
+      "600": { "$value": "#204ed6" },
+      "700": { "$value": "#1a3fae" },
+      "800": { "$value": "#1a378b" },
+      "900": { "$value": "#1a316e" },
+      "950": { "$value": "#131f44" }
+    },
+    "green": {
+      "50":  { "$value": "#eaf9f0" },
+      "100": { "$value": "#cbf0dc" },
+      "300": { "$value": "#79d6a5" },
+      "500": { "$value": "#1f9d5b" },
+      "600": { "$value": "#16804a" },
+      "700": { "$value": "#12653b" },
+      "900": { "$value": "#0b3d24" }
+    },
+    "amber": {
+      "50":  { "$value": "#fff8e6" },
+      "100": { "$value": "#ffedc2" },
+      "300": { "$value": "#f7ce62" },
+      "500": { "$value": "#c98a05" },
+      "600": { "$value": "#a56f04" },
+      "700": { "$value": "#835803" },
+      "900": { "$value": "#4a3102" }
+    },
+    "red": {
+      "50":  { "$value": "#fdeef0" },
+      "100": { "$value": "#fbd6da" },
+      "300": { "$value": "#f2949e" },
+      "500": { "$value": "#d92d43" },
+      "600": { "$value": "#b71f34" },
+      "700": { "$value": "#94182a" },
+      "900": { "$value": "#550e18" }
+    }
+  }
+}

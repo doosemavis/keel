@@ -1,0 +1,45 @@
+{
+  "name": "@keel/contracts",
+  "version": "0.1.0",
+  "description": "Machine-readable component contracts \u2014 the shared source of truth for story matrices, parity tests and generated documentation.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "lint:packaging": "publint --strict && attw --pack . --profile esm-only"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "publint": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doosemavis/keel.git",
+    "directory": "packages/contracts"
+  },
+  "homepage": "https://github.com/doosemavis/keel#readme",
+  "bugs": {
+    "url": "https://github.com/doosemavis/keel/issues"
+  },
+  "author": "Moose Davis"
+}

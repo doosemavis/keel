@@ -1,0 +1,51 @@
+{
+  "$description": "DARK theme overrides. Carries only the roles whose value differs from the light theme — merged over semantic/color.json at build time, so adding a role means touching one file, not two. Note the inversion in the fills: accent and danger get LIGHTER here while their text goes dark, which is why fg.onAccent and fg.onDanger are separate roles.",
+  "color": {
+    "$type": "color",
+    "bg": {
+      "canvas":  { "$value": "{color.neutral.950}" },
+      "surface": { "$value": "{color.neutral.900}" },
+      "subtle":  { "$value": "{color.neutral.900}" },
+      "muted":   { "$value": "{color.neutral.800}" },
+      "mutedHover":  { "$value": "{color.neutral.700}" },
+      "mutedActive": { "$value": "{color.neutral.600}" },
+      "inverse": { "$value": "{color.neutral.100}" },
+      "accent":       { "$value": "{color.blue.400}", "$description": "Lighter than light-theme accent so dark text on it clears AA." },
+      "accentHover":  { "$value": "{color.blue.300}" },
+      "accentActive": { "$value": "{color.blue.200}" },
+      "accentSubtle": { "$value": "{color.blue.950}" },
+      "successSubtle": { "$value": "{color.green.900}" },
+      "warningSubtle": { "$value": "{color.amber.900}" },
+      "dangerSubtle":  { "$value": "{color.red.900}" },
+      "danger":       { "$value": "{color.red.300}", "$description": "Follows the same inversion as accent — light fill, dark label — so destructive actions stay consistent with the rest of the system in dark mode." },
+      "dangerHover":  { "$value": "{color.red.100}" },
+      "dangerActive": { "$value": "{color.red.50}" },
+      "disabled":     { "$value": "{color.neutral.800}" }
+    },
+    "fg": {
+      "default":  { "$value": "{color.neutral.50}" },
+      "muted":    { "$value": "{color.neutral.300}" },
+      "subtle":   { "$value": "{color.neutral.400}", "$description": "neutral.500 is tuned for AA on a white canvas and is too dark to carry text here, so the dark theme steps one rung lighter." },
+      "onAccent": { "$value": "{color.neutral.950}" },
+      "onDanger": { "$value": "{color.neutral.950}" },
+      "onInverse":{ "$value": "{color.neutral.950}" },
+      "accent":   { "$value": "{color.blue.300}" },
+      "success":  { "$value": "{color.green.300}" },
+      "warning":  { "$value": "{color.amber.300}" },
+      "danger":   { "$value": "{color.red.300}" },
+      "disabled": { "$value": "{color.neutral.600}" }
+    },
+    "border": {
+      "default": { "$value": "{color.neutral.700}" },
+      "muted":   { "$value": "{color.neutral.800}" },
+      "control": { "$value": "{color.neutral.500}" },
+      "strong":  { "$value": "{color.neutral.400}" },
+      "accent":  { "$value": "{color.blue.400}" },
+      "danger":  { "$value": "{color.red.300}" },
+      "disabled":{ "$value": "{color.neutral.800}" }
+    },
+    "focus": {
+      "ring": { "$value": "{color.blue.300}" }
+    }
+  }
+}

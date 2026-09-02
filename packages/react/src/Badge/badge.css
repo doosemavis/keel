@@ -1,0 +1,63 @@
+.keel-Badge {
+  --_bg: var(--keel-color-bg-muted);
+  --_fg: var(--keel-color-fg-default);
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--keel-space-50);
+  padding: 0 var(--keel-space-100);
+  min-block-size: 1.375rem;
+  border: var(--keel-border-width-thin) solid var(--_border);
+  border-radius: var(--keel-radius-sm);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-xs);
+  font-weight: var(--keel-font-weight-medium);
+  line-height: var(--keel-font-line-height-tight);
+  white-space: nowrap;
+}
+
+.keel-Badge[data-size='sm'] {
+  min-block-size: 1.125rem;
+  padding: 0 var(--keel-space-75);
+  font-size: 0.6875rem;
+}
+
+/* ---- subtle (default) ---- */
+.keel-Badge[data-variant='subtle'][data-tone='neutral'] { --_bg: var(--keel-color-bg-muted); --_fg: var(--keel-color-fg-default); }
+.keel-Badge[data-variant='subtle'][data-tone='accent']  { --_bg: var(--keel-color-bg-accent-subtle); --_fg: var(--keel-color-fg-accent); }
+.keel-Badge[data-variant='subtle'][data-tone='success'] { --_bg: var(--keel-color-bg-success-subtle); --_fg: var(--keel-color-fg-success); }
+.keel-Badge[data-variant='subtle'][data-tone='warning'] { --_bg: var(--keel-color-bg-warning-subtle); --_fg: var(--keel-color-fg-warning); }
+.keel-Badge[data-variant='subtle'][data-tone='danger']  { --_bg: var(--keel-color-bg-danger-subtle); --_fg: var(--keel-color-fg-danger); }
+
+/* ---- solid ---- */
+.keel-Badge[data-variant='solid'][data-tone='neutral'] { --_bg: var(--keel-color-bg-inverse); --_fg: var(--keel-color-fg-on-inverse); }
+.keel-Badge[data-variant='solid'][data-tone='accent']  { --_bg: var(--keel-color-bg-accent); --_fg: var(--keel-color-fg-on-accent); }
+.keel-Badge[data-variant='solid'][data-tone='danger']  { --_bg: var(--keel-color-bg-danger); --_fg: var(--keel-color-fg-on-danger); }
+/* success and warning have no solid fill with a guaranteed-contrast text role,
+   so they fall back to their subtle treatment rather than shipping a pairing
+   the contrast gate cannot vouch for. */
+.keel-Badge[data-variant='solid'][data-tone='success'] { --_bg: var(--keel-color-bg-success-subtle); --_fg: var(--keel-color-fg-success); --_border: var(--keel-color-fg-success); }
+.keel-Badge[data-variant='solid'][data-tone='warning'] { --_bg: var(--keel-color-bg-warning-subtle); --_fg: var(--keel-color-fg-warning); --_border: var(--keel-color-fg-warning); }
+
+/* ---- outline ---- */
+.keel-Badge[data-variant='outline'] { --_bg: transparent; }
+.keel-Badge[data-variant='outline'][data-tone='neutral'] { --_fg: var(--keel-color-fg-muted); --_border: var(--keel-color-border-control); }
+.keel-Badge[data-variant='outline'][data-tone='accent']  { --_fg: var(--keel-color-fg-accent); --_border: var(--keel-color-border-accent); }
+.keel-Badge[data-variant='outline'][data-tone='success'] { --_fg: var(--keel-color-fg-success); --_border: var(--keel-color-fg-success); }
+.keel-Badge[data-variant='outline'][data-tone='warning'] { --_fg: var(--keel-color-fg-warning); --_border: var(--keel-color-fg-warning); }
+.keel-Badge[data-variant='outline'][data-tone='danger']  { --_fg: var(--keel-color-fg-danger); --_border: var(--keel-color-border-danger); }
+
+.keel-Badge-dot {
+  inline-size: 0.375rem;
+  block-size: 0.375rem;
+  border-radius: var(--keel-radius-full);
+  background: currentColor;
+  flex: none;
+}
+
+@media (forced-colors: active) {
+  .keel-Badge { border-color: ButtonBorder; }
+}

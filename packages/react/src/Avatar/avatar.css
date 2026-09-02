@@ -1,0 +1,63 @@
+.keel-Avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-muted);
+  color: var(--keel-color-fg-muted);
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-sm);
+  font-weight: var(--keel-font-weight-medium);
+  line-height: 1;
+  overflow: hidden;
+  user-select: none;
+}
+
+.keel-Avatar[data-size='xs'] { inline-size: 1.5rem;  block-size: 1.5rem;  font-size: 0.625rem; }
+.keel-Avatar[data-size='sm'] { inline-size: 1.875rem; block-size: 1.875rem; font-size: var(--keel-font-size-xs); }
+.keel-Avatar[data-size='lg'] { inline-size: 3rem;    block-size: 3rem;    font-size: var(--keel-font-size-lg); }
+
+/* Square for organisations and repositories, circle for people — a convention
+   that saves a label. Not fully square: a small radius keeps it from reading
+   as a raw image crop. */
+.keel-Avatar[data-shape='square'] { border-radius: var(--keel-radius-md); }
+
+.keel-Avatar-image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.keel-Avatar-status {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-fg-success);
+  /* Ring in the surrounding surface colour so the dot reads against both the
+     avatar and the page behind it. */
+  box-shadow: 0 0 0 2px var(--keel-color-bg-canvas);
+}
+
+.keel-Avatar[data-size='xs'] .keel-Avatar-status { inline-size: 0.4375rem; block-size: 0.4375rem; }
+.keel-Avatar[data-size='lg'] .keel-Avatar-status { inline-size: 0.8125rem; block-size: 0.8125rem; }
+
+.keel-AvatarGroup {
+  display: inline-flex;
+  align-items: center;
+}
+
+.keel-AvatarGroup .keel-Avatar + .keel-Avatar {
+  margin-inline-start: -0.5rem;
+  box-shadow: 0 0 0 2px var(--keel-color-bg-canvas);
+}
+
+@media (forced-colors: active) {
+  .keel-Avatar { border: 1px solid ButtonBorder; }
+}

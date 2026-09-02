@@ -1,0 +1,92 @@
+/* Switch reuses .keel-Choice for the row; only the control differs. */
+
+.keel-Choice[data-label-position='start'] {
+  /* Label first, control pushed to the far edge — the settings-list reading
+     order, where every switch aligns on the right. */
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.keel-Switch-track {
+  flex: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  inline-size: 2.25rem;
+  block-size: 1.375rem;
+  margin-block-start: 0.0625rem;
+  padding: 0.125rem;
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-muted);
+  transition:
+    background-color var(--keel-duration-medium) ease,
+    border-color var(--keel-duration-medium) ease;
+}
+
+.keel-Choice[data-size='sm'] .keel-Switch-track {
+  inline-size: 1.875rem;
+  block-size: 1.125rem;
+}
+
+.keel-Switch-knob {
+  inline-size: 1rem;
+  block-size: 1rem;
+  border-radius: var(--keel-radius-full);
+  background: var(--keel-color-bg-surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transition: translate var(--keel-duration-medium) ease;
+}
+
+.keel-Choice[data-size='sm'] .keel-Switch-knob {
+  inline-size: 0.8125rem;
+  block-size: 0.8125rem;
+}
+
+/* Both the knob position and the track colour change, so "on" is legible
+   without relying on colour perception. */
+.keel-Choice[data-selected] .keel-Switch-track {
+  background: var(--keel-color-bg-accent);
+  border-color: var(--keel-color-bg-accent);
+}
+
+.keel-Choice[data-selected] .keel-Switch-knob {
+  translate: 0.875rem 0;
+}
+
+.keel-Choice[data-size='sm'][data-selected] .keel-Switch-knob {
+  translate: 0.6875rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Switch-track,
+  .keel-Switch-knob { transition: none; }
+}
+
+.keel-Choice[data-hovered]:not([aria-disabled='true']) .keel-Switch-track {
+  border-color: var(--keel-color-border-strong);
+}
+
+.keel-Choice[data-focus-visible] .keel-Switch-track {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+}
+
+.keel-Choice[aria-disabled='true'] .keel-Switch-track,
+.keel-Choice[data-disabled] .keel-Switch-track {
+  background: var(--keel-color-bg-disabled);
+  border-color: var(--keel-color-border-disabled);
+}
+
+.keel-Choice[data-selected][aria-disabled='true'] .keel-Switch-track,
+.keel-Choice[data-selected][data-disabled] .keel-Switch-track {
+  background: var(--keel-color-fg-disabled);
+  border-color: var(--keel-color-fg-disabled);
+}
+
+@media (forced-colors: active) {
+  .keel-Switch-track { border-color: ButtonBorder; }
+  .keel-Choice[data-selected] .keel-Switch-track { background: Highlight; }
+  .keel-Switch-knob { background: ButtonFace; border: 1px solid ButtonBorder; }
+  .keel-Choice[data-focus-visible] .keel-Switch-track { outline-color: Highlight; }
+}

@@ -1,0 +1,13 @@
+/*
+ * The single stylesheet a consumer imports:
+ *
+ *   import '@keel/react/styles.css';
+ *
+ * It pulls the token layer in first so component rules always resolve against
+ * defined custom properties, then each component's styles. Consumers who want
+ * to manage the token layer themselves can import the component styles alone
+ * via '@keel/react/components.css'.
+ */
+@import '@keel/tokens/tokens.css';
+@import '@keel/tokens/tokens.dark.css';
+@import './components.css';

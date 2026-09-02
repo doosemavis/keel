@@ -1,0 +1,131 @@
+/* Checkbox and Switch share the choice-row layout: control, then a label
+   column that can carry description text. */
+
+.keel-Choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--keel-space-100);
+  font-family: var(--keel-font-family-sans);
+  color: var(--keel-color-fg-default);
+  cursor: pointer;
+  /* The whole row is the hit target, not just the 16px box. */
+  min-block-size: var(--keel-size-control-sm);
+  padding-block: var(--keel-space-25);
+}
+
+.keel-Choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--keel-space-25);
+  min-inline-size: 0;
+}
+
+.keel-Choice-label {
+  font-size: var(--keel-font-size-sm);
+  line-height: var(--keel-font-line-height-tight);
+}
+
+.keel-Choice-description {
+  font-size: var(--keel-font-size-xs);
+  color: var(--keel-color-fg-muted);
+  line-height: var(--keel-font-line-height-default);
+}
+
+.keel-Choice[aria-disabled='true'],
+.keel-Choice[data-disabled] {
+  cursor: not-allowed;
+  color: var(--keel-color-fg-disabled);
+}
+
+.keel-Choice[aria-disabled='true'] .keel-Choice-description,
+.keel-Choice[data-disabled] .keel-Choice-description {
+  color: var(--keel-color-fg-disabled);
+}
+
+/* ---- Box ---- */
+
+.keel-Checkbox-box {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  /* Optical alignment with the first line of label text. */
+  margin-block-start: 0.0625rem;
+  border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
+  border-radius: var(--keel-radius-sm);
+  background: var(--keel-color-bg-surface);
+  color: var(--keel-color-fg-on-accent);
+  transition:
+    background-color var(--keel-duration-fast) ease,
+    border-color var(--keel-duration-fast) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keel-Checkbox-box { transition: none; }
+}
+
+.keel-Choice[data-size='sm'] .keel-Checkbox-box {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.keel-Choice[data-hovered]:not([aria-disabled='true']) .keel-Checkbox-box {
+  border-color: var(--keel-color-border-strong);
+}
+
+/* Selection changes the fill AND the border together, so the state survives
+   greyscale and does not depend on the tick mark alone. */
+.keel-Choice[data-selected] .keel-Checkbox-box,
+.keel-Choice[data-indeterminate] .keel-Checkbox-box {
+  background: var(--keel-color-bg-accent);
+  border-color: var(--keel-color-bg-accent);
+}
+
+.keel-Choice[data-focus-visible] .keel-Checkbox-box {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+}
+
+.keel-Choice[data-invalid] .keel-Checkbox-box {
+  border-color: var(--keel-color-border-danger);
+}
+
+.keel-Choice[aria-disabled='true'] .keel-Checkbox-box,
+.keel-Choice[data-disabled] .keel-Checkbox-box {
+  background: var(--keel-color-bg-disabled);
+  border-color: var(--keel-color-border-disabled);
+  color: var(--keel-color-fg-disabled);
+}
+
+.keel-Choice[data-selected][aria-disabled='true'] .keel-Checkbox-box,
+.keel-Choice[data-selected][data-disabled] .keel-Checkbox-box {
+  background: var(--keel-color-fg-disabled);
+  border-color: var(--keel-color-fg-disabled);
+}
+
+.keel-Checkbox-mark {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  display: none;
+}
+
+.keel-Choice[data-selected] .keel-Checkbox-mark { display: block; }
+.keel-Choice[data-indeterminate] .keel-Checkbox-mark { display: none; }
+
+.keel-Checkbox-dash {
+  display: none;
+  inline-size: 0.5rem;
+  block-size: var(--keel-border-width-thick);
+  background: currentColor;
+  border-radius: var(--keel-radius-full);
+}
+
+.keel-Choice[data-indeterminate] .keel-Checkbox-dash { display: block; }
+
+@media (forced-colors: active) {
+  .keel-Checkbox-box { border-color: ButtonBorder; }
+  .keel-Choice[data-selected] .keel-Checkbox-box { background: Highlight; border-color: Highlight; }
+  .keel-Choice[data-focus-visible] .keel-Checkbox-box { outline-color: Highlight; }
+}

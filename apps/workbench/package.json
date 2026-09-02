@@ -1,0 +1,20 @@
+{
+  "name": "@keel/workbench",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Static browser view of the Keel system \u2014 tokens, contrast report, component specimens. Generated from built packages so it cannot drift.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "preview": "node -e \"console.log('open ' + new URL('dist/index.html', 'file://' + process.cwd() + '/').href)\""
+  },
+  "devDependencies": {
+    "@keel/contracts": "workspace:*",
+    "@keel/react": "workspace:*",
+    "@keel/tokens": "workspace:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doosemavis/keel.git"
+  }
+}

@@ -1,0 +1,208 @@
+/*
+ * Button styles.
+ *
+ * Every value here is a semantic token from @keel/tokens. No hex, no raw px.
+ * That is what lets the Angular package in Phase 3 consume this exact
+ * stylesheet and render an identical button — the CSS is the shared artifact
+ * between frameworks, so a visual diff between React and Angular is a real
+ * implementation bug rather than a styling divergence.
+ */
+
+.keel-Button {
+  /* Per-variant surface, set in the variant blocks below. */
+  --_bg: var(--keel-color-bg-muted);
+  --_bg-hover: var(--keel-color-bg-muted-hover);
+  --_bg-active: var(--keel-color-bg-muted-active);
+  --_fg: var(--keel-color-fg-default);
+  --_border: var(--keel-color-border-control);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--keel-space-100);
+
+  min-height: var(--keel-size-control-md);
+  padding-inline: var(--keel-space-200);
+
+  border: var(--keel-border-width-thin) solid var(--_border);
+  border-radius: var(--keel-radius-md);
+  background: var(--_bg);
+  color: var(--_fg);
+
+  font-family: var(--keel-font-family-sans);
+  font-size: var(--keel-font-size-sm);
+  font-weight: var(--keel-font-weight-medium);
+  line-height: var(--keel-font-line-height-tight);
+  text-align: center;
+  white-space: nowrap;
+
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--keel-duration-fast) ease,
+    border-color var(--keel-duration-fast) ease,
+    color var(--keel-duration-fast) ease;
+}
+
+/* Honour a user's reduced-motion preference rather than assuming the
+   transition is harmless. */
+@media (prefers-reduced-motion: reduce) {
+  .keel-Button {
+    transition: none;
+  }
+}
+
+/* React Aria emits data-hovered/pressed/focus-visible rather than relying on
+   :hover, so touch devices do not get stuck in a hover state after a tap. */
+.keel-Button[data-hovered] {
+  background: var(--_bg-hover);
+}
+
+.keel-Button[data-pressed] {
+  background: var(--_bg-active);
+}
+
+/*
+ * Focus ring.
+ *
+ * `outline` rather than box-shadow so it survives Windows High Contrast Mode,
+ * and an offset so the ring stays visible against a filled variant instead of
+ * blending into it.
+ */
+.keel-Button[data-focus-visible] {
+  outline: var(--keel-border-width-thick) solid var(--keel-color-focus-ring);
+  outline-offset: var(--keel-space-25);
+}
+
+/* ---- Sizes ---- */
+
+.keel-Button[data-size='sm'] {
+  min-height: var(--keel-size-control-sm);
+  padding-inline: var(--keel-space-150);
+  font-size: var(--keel-font-size-xs);
+}
+
+.keel-Button[data-size='md'] {
+  min-height: var(--keel-size-control-md);
+}
+
+.keel-Button[data-size='lg'] {
+  min-height: var(--keel-size-control-lg);
+  padding-inline: var(--keel-space-300);
+  font-size: var(--keel-font-size-md);
+}
+
+/* ---- Variants ---- */
+
+.keel-Button[data-variant='primary'] {
+  --_bg: var(--keel-color-bg-accent);
+  --_bg-hover: var(--keel-color-bg-accent-hover);
+  --_bg-active: var(--keel-color-bg-accent-active);
+  --_fg: var(--keel-color-fg-on-accent);
+  --_border: transparent;
+}
+
+.keel-Button[data-variant='secondary'] {
+  --_bg: var(--keel-color-bg-surface);
+  --_bg-hover: var(--keel-color-bg-muted);
+  --_bg-active: var(--keel-color-bg-muted-hover);
+  --_fg: var(--keel-color-fg-default);
+  --_border: var(--keel-color-border-control);
+}
+
+.keel-Button[data-variant='ghost'] {
+  --_bg: transparent;
+  --_bg-hover: var(--keel-color-bg-muted);
+  --_bg-active: var(--keel-color-bg-muted-hover);
+  --_fg: var(--keel-color-fg-default);
+  --_border: transparent;
+}
+
+.keel-Button[data-variant='danger'] {
+  --_bg: var(--keel-color-bg-danger);
+  --_bg-hover: var(--keel-color-bg-danger-hover);
+  --_bg-active: var(--keel-color-bg-danger-active);
+  --_fg: var(--keel-color-fg-on-danger);
+  --_border: transparent;
+}
+
+/* ---- States ---- */
+
+/*
+ * Disabled is expressed with aria-disabled, not the native attribute, so the
+ * selector keys off ARIA. The control stays focusable; only activation is
+ * refused.
+ */
+.keel-Button[aria-disabled='true'] {
+  --_bg: var(--keel-color-bg-disabled);
+  --_bg-hover: var(--keel-color-bg-disabled);
+  --_bg-active: var(--keel-color-bg-disabled);
+  --_fg: var(--keel-color-fg-disabled);
+  --_border: var(--keel-color-border-disabled);
+  cursor: not-allowed;
+}
+
+.keel-Button[data-full-width] {
+  width: 100%;
+}
+
+.keel-Button-label {
+  /* Keeps the label from being squeezed by a long icon in a narrow container. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.keel-Button-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Loading ---- */
+
+.keel-Button-spinner {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border: var(--keel-border-width-thick) solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: var(--keel-radius-full);
+  animation: keel-Button-spin 600ms linear infinite;
+}
+
+@keyframes keel-Button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * A spinner that never stops is a vestibular hazard. With reduced motion we
+ * show a static ring — aria-busy still carries the meaning to assistive tech,
+ * so nothing is lost for the users who need it most.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .keel-Button-spinner {
+    animation: none;
+    border-block-start-color: currentColor;
+    opacity: 0.5;
+  }
+}
+
+/*
+ * Windows High Contrast Mode replaces our colours with system ones. Without
+ * this the border collapses and every variant looks identical.
+ */
+@media (forced-colors: active) {
+  .keel-Button {
+    border-color: ButtonBorder;
+  }
+  .keel-Button[aria-disabled='true'] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+  .keel-Button[data-focus-visible] {
+    outline-color: Highlight;
+  }
+}
