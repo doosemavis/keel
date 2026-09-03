@@ -1,7 +1,7 @@
 /**
  * Workbench dev server — watch, rebuild, live-reload.
  *
- * `pnpm build` produces a static file you open over file://. That is the right
+ * `npm run build` produces a static file you open over file://. That is the right
  * shape for the artifact, and a miserable way to work on tokens: every colour
  * change means switching to a terminal, rebuilding, and hitting reload.
  *

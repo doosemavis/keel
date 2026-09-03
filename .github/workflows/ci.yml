@@ -15,17 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
-          cache: pnpm
+          # npm 10's dependency resolver crashes on vitest 4's optional-peer
+          # graph ("Cannot read properties of null (reading 'edgesOut')").
+          # Node 24 ships an npm new enough to install this repo.
+          node-version: 24
+          cache: npm
 
-      - run: pnpm install --frozen-lockfile
+      # `npm ci` installs strictly from package-lock.json and fails if the
+      # lockfile and manifests disagree — which is what you want in CI, and
+      # what `npm install` does not guarantee.
+      - run: npm ci
 
       # build -> typecheck -> test -> packaging, in dependency order via Turbo.
       # The token build runs the WCAG contrast gate as part of `build`, so a
       # palette change that breaks a contrast requirement fails here rather
       # than shipping.
-      - run: pnpm turbo run build typecheck test lint:packaging
+      - run: npx turbo run build typecheck test lint:packaging

@@ -23,7 +23,7 @@ const PREFIX = 'keel';
 StyleDictionary.registerFileHeader({
   name: 'keel',
   fileHeader: () => [
-    'Do not edit. Generated from packages/tokens/src by `pnpm build`.',
+    'Do not edit. Generated from packages/tokens/src by `npm run build`.',
     'Components must reference semantic roles (--keel-color-bg-accent),',
     'never primitive ramps (--keel-color-blue-600).',
   ],

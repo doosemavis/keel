@@ -26,11 +26,11 @@
     "lint:packaging": "publint --strict && attw --pack . --profile esm-only"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "publint": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "@arethetypeswrong/cli": "^0.18.5",
+    "publint": "^0.3.24",
+    "tsdown": "^0.22.14",
+    "typescript": "6.0.3",
+    "vitest": "^4.1.11"
   },
   "repository": {
     "type": "git",

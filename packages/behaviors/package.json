@@ -11,10 +11,10 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@keel/contracts": "workspace:*"
+    "@keel/contracts": "*"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "typescript": "6.0.3"
   },
   "repository": {
     "type": "git",

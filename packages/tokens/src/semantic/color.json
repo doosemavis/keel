@@ -1,5 +1,5 @@
 {
-  "$description": "Semantic color roles for the LIGHT theme. This is the base theme — the dark theme is expressed as a diff against it in color.dark.json, so a role that reads the same in both is defined exactly once, here. Components reference only these roles, never the primitive ramps. Measured contrast ratios are not repeated in these descriptions on purpose: `pnpm contrast` generates the authoritative report, and a number written by hand here would eventually be a lie.",
+  "$description": "Semantic color roles for the LIGHT theme. This is the base theme — the dark theme is expressed as a diff against it in color.dark.json, so a role that reads the same in both is defined exactly once, here. Components reference only these roles, never the primitive ramps. Measured contrast ratios are not repeated in these descriptions on purpose: `npm run contrast` generates the authoritative report, and a number written by hand here would eventually be a lie.",
   "color": {
     "$type": "color",
     "bg": {

@@ -1,16 +1,21 @@
 {
   "name": "keel",
-  "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "version": "0.0.0",
   "description": "Keel \u2014 a design system with a shared token foundation and verified cross-framework parity.",
-  "packageManager": "pnpm@11.25.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "packageManager": "npm@12.0.2",
   "engines": {
-    "node": ">=22"
+    "node": ">=22",
+    "npm": ">=11"
   },
   "scripts": {
     "build": "turbo run build",
-    "dev": "pnpm --filter @keel/workbench dev",
+    "dev": "npm run dev --workspace @keel/workbench",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "lint:packaging": "turbo run lint:packaging",
@@ -19,9 +24,14 @@
     "release": "turbo run build && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "catalog:",
-    "turbo": "catalog:",
-    "typescript": "catalog:"
+    "@changesets/cli": "^3.0.1",
+    "turbo": "^2.10.12",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "typescript": "6.0.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "repository": {
     "type": "git",

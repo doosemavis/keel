@@ -1,7 +1,7 @@
 /**
  * Contrast gate (CLI).
  *
- * Runs as part of `pnpm build`, so a palette change that breaks a WCAG
+ * Runs as part of `npm run build`, so a palette change that breaks a WCAG
  * requirement fails the build rather than shipping. The pair list and the maths
  * live in contrast.lib.js, which the workbench also imports — one definition of
  * what must pass, used by both.

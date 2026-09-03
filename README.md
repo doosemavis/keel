@@ -5,7 +5,7 @@ A design system with one token foundation and **verified cross-framework parity*
 React ships first. Angular follows, and the two are held to a single machine-readable contract rather than to good intentions.
 
 ```bash
-npm i @keel/react @keel/tokens
+npm install @keel/react @keel/tokens
 ```
 
 ```tsx
@@ -89,7 +89,7 @@ The TypeScript export emits `var(--keel-*)` reference strings rather than resolv
 
 ### Contrast is a build gate, not a promise
 
-`pnpm --filter @keel/tokens contrast` resolves every semantic role to a concrete value in each theme and asserts all 56 pairs that carry a WCAG obligation. It runs as part of `build`, so a palette change that breaks a requirement fails CI.
+`npm run contrast --workspace @keel/tokens` resolves every semantic role to a concrete value in each theme and asserts all 56 pairs that carry a WCAG obligation. It runs as part of `build`, so a palette change that breaks a requirement fails CI.
 
 It earns its keep. On first run it caught eight real failures and forced a genuine API change: `border.default` could not be both a decorative divider and a 3:1 interactive boundary under WCAG 1.4.11, so the role was split into `border.default` (decorative, exempt) and `border.control` (enforced).
 
@@ -122,30 +122,26 @@ Storage access is wrapped in `try`/`catch` throughout: `localStorage` throws out
 
 ## Development
 
-Requires **Node 22 or newer** and **pnpm 11**.
+Requires **Node 22 or newer** and **npm 11 or newer**.
 
 ```bash
-# Corepack is NOT bundled with Node 25+ — the Node TSC stopped distributing it,
-# so `corepack enable pnpm` fails on newer Node. Install pnpm directly instead:
-brew install pnpm          # or: curl -fsSL https://get.pnpm.io/install.sh | sh -
+npm install
+npm run build          # tokens (incl. contrast gate) -> contracts -> react -> workbench
+npm test
+npm run typecheck
+npm run lint:packaging # publint + are-the-types-wrong
 
-pnpm install
-pnpm build          # tokens (incl. contrast gate) -> contracts -> react -> workbench
-pnpm test
-pnpm typecheck
-pnpm lint:packaging # publint + are-the-types-wrong
-
-pnpm dev            # workbench on localhost with watch + live reload
-open apps/workbench/dist/index.html   # or just open the built file
+npm run dev            # workbench on http://127.0.0.1:4321, watch + live reload
+open apps/workbench/dist/index.html   # or just open the built file — no server needed
 ```
 
-`packageManager` pins pnpm to an exact version, and pnpm 10+ self-manages that pin — it does not need corepack, so a recent pnpm switches itself to the pinned version inside this repo.
+npm 11 is a real floor, not caution: npm 10's dependency resolver crashes on vitest 4's optional-peer graph with `Cannot read properties of null (reading 'edgesOut')`. Node 24 and newer ship an npm past that.
 
-Deliberately **no `engines.pnpm`** here. pnpm validates `engines` *before* it runs the `packageManager` self-switch, and in a workspace repo that ordering means an `engines.pnpm` constraint blocks the very upgrade it is asking for ([pnpm#9142](https://github.com/pnpm/pnpm/issues/9142)). The pin does the job on its own.
+This is an **npm workspaces** monorepo driven by Turborepo — the same shape GitHub's Primer uses. Workspace packages are linked by npm automatically; `overrides` in the root `package.json` forces one resolved version of `typescript`, `react` and `react-dom` across the whole tree.
 
-The workbench is a single self-contained HTML file with everything inlined, so `open`ing it works with no server. `pnpm dev` exists for when you are iterating on tokens and would rather not rebuild by hand.
+TypeScript is held at the **6.0** line. TypeScript 7 (the native Go port) does not yet expose a stable programmatic API, so Angular tooling cannot consume it — `@angular/compiler-cli` and `ng-packagr` both declare `typescript: ">=6.0 <6.1"`. The Angular package has to build against the same compiler the React package uses, so the line is held now rather than discovered later. `overrides` is what makes that a single decision instead of five copies that drift.
 
-TypeScript is pinned to the **6.0** line in a pnpm catalog. TypeScript 7 (the native Go port) does not yet expose a stable programmatic API, so Angular tooling cannot consume it — `@angular/compiler-cli` and `ng-packagr` both declare `typescript: ">=6.0 <6.1"`. The Angular package has to build against the same compiler the React package uses, so the line is held now rather than discovered later.
+The workbench is a single self-contained HTML file with everything inlined, so opening it works with no server. `npm run dev` exists for when you are iterating on tokens and would rather not rebuild by hand.
 
 ## Releases
 

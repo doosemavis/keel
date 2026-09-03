@@ -30,26 +30,26 @@
     "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css components.css"
   },
   "peerDependencies": {
-    "@keel/tokens": "workspace:^",
+    "@keel/tokens": "^0.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "react-aria-components": "catalog:"
+    "react-aria-components": "^1.21.0"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "@keel/contracts": "workspace:*",
-    "@keel/tokens": "workspace:*",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "publint": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:",
-    "@keel/behaviors": "workspace:*",
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@keel/contracts": "*",
+    "@keel/tokens": "*",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.0",
+    "publint": "^0.3.24",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tsdown": "^0.22.14",
+    "typescript": "6.0.3",
+    "vitest": "^4.1.11",
+    "@keel/behaviors": "*",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@testing-library/dom": "^10.4.0",

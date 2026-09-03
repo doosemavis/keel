@@ -9,7 +9,7 @@
  * Everything on the page is read from BUILT artifacts — packages/tokens/dist,
  * packages/react/dist and packages/contracts/dist — never re-typed here. A
  * hand-maintained gallery is exactly the drift this project exists to prevent,
- * so `pnpm build` regenerates the page and any change to a token shows up
+ * so `npm run build` regenerates the page and any change to a token shows up
  * without anyone remembering to update the docs.
  *
  * One transform is applied to Keel's CSS on the way in. Keel scopes its themes

@@ -31,11 +31,11 @@
     "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints tokens.css tokens.dark.css tokens.json"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "publint": "catalog:",
-    "style-dictionary": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "@arethetypeswrong/cli": "^0.18.5",
+    "publint": "^0.3.24",
+    "style-dictionary": "^5.5.2",
+    "tsdown": "^0.22.14",
+    "typescript": "6.0.3"
   },
   "repository": {
     "type": "git",

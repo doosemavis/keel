@@ -10,9 +10,9 @@
     "dev": "node serve.js"
   },
   "devDependencies": {
-    "@keel/contracts": "workspace:*",
-    "@keel/react": "workspace:*",
-    "@keel/tokens": "workspace:*"
+    "@keel/contracts": "*",
+    "@keel/react": "*",
+    "@keel/tokens": "*"
   },
   "repository": {
     "type": "git",
