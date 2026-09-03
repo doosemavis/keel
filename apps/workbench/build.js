@@ -407,7 +407,12 @@ body {
 .brand h1 { font-family: var(--wb-display); font-optical-sizing: auto; font-weight: 600; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
 .brand p { margin: 8px 0 0; color: var(--wb-muted); max-width: 56ch; }
 .masthead-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-.specimen-theme { display: flex; align-items: center; gap: 10px; }
+/* Two controls, deliberately separate. "Page" themes this workbench; "Specimen"
+   themes the system under inspection. Keeping them independent is the point —
+   reviewing Keel's dark palette while reading the page in light is the normal
+   way to work. */
+.theme-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.theme-ctl { display: flex; align-items: center; gap: 8px; }
 /* The specimen control IS the ThemeToggle component, running on Keel's own
    stylesheet. It is pinned to the light theme so the control itself stays in a
    known state while it switches everything else. */
@@ -566,9 +571,19 @@ ${keelCss}
       <p>Every token, contrast result and component in the system — with a live playground on each. Generated from the built packages, so this page cannot drift from the code.</p>
     </div>
     <div class="masthead-right">
-      <div class="specimen-theme">
-        <span class="seg-label">Specimen theme</span>
-        <div id="specimenToggle"></div>
+      <div class="theme-controls">
+        <div class="theme-ctl">
+          <span class="seg-label">Page</span>
+          <div class="seg" role="group" aria-label="Page theme">
+            <button type="button" data-pagetheme="light" aria-pressed="false">Light</button>
+            <button type="button" data-pagetheme="dark" aria-pressed="false">Dark</button>
+            <button type="button" data-pagetheme="system" aria-pressed="true">System</button>
+          </div>
+        </div>
+        <div class="theme-ctl">
+          <span class="seg-label">Specimen</span>
+          <div id="specimenToggle"></div>
+        </div>
       </div>
       <div class="stats">
       <div class="stat"><b>${entries.length}</b><span>tokens</span></div>
@@ -725,6 +740,38 @@ ${keelCss}
       });
     });
   }
+
+  // ---------------------------------------------------------- page theme
+  //
+  // Three states, not two. With only light/dark there is no way back to
+  // "follow my OS" once you have touched the control, and the un-stamped
+  // system state is what most people actually want. "system" removes the
+  // attribute entirely so the prefers-color-scheme media query takes over.
+  var PAGE_KEY = 'keel-workbench-page-theme';
+
+  function applyPageTheme(choice) {
+    if (choice === 'system') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', choice);
+    document.querySelectorAll('[data-pagetheme]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-pagetheme') === choice));
+    });
+    // Storage throws outright in some privacy modes; a theme preference is not
+    // worth breaking the page over.
+    try { localStorage.setItem(PAGE_KEY, choice); } catch (e) {}
+  }
+
+  var storedPage = 'system';
+  try {
+    var raw = localStorage.getItem(PAGE_KEY);
+    if (raw === 'light' || raw === 'dark' || raw === 'system') storedPage = raw;
+  } catch (e) {}
+  applyPageTheme(storedPage);
+
+  document.querySelectorAll('[data-pagetheme]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyPageTheme(btn.getAttribute('data-pagetheme'));
+    });
+  });
 
   // The specimen control is the real ThemeToggle, rendered by its own renderer
   // and driving every stage on the page — the component documenting itself.
