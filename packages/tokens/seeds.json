@@ -1,35 +1,39 @@
 {
   "$comment": "The entire palette, as five seeds. Everything in src/primitive/color.json is GENERATED from this file by ramps.js — do not edit the ramps by hand. Re-theming Keel means editing the numbers below.",
 
-  "$direction": "Bold, with a touch of femininity and elegance. Bold comes from chroma: the accent runs to 0.235 in OKLCH, roughly twice the saturation of a conventional SaaS primary, and it is a magenta-rose rather than a blue — a hue almost nobody ships as a primary, which is most of why it does not read as a default. Elegance comes from the neutral: a warm sand-taupe at hue 48 rather than the cool blue-grey (Tailwind slate, and every SaaS product since 2018) it replaces. Warm neutrals read as chosen; cool ones read as inherited. Femininity is carried by the pairing rather than by any one value — high-chroma rose against a warm low-chroma ground, with a didone display face whose hairline strokes do the same work in type that low chroma does in the neutral.",
+  "$inspiration": "Nelumbo nucifera, the sacred lotus. Not a vague idea of 'pink' — the five ramps are the five things actually present in the plant: the deep magenta-pink petal, the golden ring of stamens at its heart, the muted blue-green pad, the russet of the dried seed pod, and the cool grey-green of the waxy bloom on a leaf and the water under it. Naming the ramps after their source rather than after 'blue' or 'red' is deliberate: a contributor reaching for {color.lotus.600} is reminded there is one signature colour here and this is it.",
 
-  "hueNote": "OKLCH hue, in degrees. accent 335 (magenta-rose) sits 53 degrees from danger 28 (true red). That gap is deliberate and it is the tightest relationship in the palette: a primary button and a destructive button are both saturated fills with light text, so they have to be separable at a glance. They are additionally separated by chroma and by lightness — see the report `npm run contrast --workspace @keel/tokens` prints.",
+  "$direction": "Bold, with a touch of femininity and elegance — the brief the lotus turned out to serve better than the palette it replaced. BOLD is spent entirely on chroma: the petal runs to 0.225 in OKLCH, roughly twice a conventional SaaS primary. FEMININITY is the hue itself, a deep magenta-pink almost nobody ships as a primary, which is most of why it does not read as a default. ELEGANCE is the neutral, and it is the least obvious decision here: pond sits at hue 168, the cool grey-green of the glaucous bloom on a lotus pad, at a chroma of 0.010 where the colour is felt rather than seen. That hue is the near-complement of the petal magenta, so the accent pops harder against it than it would against any grey — the same trick botanical illustration has used for centuries. It also replaces the warm sand of the previous pass, which was pulling the palette toward terracotta and away from water.",
+
+  "hueNote": "OKLCH hue, in degrees. lotus 338 sits 52 degrees from russet 30, and that is the tightest and most important relationship in the palette: a primary button and a destructive button are both saturated fills carrying light text, so they must be separable at a glance. They are separated by chroma and lightness as well as hue. Real lotus cultivars run from near-white to a pink so light it would collide with russet outright; 338 picks the deep magenta-pink end of the species on purpose, both because it is bolder and because it keeps that gap open.",
 
   "ramps": {
-    "neutral": {
-      "hue": 48,
-      "maxChroma": 0.016,
-      "$comment": "Warm sand-taupe. Chroma is tiny but never zero: a pure grey reads as unconsidered, and at 0.016 the warmth is felt rather than seen. Hue 48 puts it on the same side of the wheel as the amber warning, so the whole surface family agrees."
+    "pond": {
+      "hue": 168,
+      "maxChroma": 0.01,
+      "role": "neutral",
+      "$comment": "The neutral — every surface, border, divider and text colour, so roughly 70 percent of what anyone sees. The waxy blue-green bloom on a lotus pad, and the water beneath it. Chroma is minuscule but never zero: a pure grey reads as unconsidered, and near-complement to the petal is what makes the accent sing."
     },
-    "rose": {
-      "hue": 335,
-      "maxChroma": 0.235,
-      "$comment": "The accent. Magenta-rose, pushed hard on chroma — this is where the 'bold' is spent, and per the design rule that boldness goes in exactly one place, everything else in the palette stays quiet."
+    "lotus": {
+      "hue": 338,
+      "maxChroma": 0.225,
+      "$comment": "The accent, and the signature. Deep magenta-pink petal. This is where the entire chroma budget goes — per the rule that boldness belongs in exactly one place, everything else in the palette stays quiet so this can be loud."
     },
-    "green": {
-      "hue": 158,
-      "maxChroma": 0.115,
-      "$comment": "Success. Deliberately a deep blue-green rather than a grass green — it has to sit beside a magenta accent without turning the palette into a carnival."
+    "gold": {
+      "hue": 90,
+      "maxChroma": 0.155,
+      "$comment": "Warning. The ring of stamens at the flower's heart — a true golden yellow rather than the orange-amber most systems use. Warm, and the only other ramp allowed any real saturation.",
+      "$gamutNote": "Only ~60% of this chroma survives below step 500, so gold's real saturation peak is 400 rather than 600 and its darks read brown-olive. That is sRGB, not a mistake: yellow's gamut ceiling collapses as lightness drops. Two fixes were measured and both rejected. (1) Warming the hue toward orange gains almost nothing — h60 delivers 0.101 at step 700 against h90's 0.088, a 15% gain that turns the colour from gold to tobacco and halves the separation from russet. (2) Aliasing fg.warning to gold.600 instead of 700 would look more golden, but every other status foreground aliases 700, and because OKLCH L is perceptual, breaking the pattern would make warning text visibly lighter than success and danger beside it. The shared lightness curve is what makes semantic roles swappable between hues; it does not get bent for one ramp's vanity."
     },
-    "amber": {
-      "hue": 72,
-      "maxChroma": 0.145,
-      "$comment": "Warning. Honey rather than yellow, sharing the neutral's warm side of the wheel."
+    "leaf": {
+      "hue": 145,
+      "maxChroma": 0.095,
+      "$comment": "Success. The pad itself: glaucous, which means dusty and matte rather than vivid, so the low chroma is the authentic choice as well as the restrained one. Far enough from pond in chroma (9x) that a success state never reads as a surface."
     },
-    "red": {
-      "hue": 28,
-      "maxChroma": 0.185,
-      "$comment": "Danger. A true red, pushed slightly orange to open the gap to the rose accent. Lower chroma than the accent on purpose: destructive actions should read as serious, not as the loudest thing on the page."
+    "russet": {
+      "hue": 30,
+      "maxChroma": 0.175,
+      "$comment": "Danger. The dried seed pod. Lower chroma than the petal on purpose: a destructive action should read as serious, not as the loudest thing on the page — and it must never be mistaken for the primary."
     }
   }
 }

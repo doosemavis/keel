@@ -42,7 +42,7 @@ export const PAIRS = [
   { fg: 'color.fg.onDanger', bg: 'color.bg.danger', min: 4.5, label: 'label on danger fill' },
   { fg: 'color.fg.onDanger', bg: 'color.bg.dangerHover', min: 4.5, label: 'label on danger hover' },
   { fg: 'color.fg.onInverse', bg: 'color.bg.inverse', min: 4.5, label: 'label on inverse surface' },
-  { fg: 'color.fg.default', bg: 'color.bg.muted', min: 4.5, label: 'label on neutral control fill' },
+  { fg: 'color.fg.default', bg: 'color.bg.muted', min: 4.5, label: 'label on the neutral control fill' },
 
   { fg: 'color.border.control', bg: 'color.bg.canvas', min: 3, label: 'control border on canvas' },
   { fg: 'color.border.control', bg: 'color.bg.surface', min: 3, label: 'control border on surface' },

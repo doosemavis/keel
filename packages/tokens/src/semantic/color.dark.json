@@ -3,49 +3,49 @@
   "color": {
     "$type": "color",
     "bg": {
-      "canvas":  { "$value": "{color.neutral.950}" },
-      "surface": { "$value": "{color.neutral.900}" },
-      "subtle":  { "$value": "{color.neutral.900}" },
-      "muted":   { "$value": "{color.neutral.800}" },
-      "mutedHover":  { "$value": "{color.neutral.700}" },
-      "mutedActive": { "$value": "{color.neutral.600}" },
-      "inverse": { "$value": "{color.neutral.100}" },
-      "accent":       { "$value": "{color.rose.400}", "$description": "Lighter than light-theme accent so dark text on it clears AA." },
-      "accentHover":  { "$value": "{color.rose.300}" },
-      "accentActive": { "$value": "{color.rose.200}" },
-      "accentSubtle": { "$value": "{color.rose.950}" },
-      "successSubtle": { "$value": "{color.green.900}" },
-      "warningSubtle": { "$value": "{color.amber.900}" },
-      "dangerSubtle":  { "$value": "{color.red.900}" },
-      "danger":       { "$value": "{color.red.300}", "$description": "Follows the same inversion as accent — light fill, dark label — so destructive actions stay consistent with the rest of the system in dark mode." },
-      "dangerHover":  { "$value": "{color.red.100}" },
-      "dangerActive": { "$value": "{color.red.50}" },
-      "disabled":     { "$value": "{color.neutral.800}" }
+      "canvas":  { "$value": "{color.pond.950}" },
+      "surface": { "$value": "{color.pond.900}" },
+      "subtle":  { "$value": "{color.pond.900}" },
+      "muted":   { "$value": "{color.pond.800}" },
+      "mutedHover":  { "$value": "{color.pond.700}" },
+      "mutedActive": { "$value": "{color.pond.600}" },
+      "inverse": { "$value": "{color.pond.100}" },
+      "accent":       { "$value": "{color.lotus.400}", "$description": "Lighter than light-theme accent so dark text on it clears AA." },
+      "accentHover":  { "$value": "{color.lotus.300}" },
+      "accentActive": { "$value": "{color.lotus.200}" },
+      "accentSubtle": { "$value": "{color.lotus.950}" },
+      "successSubtle": { "$value": "{color.leaf.900}" },
+      "warningSubtle": { "$value": "{color.gold.900}" },
+      "dangerSubtle":  { "$value": "{color.russet.900}" },
+      "danger":       { "$value": "{color.russet.300}", "$description": "Follows the same inversion as accent — light fill, dark label — so destructive actions stay consistent with the rest of the system in dark mode." },
+      "dangerHover":  { "$value": "{color.russet.100}" },
+      "dangerActive": { "$value": "{color.russet.50}" },
+      "disabled":     { "$value": "{color.pond.800}" }
     },
     "fg": {
-      "default":  { "$value": "{color.neutral.50}" },
-      "muted":    { "$value": "{color.neutral.300}" },
-      "subtle":   { "$value": "{color.neutral.400}", "$description": "neutral.500 is tuned for AA on a white canvas and is too dark to carry text here, so the dark theme steps one rung lighter." },
-      "onAccent": { "$value": "{color.neutral.950}" },
-      "onDanger": { "$value": "{color.neutral.950}" },
-      "onInverse":{ "$value": "{color.neutral.950}" },
-      "accent":   { "$value": "{color.rose.300}" },
-      "success":  { "$value": "{color.green.300}" },
-      "warning":  { "$value": "{color.amber.300}" },
-      "danger":   { "$value": "{color.red.300}" },
-      "disabled": { "$value": "{color.neutral.600}" }
+      "default":  { "$value": "{color.pond.50}" },
+      "muted":    { "$value": "{color.pond.300}" },
+      "subtle":   { "$value": "{color.pond.400}", "$description": "pond.500 is tuned for AA on a white canvas and is too dark to carry text here, so the dark theme steps one rung lighter." },
+      "onAccent": { "$value": "{color.pond.950}" },
+      "onDanger": { "$value": "{color.pond.950}" },
+      "onInverse":{ "$value": "{color.pond.950}" },
+      "accent":   { "$value": "{color.lotus.300}" },
+      "success":  { "$value": "{color.leaf.300}" },
+      "warning":  { "$value": "{color.gold.300}" },
+      "danger":   { "$value": "{color.russet.300}" },
+      "disabled": { "$value": "{color.pond.600}" }
     },
     "border": {
-      "default": { "$value": "{color.neutral.700}" },
-      "muted":   { "$value": "{color.neutral.800}" },
-      "control": { "$value": "{color.neutral.500}" },
-      "strong":  { "$value": "{color.neutral.400}" },
-      "accent":  { "$value": "{color.rose.400}" },
-      "danger":  { "$value": "{color.red.300}" },
-      "disabled":{ "$value": "{color.neutral.800}" }
+      "default": { "$value": "{color.pond.700}" },
+      "muted":   { "$value": "{color.pond.800}" },
+      "control": { "$value": "{color.pond.500}" },
+      "strong":  { "$value": "{color.pond.400}" },
+      "accent":  { "$value": "{color.lotus.400}" },
+      "danger":  { "$value": "{color.russet.300}" },
+      "disabled":{ "$value": "{color.pond.800}" }
     },
     "focus": {
-      "ring": { "$value": "{color.rose.300}" }
+      "ring": { "$value": "{color.lotus.300}" }
     }
   }
 }

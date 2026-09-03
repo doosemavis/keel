@@ -1,5 +1,6 @@
 /**
- * Palette generator — five seeds in, 58 hex values out.
+ * Palette generator — five seeds in, 57 hex values out. The colour maths lives
+ * in oklch.js; this file owns the ramp SHAPE and the seed contract.
  *
  * Replaces the hand-authored primitive ramps. Hand-picking 45 hex values has
  * two problems that only show up later: re-theming means 45 coordinated edits,
@@ -18,70 +19,9 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { oklch } from './oklch.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
-
-// ------------------------------------------------------------------ colour maths
-
-/** OKLab → linear sRGB. Björn Ottosson's matrix. */
-function oklabToLinearSrgb(L, a, b) {
-  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
-
-  const l = l_ * l_ * l_;
-  const m = m_ * m_ * m_;
-  const s = s_ * s_ * s_;
-
-  return [
-    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
-    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
-  ];
-}
-
-/** Linear light → sRGB transfer function. */
-const encode = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055);
-
-const inGamut = ([r, g, b]) => {
-  const eps = 1e-5;
-  return r >= -eps && r <= 1 + eps && g >= -eps && g <= 1 + eps && b >= -eps && b <= 1 + eps;
-};
-
-/**
- * OKLCH → hex, reducing chroma until the colour fits in sRGB.
- *
- * High-chroma requests at extreme lightness are simply not representable on a
- * screen. Clipping the channels would shift the HUE — a too-saturated magenta
- * clips to something visibly redder — so chroma is walked down instead, which
- * preserves the hue and only gives up saturation. This is the approach CSS
- * Color 4 describes for gamut mapping.
- */
-function oklchToHex(L, C, H) {
-  const rad = (H * Math.PI) / 180;
-
-  const at = (chroma) => oklabToLinearSrgb(L, chroma * Math.cos(rad), chroma * Math.sin(rad));
-
-  let lo = 0;
-  let hi = C;
-  if (!inGamut(at(C))) {
-    // 24 iterations resolves chroma far finer than 8-bit output can show.
-    for (let i = 0; i < 24; i++) {
-      const mid = (lo + hi) / 2;
-      if (inGamut(at(mid))) lo = mid;
-      else hi = mid;
-    }
-  } else {
-    lo = C;
-  }
-
-  const [r, g, b] = at(lo).map((v) => Math.min(1, Math.max(0, encode(v))));
-  const hex = (v) =>
-    Math.round(v * 255)
-      .toString(16)
-      .padStart(2, '0');
-  return `#${hex(r)}${hex(g)}${hex(b)}`;
-}
 
 // ------------------------------------------------------------------ ramp shape
 
@@ -106,7 +46,7 @@ const COLOR_STEPS = [
   { step: 950, L: 0.225, c: 0.5 },
 ];
 
-/** The neutral runs to pure white and pure black at the ends, where hue is meaningless. */
+/** The ramp whose role is `neutral` runs to pure white and pure black at the ends, where hue is meaningless. */
 const NEUTRAL_STEPS = [
   { step: 0, L: 1.0, c: 0 },
   { step: 50, L: 0.982, c: 0.25 },
@@ -117,7 +57,7 @@ const NEUTRAL_STEPS = [
   // 0.562, not the 0.588 the even spacing wants. `fg.subtle` aliases this step
   // and its whole job is being "the lightest foreground that still carries AA
   // body text" — at 0.588 it measured 4.17:1 on white and the contrast gate
-  // rejected the build. Repointing the alias to 600 would have collapsed
+  // rejected the build. Repointing the alias to pond.600 would have collapsed
   // fg.subtle into fg.muted and lost a level of type hierarchy, so the ramp
   // moved instead. The accessibility requirement sets the value; the spacing
   // yields to it.
@@ -135,18 +75,41 @@ const NEUTRAL_STEPS = [
 const seeds = JSON.parse(await readFile(resolve(here, 'seeds.json'), 'utf8'));
 
 const color = {};
+const gamut = {};
 let count = 0;
 
 for (const [name, spec] of Object.entries(seeds.ramps)) {
-  const steps = name === 'neutral' ? NEUTRAL_STEPS : COLOR_STEPS;
+  // Selected by declared ROLE, not by name. The generator must not know that the
+  // neutral is currently called `pond` — that is a palette decision, and the last
+  // re-theme renamed all five ramps. A seed says what job it does; this file
+  // decides what shape that job needs.
+  const steps = spec.role === 'neutral' ? NEUTRAL_STEPS : COLOR_STEPS;
   color[name] = {};
+  let peak = { step: null, chroma: -1 };
+  let clipped = 0;
+
   for (const { step, L, c } of steps) {
+    const requested = spec.maxChroma * c;
+    const { hex, delivered } = oklch(L, requested, spec.hue);
+    const short = requested > 0 ? 1 - delivered / requested : 0;
+    if (short > 0.001) clipped++;
+    if (delivered > peak.chroma) peak = { step, chroma: delivered };
+
     color[name][String(step)] = {
-      $value: oklchToHex(L, spec.maxChroma * c, spec.hue),
-      $description: `OKLCH L ${L} C ${(spec.maxChroma * c).toFixed(4)} H ${spec.hue}`,
+      $value: hex,
+      // Delivered coordinate first, because that is what the hex actually is.
+      // The request is kept only where it differs, so the gap is legible rather
+      // than silently absorbed.
+      $description:
+        `OKLCH L ${L} C ${delivered.toFixed(4)} H ${spec.hue}` +
+        (short > 0.001
+          ? ` — gamut-mapped from C ${requested.toFixed(4)} (sRGB holds ${Math.round((1 - short) * 100)}% of the requested chroma at this lightness)`
+          : ''),
     };
     count++;
   }
+
+  gamut[name] = { clipped, total: steps.length, peak: peak.step };
 }
 
 const out = {
@@ -165,7 +128,23 @@ await writeFile(
   'utf8',
 );
 
-const hues = Object.entries(seeds.ramps)
-  .map(([n, s]) => `${n} h${s.hue}`)
-  .join(', ');
-console.log(`@keel/tokens — generated ${count} primitive colors from ${Object.keys(seeds.ramps).length} seeds (${hues})`);
+console.log(
+  `@keel/tokens — generated ${count} primitive colors from ${Object.keys(seeds.ramps).length} seeds`,
+);
+
+// Printed on every build, not hidden behind a flag. Where sRGB cannot hold the
+// requested chroma the ramp's real saturation peak moves off step 600, and the
+// only visible symptom is that the ramp "looks wrong" three months later with
+// nobody able to say why. gold is the live example: yellow's gamut ceiling
+// collapses as lightness drops, so its darks give up ~40% of the request and
+// its peak sits at 400. That is sRGB, not a bug — but it should be stated.
+for (const [name, spec] of Object.entries(seeds.ramps)) {
+  const g = gamut[name];
+  const note =
+    g.clipped === 0
+      ? 'fully in gamut'
+      : `${g.clipped}/${g.total} steps gamut-mapped, chroma peaks at ${g.peak}`;
+  console.log(
+    `  ${name.padEnd(7)} h${String(spec.hue).padStart(3)}  C≤${spec.maxChroma.toFixed(3)}  ${note}`,
+  );
+}

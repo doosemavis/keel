@@ -2,242 +2,242 @@
   "$description": "GENERATED FILE — do not edit. Produced by packages/tokens/ramps.js from seeds.json. Every value is an OKLCH coordinate resolved to the nearest in-gamut sRGB hex, so step 600 is the same perceptual lightness in every hue. Re-theme by editing seeds.json and rebuilding. Components must never reference these directly — they exist only to be aliased by the semantic roles in src/semantic/.",
   "color": {
     "$type": "color",
-    "neutral": {
+    "pond": {
       "0": {
         "$value": "#ffffff",
-        "$description": "OKLCH L 1 C 0.0000 H 48"
+        "$description": "OKLCH L 1 C 0.0000 H 168"
       },
       "50": {
-        "$value": "#fbf8f7",
-        "$description": "OKLCH L 0.982 C 0.0040 H 48"
+        "$value": "#f8faf9",
+        "$description": "OKLCH L 0.982 C 0.0025 H 168"
       },
       "100": {
-        "$value": "#f5f0ed",
-        "$description": "OKLCH L 0.958 C 0.0064 H 48"
+        "$value": "#eff2f0",
+        "$description": "OKLCH L 0.958 C 0.0040 H 168"
       },
       "200": {
-        "$value": "#e9e2df",
-        "$description": "OKLCH L 0.918 C 0.0088 H 48"
+        "$value": "#e1e5e3",
+        "$description": "OKLCH L 0.918 C 0.0055 H 168"
       },
       "300": {
-        "$value": "#d7ceca",
-        "$description": "OKLCH L 0.858 C 0.0120 H 48"
+        "$value": "#ccd2cf",
+        "$description": "OKLCH L 0.858 C 0.0075 H 168"
       },
       "400": {
-        "$value": "#aea29d",
-        "$description": "OKLCH L 0.722 C 0.0160 H 48"
+        "$value": "#a0a7a4",
+        "$description": "OKLCH L 0.722 C 0.0100 H 168"
       },
       "500": {
-        "$value": "#7d726d",
-        "$description": "OKLCH L 0.562 C 0.0160 H 48"
+        "$value": "#707774",
+        "$description": "OKLCH L 0.562 C 0.0100 H 168"
       },
       "600": {
-        "$value": "#695f5a",
-        "$description": "OKLCH L 0.492 C 0.0152 H 48"
+        "$value": "#5c6360",
+        "$description": "OKLCH L 0.492 C 0.0095 H 168"
       },
       "700": {
-        "$value": "#4f4642",
-        "$description": "OKLCH L 0.402 C 0.0136 H 48"
+        "$value": "#444a47",
+        "$description": "OKLCH L 0.402 C 0.0085 H 168"
       },
       "800": {
-        "$value": "#362f2c",
-        "$description": "OKLCH L 0.312 C 0.0120 H 48"
+        "$value": "#2d3230",
+        "$description": "OKLCH L 0.312 C 0.0075 H 168"
       },
       "900": {
-        "$value": "#221d1a",
-        "$description": "OKLCH L 0.236 C 0.0099 H 48"
+        "$value": "#1c1f1e",
+        "$description": "OKLCH L 0.236 C 0.0062 H 168"
       },
       "950": {
-        "$value": "#120e0c",
-        "$description": "OKLCH L 0.168 C 0.0080 H 48"
+        "$value": "#0d100f",
+        "$description": "OKLCH L 0.168 C 0.0050 H 168"
       },
       "1000": {
         "$value": "#000000",
-        "$description": "OKLCH L 0 C 0.0000 H 48"
+        "$description": "OKLCH L 0 C 0.0000 H 168"
       }
     },
-    "rose": {
+    "lotus": {
       "50": {
-        "$value": "#fff3fc",
-        "$description": "OKLCH L 0.975 C 0.0376 H 335"
+        "$value": "#fff3fb",
+        "$description": "OKLCH L 0.975 C 0.0170 H 338 — gamut-mapped from C 0.0360 (sRGB holds 47% of the requested chroma at this lightness)"
       },
       "100": {
-        "$value": "#ffe3f8",
-        "$description": "OKLCH L 0.945 C 0.0705 H 335"
+        "$value": "#ffe4f6",
+        "$description": "OKLCH L 0.945 C 0.0383 H 338 — gamut-mapped from C 0.0675 (sRGB holds 57% of the requested chroma at this lightness)"
       },
       "200": {
-        "$value": "#ffc9f2",
-        "$description": "OKLCH L 0.895 C 0.1222 H 335"
+        "$value": "#ffc9ee",
+        "$description": "OKLCH L 0.895 C 0.0767 H 338 — gamut-mapped from C 0.1170 (sRGB holds 66% of the requested chroma at this lightness)"
       },
       "300": {
-        "$value": "#ff9dea",
-        "$description": "OKLCH L 0.82 C 0.1786 H 335"
+        "$value": "#ff9fe4",
+        "$description": "OKLCH L 0.82 C 0.1418 H 338 — gamut-mapped from C 0.1710 (sRGB holds 83% of the requested chroma at this lightness)"
       },
       "400": {
-        "$value": "#f363da",
-        "$description": "OKLCH L 0.72 C 0.2209 H 335"
+        "$value": "#f465d2",
+        "$description": "OKLCH L 0.72 C 0.2115 H 338"
       },
       "500": {
-        "$value": "#d133b9",
-        "$description": "OKLCH L 0.61 C 0.2350 H 335"
+        "$value": "#d137b1",
+        "$description": "OKLCH L 0.61 C 0.2250 H 338"
       },
       "600": {
-        "$value": "#a70094",
-        "$description": "OKLCH L 0.5 C 0.2350 H 335"
+        "$value": "#a9008d",
+        "$description": "OKLCH L 0.5 C 0.2192 H 338 — gamut-mapped from C 0.2250 (sRGB holds 97% of the requested chroma at this lightness)"
       },
       "700": {
-        "$value": "#880078",
-        "$description": "OKLCH L 0.43 C 0.2162 H 335"
+        "$value": "#8a0072",
+        "$description": "OKLCH L 0.43 C 0.1886 H 338 — gamut-mapped from C 0.2070 (sRGB holds 91% of the requested chroma at this lightness)"
       },
       "800": {
-        "$value": "#6a005d",
-        "$description": "OKLCH L 0.36 C 0.1880 H 335"
+        "$value": "#6c0059",
+        "$description": "OKLCH L 0.36 C 0.1579 H 338 — gamut-mapped from C 0.1800 (sRGB holds 88% of the requested chroma at this lightness)"
       },
       "900": {
-        "$value": "#500046",
-        "$description": "OKLCH L 0.295 C 0.1551 H 335"
+        "$value": "#510042",
+        "$description": "OKLCH L 0.295 C 0.1294 H 338 — gamut-mapped from C 0.1485 (sRGB holds 87% of the requested chroma at this lightness)"
       },
       "950": {
-        "$value": "#35002e",
-        "$description": "OKLCH L 0.225 C 0.1175 H 335"
+        "$value": "#36002b",
+        "$description": "OKLCH L 0.225 C 0.0987 H 338 — gamut-mapped from C 0.1125 (sRGB holds 88% of the requested chroma at this lightness)"
       }
     },
-    "green": {
+    "gold": {
       "50": {
-        "$value": "#edfbf2",
-        "$description": "OKLCH L 0.975 C 0.0184 H 158"
+        "$value": "#fdf6e4",
+        "$description": "OKLCH L 0.975 C 0.0248 H 90"
       },
       "100": {
-        "$value": "#dbf4e4",
-        "$description": "OKLCH L 0.945 C 0.0345 H 158"
+        "$value": "#f9ecca",
+        "$description": "OKLCH L 0.945 C 0.0465 H 90"
       },
       "200": {
-        "$value": "#bce9cd",
-        "$description": "OKLCH L 0.895 C 0.0598 H 158"
+        "$value": "#f1db9f",
+        "$description": "OKLCH L 0.895 C 0.0806 H 90"
       },
       "300": {
-        "$value": "#93d6af",
-        "$description": "OKLCH L 0.82 C 0.0874 H 158"
+        "$value": "#e2c165",
+        "$description": "OKLCH L 0.82 C 0.1178 H 90"
       },
       "400": {
-        "$value": "#65b98b",
-        "$description": "OKLCH L 0.72 C 0.1081 H 158"
+        "$value": "#c89f09",
+        "$description": "OKLCH L 0.72 C 0.1457 H 90"
       },
       "500": {
-        "$value": "#3a9868",
-        "$description": "OKLCH L 0.61 C 0.1150 H 158"
+        "$value": "#a07f00",
+        "$description": "OKLCH L 0.61 C 0.1247 H 90 — gamut-mapped from C 0.1550 (sRGB holds 80% of the requested chroma at this lightness)"
       },
       "600": {
-        "$value": "#077649",
-        "$description": "OKLCH L 0.5 C 0.1150 H 158"
+        "$value": "#7a6000",
+        "$description": "OKLCH L 0.5 C 0.1022 H 90 — gamut-mapped from C 0.1550 (sRGB holds 66% of the requested chroma at this lightness)"
       },
       "700": {
-        "$value": "#00603a",
-        "$description": "OKLCH L 0.43 C 0.1058 H 158"
+        "$value": "#624d00",
+        "$description": "OKLCH L 0.43 C 0.0879 H 90 — gamut-mapped from C 0.1426 (sRGB holds 62% of the requested chroma at this lightness)"
       },
       "800": {
-        "$value": "#004a2b",
-        "$description": "OKLCH L 0.36 C 0.0920 H 158"
+        "$value": "#4c3b00",
+        "$description": "OKLCH L 0.36 C 0.0736 H 90 — gamut-mapped from C 0.1240 (sRGB holds 59% of the requested chroma at this lightness)"
       },
       "900": {
-        "$value": "#00371f",
-        "$description": "OKLCH L 0.295 C 0.0759 H 158"
+        "$value": "#382b00",
+        "$description": "OKLCH L 0.295 C 0.0603 H 90 — gamut-mapped from C 0.1023 (sRGB holds 59% of the requested chroma at this lightness)"
       },
       "950": {
-        "$value": "#002312",
-        "$description": "OKLCH L 0.225 C 0.0575 H 158"
+        "$value": "#241a00",
+        "$description": "OKLCH L 0.225 C 0.0460 H 90 — gamut-mapped from C 0.0775 (sRGB holds 59% of the requested chroma at this lightness)"
       }
     },
-    "amber": {
+    "leaf": {
       "50": {
-        "$value": "#fff5e9",
-        "$description": "OKLCH L 0.975 C 0.0232 H 72"
+        "$value": "#f1faf1",
+        "$description": "OKLCH L 0.975 C 0.0152 H 145"
       },
       "100": {
-        "$value": "#ffe9cf",
-        "$description": "OKLCH L 0.945 C 0.0435 H 72"
+        "$value": "#e2f2e1",
+        "$description": "OKLCH L 0.945 C 0.0285 H 145"
       },
       "200": {
-        "$value": "#fcd5a6",
-        "$description": "OKLCH L 0.895 C 0.0754 H 72"
+        "$value": "#c9e6c9",
+        "$description": "OKLCH L 0.895 C 0.0494 H 145"
       },
       "300": {
-        "$value": "#f0b871",
-        "$description": "OKLCH L 0.82 C 0.1102 H 72"
+        "$value": "#a7d1a8",
+        "$description": "OKLCH L 0.82 C 0.0722 H 145"
       },
       "400": {
-        "$value": "#d99532",
-        "$description": "OKLCH L 0.72 C 0.1363 H 72"
+        "$value": "#81b482",
+        "$description": "OKLCH L 0.72 C 0.0893 H 145"
       },
       "500": {
-        "$value": "#b27400",
-        "$description": "OKLCH L 0.61 C 0.1450 H 72"
+        "$value": "#5d925f",
+        "$description": "OKLCH L 0.61 C 0.0950 H 145"
       },
       "600": {
-        "$value": "#885700",
-        "$description": "OKLCH L 0.5 C 0.1450 H 72"
+        "$value": "#3d7140",
+        "$description": "OKLCH L 0.5 C 0.0950 H 145"
       },
       "700": {
-        "$value": "#6e4600",
-        "$description": "OKLCH L 0.43 C 0.1334 H 72"
+        "$value": "#2e5c30",
+        "$description": "OKLCH L 0.43 C 0.0874 H 145"
       },
       "800": {
-        "$value": "#563500",
-        "$description": "OKLCH L 0.36 C 0.1160 H 72"
+        "$value": "#204723",
+        "$description": "OKLCH L 0.36 C 0.0760 H 145"
       },
       "900": {
-        "$value": "#402600",
-        "$description": "OKLCH L 0.295 C 0.0957 H 72"
+        "$value": "#163518",
+        "$description": "OKLCH L 0.295 C 0.0627 H 145"
       },
       "950": {
-        "$value": "#291700",
-        "$description": "OKLCH L 0.225 C 0.0725 H 72"
+        "$value": "#0c210d",
+        "$description": "OKLCH L 0.225 C 0.0475 H 145"
       }
     },
-    "red": {
+    "russet": {
       "50": {
         "$value": "#fff4f2",
-        "$description": "OKLCH L 0.975 C 0.0296 H 28"
+        "$description": "OKLCH L 0.975 C 0.0123 H 30 — gamut-mapped from C 0.0280 (sRGB holds 44% of the requested chroma at this lightness)"
       },
       "100": {
-        "$value": "#ffe6e3",
-        "$description": "OKLCH L 0.945 C 0.0555 H 28"
+        "$value": "#ffe6e2",
+        "$description": "OKLCH L 0.945 C 0.0277 H 30 — gamut-mapped from C 0.0525 (sRGB holds 53% of the requested chroma at this lightness)"
       },
       "200": {
-        "$value": "#ffcfc8",
-        "$description": "OKLCH L 0.895 C 0.0962 H 28"
+        "$value": "#ffd0c7",
+        "$description": "OKLCH L 0.895 C 0.0552 H 30 — gamut-mapped from C 0.0910 (sRGB holds 61% of the requested chroma at this lightness)"
       },
       "300": {
-        "$value": "#ffaba0",
-        "$description": "OKLCH L 0.82 C 0.1406 H 28"
+        "$value": "#ffab9d",
+        "$description": "OKLCH L 0.82 C 0.1014 H 30 — gamut-mapped from C 0.1330 (sRGB holds 76% of the requested chroma at this lightness)"
       },
       "400": {
-        "$value": "#ff7364",
-        "$description": "OKLCH L 0.72 C 0.1739 H 28"
+        "$value": "#fa7764",
+        "$description": "OKLCH L 0.72 C 0.1645 H 30"
       },
       "500": {
-        "$value": "#dc493e",
-        "$description": "OKLCH L 0.61 C 0.1850 H 28"
+        "$value": "#d84f3e",
+        "$description": "OKLCH L 0.61 C 0.1750 H 30"
       },
       "600": {
-        "$value": "#b51f1c",
-        "$description": "OKLCH L 0.5 C 0.1850 H 28"
+        "$value": "#b1291b",
+        "$description": "OKLCH L 0.5 C 0.1750 H 30"
       },
       "700": {
-        "$value": "#970a0d",
-        "$description": "OKLCH L 0.43 C 0.1702 H 28"
+        "$value": "#94170c",
+        "$description": "OKLCH L 0.43 C 0.1610 H 30"
       },
       "800": {
-        "$value": "#780004",
-        "$description": "OKLCH L 0.36 C 0.1480 H 28"
+        "$value": "#760a03",
+        "$description": "OKLCH L 0.36 C 0.1400 H 30"
       },
       "900": {
-        "$value": "#5b0002",
-        "$description": "OKLCH L 0.295 C 0.1221 H 28"
+        "$value": "#590501",
+        "$description": "OKLCH L 0.295 C 0.1155 H 30"
       },
       "950": {
-        "$value": "#3c0001",
-        "$description": "OKLCH L 0.225 C 0.0925 H 28"
+        "$value": "#3b0201",
+        "$description": "OKLCH L 0.225 C 0.0875 H 30"
       }
     }
   }

@@ -3,50 +3,50 @@
   "color": {
     "$type": "color",
     "bg": {
-      "canvas":  { "$value": "{color.neutral.0}",   "$description": "The page behind everything." },
-      "surface": { "$value": "{color.neutral.0}",   "$description": "Raised surfaces: cards, dialogs, menus." },
-      "subtle":  { "$value": "{color.neutral.50}",  "$description": "Quietly separated regions: table stripes, well backgrounds." },
-      "muted":   { "$value": "{color.neutral.100}", "$description": "Neutral control fill at rest." },
-      "mutedHover":  { "$value": "{color.neutral.200}" },
-      "mutedActive": { "$value": "{color.neutral.300}" },
-      "inverse": { "$value": "{color.neutral.900}", "$description": "Inverted surfaces: tooltips, toasts." },
-      "accent":       { "$value": "{color.rose.600}" },
-      "accentHover":  { "$value": "{color.rose.700}" },
-      "accentActive": { "$value": "{color.rose.800}" },
-      "accentSubtle": { "$value": "{color.rose.50}" },
-      "successSubtle": { "$value": "{color.green.50}" },
-      "warningSubtle": { "$value": "{color.amber.50}" },
-      "dangerSubtle":  { "$value": "{color.red.50}" },
-      "danger":        { "$value": "{color.red.600}" },
-      "dangerHover":   { "$value": "{color.red.700}" },
-      "dangerActive":  { "$value": "{color.red.900}" },
-      "disabled":      { "$value": "{color.neutral.100}" }
+      "canvas":  { "$value": "{color.pond.0}",   "$description": "The page behind everything." },
+      "surface": { "$value": "{color.pond.0}",   "$description": "Raised surfaces: cards, dialogs, menus." },
+      "subtle":  { "$value": "{color.pond.50}",  "$description": "Quietly separated regions: table stripes, well backgrounds." },
+      "muted":   { "$value": "{color.pond.100}", "$description": "Neutral control fill at rest." },
+      "mutedHover":  { "$value": "{color.pond.200}" },
+      "mutedActive": { "$value": "{color.pond.300}" },
+      "inverse": { "$value": "{color.pond.900}", "$description": "Inverted surfaces: tooltips, toasts." },
+      "accent":       { "$value": "{color.lotus.600}" },
+      "accentHover":  { "$value": "{color.lotus.700}" },
+      "accentActive": { "$value": "{color.lotus.800}" },
+      "accentSubtle": { "$value": "{color.lotus.50}" },
+      "successSubtle": { "$value": "{color.leaf.50}" },
+      "warningSubtle": { "$value": "{color.gold.50}" },
+      "dangerSubtle":  { "$value": "{color.russet.50}" },
+      "danger":        { "$value": "{color.russet.600}" },
+      "dangerHover":   { "$value": "{color.russet.700}" },
+      "dangerActive":  { "$value": "{color.russet.900}" },
+      "disabled":      { "$value": "{color.pond.100}" }
     },
     "fg": {
-      "default":  { "$value": "{color.neutral.900}", "$description": "Body text." },
-      "muted":    { "$value": "{color.neutral.600}", "$description": "Secondary text and help text. Carries AA body text." },
-      "subtle":   { "$value": "{color.neutral.500}", "$description": "Placeholder and de-emphasised metadata. The lightest foreground that still carries AA body text — anything lighter must not hold meaning." },
-      "onAccent": { "$value": "{color.neutral.0}",   "$description": "Text on an accent fill. Flips to a dark value in the dark theme, where the accent fill itself is light." },
-      "onDanger": { "$value": "{color.neutral.0}",   "$description": "Text on a danger fill. Split from onAccent because the two fills move in opposite directions between themes and one token cannot satisfy both." },
-      "onInverse":{ "$value": "{color.neutral.0}" },
-      "accent":   { "$value": "{color.rose.700}",    "$description": "Links and accent text on light surfaces." },
-      "success":  { "$value": "{color.green.700}" },
-      "warning":  { "$value": "{color.amber.700}" },
-      "danger":   { "$value": "{color.red.700}" },
-      "disabled": { "$value": "{color.neutral.400}", "$description": "Disabled text. Deliberately below AA — WCAG 1.4.3 exempts disabled controls, and lifting this reads as enabled." }
+      "default":  { "$value": "{color.pond.900}", "$description": "Body text." },
+      "muted":    { "$value": "{color.pond.600}", "$description": "Secondary text and help text. Carries AA body text." },
+      "subtle":   { "$value": "{color.pond.500}", "$description": "Placeholder and de-emphasised metadata. The lightest foreground that still carries AA body text — anything lighter must not hold meaning." },
+      "onAccent": { "$value": "{color.pond.0}",   "$description": "Text on an accent fill. Flips to a dark value in the dark theme, where the accent fill itself is light." },
+      "onDanger": { "$value": "{color.pond.0}",   "$description": "Text on a danger fill. Split from onAccent because the two fills move in opposite directions between themes and one token cannot satisfy both." },
+      "onInverse":{ "$value": "{color.pond.0}" },
+      "accent":   { "$value": "{color.lotus.700}",    "$description": "Links and accent text on light surfaces." },
+      "success":  { "$value": "{color.leaf.700}" },
+      "warning":  { "$value": "{color.gold.700}" },
+      "danger":   { "$value": "{color.russet.700}" },
+      "disabled": { "$value": "{color.pond.400}", "$description": "Disabled text. Deliberately below AA — WCAG 1.4.3 exempts disabled controls, and lifting this reads as enabled." }
     },
     "border": {
-      "default": { "$value": "{color.neutral.300}", "$description": "Container edges and dividers. DECORATIVE ONLY — below 3:1 by design, so it must never be the sole indicator of an interactive boundary. Use border.control for that." },
-      "muted":   { "$value": "{color.neutral.200}", "$description": "The quietest divider. Decorative only." },
-      "control": { "$value": "{color.neutral.500}", "$description": "The boundary of an interactive control — input, select, checkbox. Enforced at 3:1 against every surface it sits on, per WCAG 1.4.11 non-text contrast." },
-      "strong":  { "$value": "{color.neutral.600}" },
-      "accent":  { "$value": "{color.rose.600}" },
-      "danger":  { "$value": "{color.red.600}" },
-      "disabled":{ "$value": "{color.neutral.200}" }
+      "default": { "$value": "{color.pond.300}", "$description": "Container edges and dividers. DECORATIVE ONLY — below 3:1 by design, so it must never be the sole indicator of an interactive boundary. Use border.control for that." },
+      "muted":   { "$value": "{color.pond.200}", "$description": "The quietest divider. Decorative only." },
+      "control": { "$value": "{color.pond.500}", "$description": "The boundary of an interactive control — input, select, checkbox. Enforced at 3:1 against every surface it sits on, per WCAG 1.4.11 non-text contrast." },
+      "strong":  { "$value": "{color.pond.600}" },
+      "accent":  { "$value": "{color.lotus.600}" },
+      "danger":  { "$value": "{color.russet.600}" },
+      "disabled":{ "$value": "{color.pond.200}" }
     },
     "focus": {
-      "ring":   { "$value": "{color.rose.500}", "$description": "Focus indicator. Enforced at 3:1 against every surface it can appear on." },
-      "onDark": { "$value": "{color.rose.300}" }
+      "ring":   { "$value": "{color.lotus.500}", "$description": "Focus indicator. Enforced at 3:1 against every surface it can appear on." },
+      "onDark": { "$value": "{color.lotus.300}" }
     }
   }
 }

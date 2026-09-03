@@ -87,17 +87,39 @@ Four mechanisms hang off it:
 
 `packages/tokens/seeds.json` holds five OKLCH seeds — a hue and a max chroma each. `ramps.js` generates all 57 primitive values from them, so re-theming Keel means editing five lines rather than 57 coordinated hex codes.
 
-| Seed | Hue | Job |
-|---|---|---|
-| neutral | 48 | Warm sand-taupe. Every surface, border and text colour. |
-| rose | 335 | The accent, at chroma 0.235 — roughly twice a conventional SaaS primary. |
-| green | 158 | Success. Deep blue-green, so it sits beside magenta without shouting. |
-| amber | 72 | Warning. Honey rather than yellow. |
-| red | 28 | Danger. Pushed slightly orange to open the gap to the rose accent. |
+The palette is drawn from *Nelumbo nucifera*, the sacred lotus — and specifically from the five things actually present in the plant, rather than from a general idea of "pink". The ramps are named after their source, not after `blue` or `red`, so a contributor reaching for `{color.lotus.600}` is reminded there is exactly one signature colour in this system and that is it.
 
-Generating in OKLCH rather than hand-picking hex buys one thing that matters: **OKLCH's L is perceptual lightness, so step 600 is the same apparent darkness in every hue by construction.** That is what makes a semantic role like `bg.accent` safely swappable between hues — with hand-tuned ramps, `blue.600` and `red.600` end up different real lightnesses and a component that swaps one for the other visibly changes weight.
+| Seed | Hue | C≤ | Job |
+|---|---|---|---|
+| `pond` | 168 | 0.010 | The neutral: every surface, border, divider and text colour — roughly 70% of what anyone sees. The waxy blue-green bloom on a lotus pad, and the water under it. |
+| `lotus` | 338 | 0.225 | The accent, and the signature. Deep magenta-pink petal, at roughly twice the chroma of a conventional SaaS primary. |
+| `gold` | 90 | 0.155 | Warning. The ring of stamens at the flower's heart — a true golden yellow rather than the orange-amber most systems reach for. |
+| `leaf` | 145 | 0.095 | Success. The pad itself: glaucous, meaning dusty and matte rather than vivid, so the low chroma is the authentic choice as well as the restrained one. |
+| `russet` | 30 | 0.175 | Danger. The dried seed pod. Deliberately below the petal's chroma — a destructive action should read as serious, not as the loudest thing on screen. |
 
-Chroma peaks in the midtones because real pigment does: a colour is most saturated at mid-lightness and desaturates toward both white and black. Flat-chroma ramps look like plastic.
+Three of those numbers are load-bearing in ways worth stating.
+
+**The neutral is not grey.** `pond` sits at hue 168 with a chroma of 0.010, where the colour is felt rather than seen. That hue is the near-complement of the petal magenta, so the accent pops harder against every surface in the system than it would against a true grey — the trick botanical illustration has used for centuries. A pure grey also reads as unconsidered.
+
+**`lotus` and `russet` are 52° apart, and that is the tightest relationship in the palette.** A primary button and a destructive button are both saturated fills carrying light text, so they have to be separable at a glance; they're separated by chroma and lightness as well as hue. Real lotus cultivars run from near-white to a pink light enough to collide with russet outright — 338 picks the deep magenta end of the species on purpose, partly for boldness and partly to keep that gap open.
+
+**The whole chroma budget goes to one ramp.** `lotus` runs to 0.225; nothing else exceeds 0.175, and the neutral is effectively silent. Boldness spread evenly is just noise.
+
+#### Why generate rather than hand-pick
+
+**OKLCH's L is perceptual lightness, so step 600 is the same apparent darkness in every hue by construction.** That is what makes a semantic role like `bg.accent` safely swappable between hues — with hand-tuned ramps, `blue.600` and `red.600` end up different real lightnesses and a component that swaps one for the other visibly changes weight. Chroma peaks in the midtones because real pigment does: a colour is most saturated at mid-lightness and desaturates toward both white and black. Flat-chroma ramps look like plastic.
+
+Requested chroma is frequently unreachable — a saturated yellow at mid lightness does not exist in sRGB at any hue. `ramps.js` walks chroma down until the colour fits rather than clipping channels, because clipping shifts the *hue* (an over-saturated magenta clips visibly redder) while reducing chroma preserves it. Every generated token records the chroma it actually **delivered**, plus the request when the two differ, and the build prints the shortfall per ramp:
+
+```
+pond    h168  C≤0.010  fully in gamut
+lotus   h338  C≤0.225  9/11 steps gamut-mapped, chroma peaks at 500
+gold    h 90  C≤0.155  6/11 steps gamut-mapped, chroma peaks at 400
+leaf    h145  C≤0.095  fully in gamut
+russet  h 30  C≤0.175  4/11 steps gamut-mapped, chroma peaks at 500
+```
+
+That line is the point of the exercise. `gold` gives up ~40% of its requested chroma below step 500, which moves its real saturation peak to 400 and makes its dark steps read brown-olive. Without the report, the only symptom is a palette that "looks slightly wrong" months later with nobody able to say why. Two fixes were measured and both rejected — the reasoning is in `seeds.json` under `gold.$gamutNote`, and the short version is that the shared lightness curve is what makes semantic roles swappable between hues, so it does not get bent for one ramp.
 
 Tokens are then authored in [DTCG](https://www.designtokens.org/) format and compiled with Style Dictionary in two passes:
 
@@ -118,9 +140,13 @@ The TypeScript export emits `var(--keel-*)` reference strings rather than resolv
 
 It earns its keep, twice now. On first run it caught eight real failures and forced a genuine API change: `border.default` could not be both a decorative divider and a 3:1 interactive boundary under WCAG 1.4.11, so the role was split into `border.default` (decorative, exempt) and `border.control` (enforced).
 
-On the re-theme it rejected the build again: `fg.subtle` aliases `neutral.500`, and the role's whole job is being "the lightest foreground that still carries AA body text" — at the evenly-spaced lightness it measured 4.17:1 on white. Repointing the alias to `neutral.600` would have collapsed `fg.subtle` into `fg.muted` and lost a level of type hierarchy, so the ramp moved instead. The accessibility requirement sets the value and the even spacing yields to it, which is recorded in `ramps.js` where someone might otherwise "tidy" it back.
+On the re-theme it rejected the build again: `fg.subtle` aliases `pond.500`, and the role's whole job is being "the lightest foreground that still carries AA body text" — at the evenly-spaced lightness it measured 4.17:1 on white. Repointing the alias to `pond.600` would have collapsed `fg.subtle` into `fg.muted` and lost a level of type hierarchy, so the ramp moved instead. The accessibility requirement sets the value and the even spacing yields to it, which is recorded in `ramps.js` where someone might otherwise "tidy" it back.
 
 Pairs marked exempt — disabled text, decorative dividers — are reported but not enforced, because WCAG 1.4.3 exempts disabled controls and lifting disabled text to AA makes it read as enabled.
+
+**The docs page is held to the same bar.** The workbench chrome was, until the lotus re-theme, 39 hand-written hex values — and they had been authored warm, to sit against the warm neutral the re-theme replaced. Nothing caught it, because the chrome was the one part of a project built entirely around *generate it and verify it* that was neither. It is now derived from the same OKLCH conversion as the system's ramps (`apps/workbench/chrome.js`) and gated on 20 of its own contrast pairs before a byte of the page is assembled.
+
+That gate immediately reproduced the system's own history: `--wb-line-strong` was doing duty as both a quiet table rule and the sole visible boundary of the filter input, and 1.78:1 is not a control border. It split into `--wb-line-strong` (decorative, exempt) and `--wb-line-control` (enforced at 3:1) — the same resolution `border.default`/`border.control` reached, arrived at the same way, by something measuring rather than someone remembering.
 
 ## Theming
 

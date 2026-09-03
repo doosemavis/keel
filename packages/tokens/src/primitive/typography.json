@@ -10,7 +10,7 @@
       },
       "sans": {
         "$value": ["DM Sans", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
-        "$description": "Every interface surface — labels, body, buttons, help text. Chosen over the obvious geometric options because it holds up at 12px in dense tables, which a Futura-lineage face does not. Warm enough to sit with the sand neutral without fighting it."
+        "$description": "Every interface surface — labels, body, buttons, help text. Chosen over the obvious geometric options because it holds up at 12px in dense tables, which a Futura-lineage face does not. Its terminals are slightly humanist rather than mechanically circular, which is what lets it sit under a didone without looking like a different system."
       },
       "mono": {
         "$value": ["DM Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
