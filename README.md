@@ -131,7 +131,7 @@ npm test
 npm run typecheck
 npm run lint:packaging # publint + are-the-types-wrong
 
-npm run dev            # workbench on http://127.0.0.1:4321, watch + live reload
+npm run dev            # workbench on http://localhost:3000, watch + live reload
 open apps/workbench/dist/index.html   # or just open the built file — no server needed
 ```
 

@@ -26,8 +26,16 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
 const dist = join(here, 'dist');
 
-const PORT = Number(process.env.PORT ?? 4321);
-const HOST = process.env.HOST ?? '127.0.0.1';
+const PORT = Number(process.env.PORT ?? 3000);
+// `localhost` rather than a literal 127.0.0.1: on macOS with modern Node,
+// localhost usually resolves to ::1, so binding the IPv4 literal while the
+// browser resolves IPv6 is a real way to get "connection refused" on a server
+// that is plainly running. Binding the same name the browser resolves keeps
+// the two consistent.
+const HOST = process.env.HOST ?? 'localhost';
+
+/** How many ports to try past PORT before giving up. */
+const PORT_ATTEMPTS = 10;
 
 /** Source trees whose contents affect the generated page. */
 const WATCHED = [
@@ -178,8 +186,11 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, HOST, () => {
-  console.log(`\n  Keel workbench  →  http://${HOST}:${PORT}\n`);
+function onListening(port) {
+  console.log(`\n  Keel workbench  →  http://${HOST}:${port}\n`);
+  if (port !== PORT) {
+    console.log(`  (${PORT} was busy — using ${port}. Set PORT to choose your own.)\n`);
+  }
   console.log('  watching:');
   for (const dir of WATCHED) console.log(`    ${dir.replace(root + '/', '')}`);
   console.log();
@@ -193,7 +204,41 @@ server.listen(PORT, HOST, () => {
   }
 
   runBuild();
-});
+}
+
+/**
+ * Port 3000 is the convention and therefore frequently already taken — by
+ * another dev server, or by a previous run of this one that did not exit
+ * cleanly. Walking to the next free port beats crashing with EADDRINUSE and
+ * making the reader work out what "address already in use" means.
+ */
+function start(port, attemptsLeft) {
+  server.once('error', (err) => {
+    if (err.code === 'EADDRINUSE' && attemptsLeft > 0) {
+      start(port + 1, attemptsLeft - 1);
+      return;
+    }
+    if (err.code === 'EADDRINUSE') {
+      console.error(
+        `\n  Ports ${PORT}–${port} are all in use. Free one, or run: PORT=8080 npm run dev\n`,
+      );
+    } else {
+      console.error(`\n  Could not start the server: ${err.message}\n`);
+    }
+    process.exit(1);
+  });
+
+  // No callback here on purpose. `server.listen(port, host, cb)` registers cb
+  // as a one-shot 'listening' listener, and a failed attempt does NOT remove
+  // it — so after falling back, every earlier attempt's callback fires too and
+  // the server announces the port it wanted rather than the one it got. The
+  // single handler below reads the address off the socket, which cannot lie.
+  server.listen(port, HOST);
+}
+
+server.on('listening', () => onListening(server.address().port));
+
+start(PORT, PORT_ATTEMPTS);
 
 process.on('SIGINT', () => {
   console.log('\n  stopped');
