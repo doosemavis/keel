@@ -139,7 +139,9 @@ pnpm dev            # workbench on localhost with watch + live reload
 open apps/workbench/dist/index.html   # or just open the built file
 ```
 
-`packageManager` pins pnpm to an exact version, and pnpm self-manages that pin — it does not need corepack, so whatever pnpm you install will switch itself to the pinned version inside this repo.
+`packageManager` pins pnpm to an exact version, and pnpm 10+ self-manages that pin — it does not need corepack, so a recent pnpm switches itself to the pinned version inside this repo.
+
+Deliberately **no `engines.pnpm`** here. pnpm validates `engines` *before* it runs the `packageManager` self-switch, and in a workspace repo that ordering means an `engines.pnpm` constraint blocks the very upgrade it is asking for ([pnpm#9142](https://github.com/pnpm/pnpm/issues/9142)). The pin does the job on its own.
 
 The workbench is a single self-contained HTML file with everything inlined, so `open`ing it works with no server. `pnpm dev` exists for when you are iterating on tokens and would rather not rebuild by hand.
 
