@@ -1,61 +1,244 @@
 {
-  "$description": "Primitive color ramps. These are raw values with no meaning attached — never reference them directly from a component. Components use the semantic tokens, which alias these.",
+  "$description": "GENERATED FILE — do not edit. Produced by packages/tokens/ramps.js from seeds.json. Every value is an OKLCH coordinate resolved to the nearest in-gamut sRGB hex, so step 600 is the same perceptual lightness in every hue. Re-theme by editing seeds.json and rebuilding. Components must never reference these directly — they exist only to be aliased by the semantic roles in src/semantic/.",
   "color": {
     "$type": "color",
     "neutral": {
-      "0":    { "$value": "#ffffff" },
-      "50":   { "$value": "#f7f8f9" },
-      "100":  { "$value": "#eceef1" },
-      "200":  { "$value": "#dfe2e7" },
-      "300":  { "$value": "#c7ccd4" },
-      "400":  { "$value": "#9aa2ae" },
-      "500":  { "$value": "#6b7481", "$description": "Tuned to clear 4.5:1 on neutral.0 so it can carry AA body text as fg.subtle." },
-      "600":  { "$value": "#525a66" },
-      "700":  { "$value": "#3b424c" },
-      "800":  { "$value": "#272c34" },
-      "900":  { "$value": "#181c22" },
-      "950":  { "$value": "#0e1115" },
-      "1000": { "$value": "#000000" }
+      "0": {
+        "$value": "#ffffff",
+        "$description": "OKLCH L 1 C 0.0000 H 48"
+      },
+      "50": {
+        "$value": "#fbf8f7",
+        "$description": "OKLCH L 0.982 C 0.0040 H 48"
+      },
+      "100": {
+        "$value": "#f5f0ed",
+        "$description": "OKLCH L 0.958 C 0.0064 H 48"
+      },
+      "200": {
+        "$value": "#e9e2df",
+        "$description": "OKLCH L 0.918 C 0.0088 H 48"
+      },
+      "300": {
+        "$value": "#d7ceca",
+        "$description": "OKLCH L 0.858 C 0.0120 H 48"
+      },
+      "400": {
+        "$value": "#aea29d",
+        "$description": "OKLCH L 0.722 C 0.0160 H 48"
+      },
+      "500": {
+        "$value": "#7d726d",
+        "$description": "OKLCH L 0.562 C 0.0160 H 48"
+      },
+      "600": {
+        "$value": "#695f5a",
+        "$description": "OKLCH L 0.492 C 0.0152 H 48"
+      },
+      "700": {
+        "$value": "#4f4642",
+        "$description": "OKLCH L 0.402 C 0.0136 H 48"
+      },
+      "800": {
+        "$value": "#362f2c",
+        "$description": "OKLCH L 0.312 C 0.0120 H 48"
+      },
+      "900": {
+        "$value": "#221d1a",
+        "$description": "OKLCH L 0.236 C 0.0099 H 48"
+      },
+      "950": {
+        "$value": "#120e0c",
+        "$description": "OKLCH L 0.168 C 0.0080 H 48"
+      },
+      "1000": {
+        "$value": "#000000",
+        "$description": "OKLCH L 0 C 0.0000 H 48"
+      }
     },
-    "blue": {
-      "50":  { "$value": "#eef4ff" },
-      "100": { "$value": "#d9e6ff" },
-      "200": { "$value": "#bcd3ff" },
-      "300": { "$value": "#8eb6ff" },
-      "400": { "$value": "#5a90fb" },
-      "500": { "$value": "#356af0" },
-      "600": { "$value": "#204ed6" },
-      "700": { "$value": "#1a3fae" },
-      "800": { "$value": "#1a378b" },
-      "900": { "$value": "#1a316e" },
-      "950": { "$value": "#131f44" }
+    "rose": {
+      "50": {
+        "$value": "#fff3fc",
+        "$description": "OKLCH L 0.975 C 0.0376 H 335"
+      },
+      "100": {
+        "$value": "#ffe3f8",
+        "$description": "OKLCH L 0.945 C 0.0705 H 335"
+      },
+      "200": {
+        "$value": "#ffc9f2",
+        "$description": "OKLCH L 0.895 C 0.1222 H 335"
+      },
+      "300": {
+        "$value": "#ff9dea",
+        "$description": "OKLCH L 0.82 C 0.1786 H 335"
+      },
+      "400": {
+        "$value": "#f363da",
+        "$description": "OKLCH L 0.72 C 0.2209 H 335"
+      },
+      "500": {
+        "$value": "#d133b9",
+        "$description": "OKLCH L 0.61 C 0.2350 H 335"
+      },
+      "600": {
+        "$value": "#a70094",
+        "$description": "OKLCH L 0.5 C 0.2350 H 335"
+      },
+      "700": {
+        "$value": "#880078",
+        "$description": "OKLCH L 0.43 C 0.2162 H 335"
+      },
+      "800": {
+        "$value": "#6a005d",
+        "$description": "OKLCH L 0.36 C 0.1880 H 335"
+      },
+      "900": {
+        "$value": "#500046",
+        "$description": "OKLCH L 0.295 C 0.1551 H 335"
+      },
+      "950": {
+        "$value": "#35002e",
+        "$description": "OKLCH L 0.225 C 0.1175 H 335"
+      }
     },
     "green": {
-      "50":  { "$value": "#eaf9f0" },
-      "100": { "$value": "#cbf0dc" },
-      "300": { "$value": "#79d6a5" },
-      "500": { "$value": "#1f9d5b" },
-      "600": { "$value": "#16804a" },
-      "700": { "$value": "#12653b" },
-      "900": { "$value": "#0b3d24" }
+      "50": {
+        "$value": "#edfbf2",
+        "$description": "OKLCH L 0.975 C 0.0184 H 158"
+      },
+      "100": {
+        "$value": "#dbf4e4",
+        "$description": "OKLCH L 0.945 C 0.0345 H 158"
+      },
+      "200": {
+        "$value": "#bce9cd",
+        "$description": "OKLCH L 0.895 C 0.0598 H 158"
+      },
+      "300": {
+        "$value": "#93d6af",
+        "$description": "OKLCH L 0.82 C 0.0874 H 158"
+      },
+      "400": {
+        "$value": "#65b98b",
+        "$description": "OKLCH L 0.72 C 0.1081 H 158"
+      },
+      "500": {
+        "$value": "#3a9868",
+        "$description": "OKLCH L 0.61 C 0.1150 H 158"
+      },
+      "600": {
+        "$value": "#077649",
+        "$description": "OKLCH L 0.5 C 0.1150 H 158"
+      },
+      "700": {
+        "$value": "#00603a",
+        "$description": "OKLCH L 0.43 C 0.1058 H 158"
+      },
+      "800": {
+        "$value": "#004a2b",
+        "$description": "OKLCH L 0.36 C 0.0920 H 158"
+      },
+      "900": {
+        "$value": "#00371f",
+        "$description": "OKLCH L 0.295 C 0.0759 H 158"
+      },
+      "950": {
+        "$value": "#002312",
+        "$description": "OKLCH L 0.225 C 0.0575 H 158"
+      }
     },
     "amber": {
-      "50":  { "$value": "#fff8e6" },
-      "100": { "$value": "#ffedc2" },
-      "300": { "$value": "#f7ce62" },
-      "500": { "$value": "#c98a05" },
-      "600": { "$value": "#a56f04" },
-      "700": { "$value": "#835803" },
-      "900": { "$value": "#4a3102" }
+      "50": {
+        "$value": "#fff5e9",
+        "$description": "OKLCH L 0.975 C 0.0232 H 72"
+      },
+      "100": {
+        "$value": "#ffe9cf",
+        "$description": "OKLCH L 0.945 C 0.0435 H 72"
+      },
+      "200": {
+        "$value": "#fcd5a6",
+        "$description": "OKLCH L 0.895 C 0.0754 H 72"
+      },
+      "300": {
+        "$value": "#f0b871",
+        "$description": "OKLCH L 0.82 C 0.1102 H 72"
+      },
+      "400": {
+        "$value": "#d99532",
+        "$description": "OKLCH L 0.72 C 0.1363 H 72"
+      },
+      "500": {
+        "$value": "#b27400",
+        "$description": "OKLCH L 0.61 C 0.1450 H 72"
+      },
+      "600": {
+        "$value": "#885700",
+        "$description": "OKLCH L 0.5 C 0.1450 H 72"
+      },
+      "700": {
+        "$value": "#6e4600",
+        "$description": "OKLCH L 0.43 C 0.1334 H 72"
+      },
+      "800": {
+        "$value": "#563500",
+        "$description": "OKLCH L 0.36 C 0.1160 H 72"
+      },
+      "900": {
+        "$value": "#402600",
+        "$description": "OKLCH L 0.295 C 0.0957 H 72"
+      },
+      "950": {
+        "$value": "#291700",
+        "$description": "OKLCH L 0.225 C 0.0725 H 72"
+      }
     },
     "red": {
-      "50":  { "$value": "#fdeef0" },
-      "100": { "$value": "#fbd6da" },
-      "300": { "$value": "#f2949e" },
-      "500": { "$value": "#d92d43" },
-      "600": { "$value": "#b71f34" },
-      "700": { "$value": "#94182a" },
-      "900": { "$value": "#550e18" }
+      "50": {
+        "$value": "#fff4f2",
+        "$description": "OKLCH L 0.975 C 0.0296 H 28"
+      },
+      "100": {
+        "$value": "#ffe6e3",
+        "$description": "OKLCH L 0.945 C 0.0555 H 28"
+      },
+      "200": {
+        "$value": "#ffcfc8",
+        "$description": "OKLCH L 0.895 C 0.0962 H 28"
+      },
+      "300": {
+        "$value": "#ffaba0",
+        "$description": "OKLCH L 0.82 C 0.1406 H 28"
+      },
+      "400": {
+        "$value": "#ff7364",
+        "$description": "OKLCH L 0.72 C 0.1739 H 28"
+      },
+      "500": {
+        "$value": "#dc493e",
+        "$description": "OKLCH L 0.61 C 0.1850 H 28"
+      },
+      "600": {
+        "$value": "#b51f1c",
+        "$description": "OKLCH L 0.5 C 0.1850 H 28"
+      },
+      "700": {
+        "$value": "#970a0d",
+        "$description": "OKLCH L 0.43 C 0.1702 H 28"
+      },
+      "800": {
+        "$value": "#780004",
+        "$description": "OKLCH L 0.36 C 0.1480 H 28"
+      },
+      "900": {
+        "$value": "#5b0002",
+        "$description": "OKLCH L 0.295 C 0.1221 H 28"
+      },
+      "950": {
+        "$value": "#3c0001",
+        "$description": "OKLCH L 0.225 C 0.0925 H 28"
+      }
     }
   }
 }

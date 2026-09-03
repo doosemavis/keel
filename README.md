@@ -15,6 +15,15 @@ import '@keel/react/styles.css';
 <Button variant="primary" size="md">Save changes</Button>
 ```
 
+Keel sets its own faces, so load them in `<head>` — a `<link>` starts the download earlier than an `@import` the browser cannot see until the stylesheet arrives:
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap">
+```
+
+`import '@keel/tokens/fonts.css'` does the same thing where editing the HTML shell is impractical. That file is **generated from the typography tokens**, so it can never request a face the system does not declare.
+
 ---
 
 ## Why this exists
@@ -74,7 +83,23 @@ Four mechanisms hang off it:
 
 ## Design tokens
 
-Tokens are authored in [DTCG](https://www.designtokens.org/) format and compiled with Style Dictionary in two passes:
+### The palette is five numbers
+
+`packages/tokens/seeds.json` holds five OKLCH seeds — a hue and a max chroma each. `ramps.js` generates all 57 primitive values from them, so re-theming Keel means editing five lines rather than 57 coordinated hex codes.
+
+| Seed | Hue | Job |
+|---|---|---|
+| neutral | 48 | Warm sand-taupe. Every surface, border and text colour. |
+| rose | 335 | The accent, at chroma 0.235 — roughly twice a conventional SaaS primary. |
+| green | 158 | Success. Deep blue-green, so it sits beside magenta without shouting. |
+| amber | 72 | Warning. Honey rather than yellow. |
+| red | 28 | Danger. Pushed slightly orange to open the gap to the rose accent. |
+
+Generating in OKLCH rather than hand-picking hex buys one thing that matters: **OKLCH's L is perceptual lightness, so step 600 is the same apparent darkness in every hue by construction.** That is what makes a semantic role like `bg.accent` safely swappable between hues — with hand-tuned ramps, `blue.600` and `red.600` end up different real lightnesses and a component that swaps one for the other visibly changes weight.
+
+Chroma peaks in the midtones because real pigment does: a colour is most saturated at mid-lightness and desaturates toward both white and black. Flat-chroma ramps look like plastic.
+
+Tokens are then authored in [DTCG](https://www.designtokens.org/) format and compiled with Style Dictionary in two passes:
 
 ```
 src/primitive/*.json  ─┬─> src/semantic/color.json ──────────> :root, [data-theme="light"]
@@ -91,7 +116,9 @@ The TypeScript export emits `var(--keel-*)` reference strings rather than resolv
 
 `npm run contrast --workspace @keel/tokens` resolves every semantic role to a concrete value in each theme and asserts all 56 pairs that carry a WCAG obligation. It runs as part of `build`, so a palette change that breaks a requirement fails CI.
 
-It earns its keep. On first run it caught eight real failures and forced a genuine API change: `border.default` could not be both a decorative divider and a 3:1 interactive boundary under WCAG 1.4.11, so the role was split into `border.default` (decorative, exempt) and `border.control` (enforced).
+It earns its keep, twice now. On first run it caught eight real failures and forced a genuine API change: `border.default` could not be both a decorative divider and a 3:1 interactive boundary under WCAG 1.4.11, so the role was split into `border.default` (decorative, exempt) and `border.control` (enforced).
+
+On the re-theme it rejected the build again: `fg.subtle` aliases `neutral.500`, and the role's whole job is being "the lightest foreground that still carries AA body text" — at the evenly-spaced lightness it measured 4.17:1 on white. Repointing the alias to `neutral.600` would have collapsed `fg.subtle` into `fg.muted` and lost a level of type hierarchy, so the ramp moved instead. The accessibility requirement sets the value and the even spacing yields to it, which is recorded in `ramps.js` where someone might otherwise "tidy" it back.
 
 Pairs marked exempt — disabled text, decorative dividers — are reported but not enforced, because WCAG 1.4.3 exempts disabled controls and lifting disabled text to AA makes it read as enabled.
 

@@ -1,19 +1,28 @@
 {
+  "$description": "Type, weight, size, rhythm and motion primitives. Three families with three distinct jobs — display carries the voice, sans does the work, mono aligns the digits. Every family declares a real fallback stack, because a webfont that fails to load must degrade to something with similar metrics rather than to Times.",
+
   "font": {
     "family": {
       "$type": "fontFamily",
+      "display": {
+        "$value": ["Bodoni Moda", "Didot", "Cochin", "Georgia", "serif"],
+        "$description": "Headings and display type only. A didone: hairline-to-stem contrast is extreme, which is precisely where the elegance lives — and at its heavy weights that same contrast reads as bold rather than delicate. Never set below 20px; the hairlines vanish and it turns to mush at UI sizes."
+      },
       "sans": {
-        "$value": ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
+        "$value": ["DM Sans", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+        "$description": "Every interface surface — labels, body, buttons, help text. Chosen over the obvious geometric options because it holds up at 12px in dense tables, which a Futura-lineage face does not. Warm enough to sit with the sand neutral without fighting it."
       },
       "mono": {
-        "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono", "monospace"]
+        "$value": ["DM Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+        "$description": "Token names, hex values, code, and any column of digits. Deliberately DM Mono rather than an unrelated mono: it shares DM Sans's skeleton and metrics, so a code snippet beside body text reads as the same voice at a different pitch instead of as a foreign object."
       }
     },
     "weight": {
       "$type": "fontWeight",
       "regular": { "$value": 400 },
-      "medium":  { "$value": 500 },
-      "semibold": { "$value": 600 }
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700, "$description": "Display face only. DM Sans at 700 in UI reads as shouting; the hierarchy is carried by size and colour instead." }
     },
     "size": {
       "$type": "dimension",
@@ -21,19 +30,28 @@
       "sm": { "$value": "0.875rem" },
       "md": { "$value": "1rem" },
       "lg": { "$value": "1.125rem" },
-      "xl": { "$value": "1.375rem" }
+      "xl": { "$value": "1.375rem" },
+      "display": { "$value": "2rem", "$description": "The floor for the display face. Below this a didone's hairlines drop out." }
     },
     "lineHeight": {
       "$type": "number",
-      "tight":   { "$value": 1.25 },
+      "tight": { "$value": 1.25 },
       "default": { "$value": 1.5 },
-      "loose":   { "$value": 1.7 }
+      "loose": { "$value": 1.7 },
+      "display": { "$value": 1.08, "$description": "Display type sets tighter — large didone caps leave too much optical space at 1.25." }
+    },
+    "letterSpacing": {
+      "$type": "dimension",
+      "display": { "$value": "-0.02em", "$description": "Large type needs negative tracking; the default spacing is designed for text sizes." },
+      "default": { "$value": "0em" },
+      "label": { "$value": "0.08em", "$description": "Uppercase micro-labels only. Caps set at default tracking read as cramped." }
     }
   },
+
   "duration": {
     "$type": "duration",
     "instant": { "$value": "0ms" },
-    "fast":    { "$value": "120ms" },
-    "medium":  { "$value": "200ms" }
+    "fast": { "$value": "120ms" },
+    "medium": { "$value": "200ms" }
   }
 }

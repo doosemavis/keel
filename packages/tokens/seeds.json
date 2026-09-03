@@ -1,0 +1,35 @@
+{
+  "$comment": "The entire palette, as five seeds. Everything in src/primitive/color.json is GENERATED from this file by ramps.js — do not edit the ramps by hand. Re-theming Keel means editing the numbers below.",
+
+  "$direction": "Bold, with a touch of femininity and elegance. Bold comes from chroma: the accent runs to 0.235 in OKLCH, roughly twice the saturation of a conventional SaaS primary, and it is a magenta-rose rather than a blue — a hue almost nobody ships as a primary, which is most of why it does not read as a default. Elegance comes from the neutral: a warm sand-taupe at hue 48 rather than the cool blue-grey (Tailwind slate, and every SaaS product since 2018) it replaces. Warm neutrals read as chosen; cool ones read as inherited. Femininity is carried by the pairing rather than by any one value — high-chroma rose against a warm low-chroma ground, with a didone display face whose hairline strokes do the same work in type that low chroma does in the neutral.",
+
+  "hueNote": "OKLCH hue, in degrees. accent 335 (magenta-rose) sits 53 degrees from danger 28 (true red). That gap is deliberate and it is the tightest relationship in the palette: a primary button and a destructive button are both saturated fills with light text, so they have to be separable at a glance. They are additionally separated by chroma and by lightness — see the report `npm run contrast --workspace @keel/tokens` prints.",
+
+  "ramps": {
+    "neutral": {
+      "hue": 48,
+      "maxChroma": 0.016,
+      "$comment": "Warm sand-taupe. Chroma is tiny but never zero: a pure grey reads as unconsidered, and at 0.016 the warmth is felt rather than seen. Hue 48 puts it on the same side of the wheel as the amber warning, so the whole surface family agrees."
+    },
+    "rose": {
+      "hue": 335,
+      "maxChroma": 0.235,
+      "$comment": "The accent. Magenta-rose, pushed hard on chroma — this is where the 'bold' is spent, and per the design rule that boldness goes in exactly one place, everything else in the palette stays quiet."
+    },
+    "green": {
+      "hue": 158,
+      "maxChroma": 0.115,
+      "$comment": "Success. Deliberately a deep blue-green rather than a grass green — it has to sit beside a magenta accent without turning the palette into a carnival."
+    },
+    "amber": {
+      "hue": 72,
+      "maxChroma": 0.145,
+      "$comment": "Warning. Honey rather than yellow, sharing the neutral's warm side of the wheel."
+    },
+    "red": {
+      "hue": 28,
+      "maxChroma": 0.185,
+      "$comment": "Danger. A true red, pushed slightly orange to open the gap to the rose accent. Lower chroma than the accent on purpose: destructive actions should read as serious, not as the loudest thing on the page."
+    }
+  }
+}

@@ -18,17 +18,19 @@
     "./tokens.css": "./dist/tokens.css",
     "./tokens.dark.css": "./dist/tokens.dark.css",
     "./tokens.json": "./dist/tokens.json",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./fonts.css": "./dist/fonts.css"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "scripts": {
-    "build": "node build.js && node contrast.js && tsdown",
+    "build": "node ramps.js && node build.js && node contrast.js && tsdown",
     "contrast": "node build.js && node contrast.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints tokens.css tokens.dark.css tokens.json"
+    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints tokens.css tokens.dark.css fonts.css tokens.json",
+    "ramps": "node ramps.js"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

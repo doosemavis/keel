@@ -10,10 +10,10 @@
       "mutedHover":  { "$value": "{color.neutral.700}" },
       "mutedActive": { "$value": "{color.neutral.600}" },
       "inverse": { "$value": "{color.neutral.100}" },
-      "accent":       { "$value": "{color.blue.400}", "$description": "Lighter than light-theme accent so dark text on it clears AA." },
-      "accentHover":  { "$value": "{color.blue.300}" },
-      "accentActive": { "$value": "{color.blue.200}" },
-      "accentSubtle": { "$value": "{color.blue.950}" },
+      "accent":       { "$value": "{color.rose.400}", "$description": "Lighter than light-theme accent so dark text on it clears AA." },
+      "accentHover":  { "$value": "{color.rose.300}" },
+      "accentActive": { "$value": "{color.rose.200}" },
+      "accentSubtle": { "$value": "{color.rose.950}" },
       "successSubtle": { "$value": "{color.green.900}" },
       "warningSubtle": { "$value": "{color.amber.900}" },
       "dangerSubtle":  { "$value": "{color.red.900}" },
@@ -29,7 +29,7 @@
       "onAccent": { "$value": "{color.neutral.950}" },
       "onDanger": { "$value": "{color.neutral.950}" },
       "onInverse":{ "$value": "{color.neutral.950}" },
-      "accent":   { "$value": "{color.blue.300}" },
+      "accent":   { "$value": "{color.rose.300}" },
       "success":  { "$value": "{color.green.300}" },
       "warning":  { "$value": "{color.amber.300}" },
       "danger":   { "$value": "{color.red.300}" },
@@ -40,12 +40,12 @@
       "muted":   { "$value": "{color.neutral.800}" },
       "control": { "$value": "{color.neutral.500}" },
       "strong":  { "$value": "{color.neutral.400}" },
-      "accent":  { "$value": "{color.blue.400}" },
+      "accent":  { "$value": "{color.rose.400}" },
       "danger":  { "$value": "{color.red.300}" },
       "disabled":{ "$value": "{color.neutral.800}" }
     },
     "focus": {
-      "ring": { "$value": "{color.blue.300}" }
+      "ring": { "$value": "{color.rose.300}" }
     }
   }
 }

@@ -1,6 +1,6 @@
 import StyleDictionary from 'style-dictionary';
 import { fileHeader } from 'style-dictionary/utils';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 /**
  * Keel token build.
@@ -164,4 +164,71 @@ await buildCss({
 });
 const count = await buildTypeScript();
 
-console.log(`@keel/tokens — built ${count} tokens: tokens.css, tokens.dark.css, index.ts, tokens.json`);
+/**
+ * Emit fonts.css — the webfont loader, DERIVED from the typography tokens.
+ *
+ * A design system that specifies DM Sans and gives consumers no way to load it
+ * is broken, and a hand-written font loader is exactly the kind of thing that
+ * drifts: someone changes font.family.sans and the loader keeps fetching the
+ * old face forever. So the Google Fonts request is generated from the same
+ * tokens the CSS variables come from — the first family in each stack, which
+ * is by definition the webfont, with the rest being local fallbacks.
+ *
+ * A <link> in <head> is faster than an @import and is what the README
+ * recommends; this file exists for build setups where importing CSS is simply
+ * more convenient than editing an HTML template.
+ */
+async function buildFontLoader() {
+  const typography = JSON.parse(await readFile('src/primitive/typography.json', 'utf8'));
+  const families = typography.font.family;
+
+  // Weight axes actually used by the system. Requesting more is wasted bytes;
+  // requesting fewer makes the browser synthesise them, which looks wrong.
+  const AXES = {
+    display: 'opsz,wght@6..96,500;6..96,700',
+    sans: 'opsz,wght@9..40,400;9..40,500;9..40,600',
+    mono: 'wght@400;500',
+  };
+
+  // Object.entries over a DTCG group yields its `$type` metadata key too.
+  const roles = Object.entries(families).filter(([k, v]) => !k.startsWith('$') && v && v.$value);
+
+  const specs = roles
+    .filter(([role]) => role in AXES)
+    .map(([role, def]) => {
+      const webfont = def.$value[0];
+      return `family=${webfont.replace(/ /g, '+')}:${AXES[role]}`;
+    });
+
+  const href = `https://fonts.googleapis.com/css2?${specs.join('&')}&display=swap`;
+  const list = roles.map(([role, def]) => ` *   ${role.padEnd(8)} ${def.$value[0]}`).join('\n');
+
+  const css = `/**
+ * Keel webfonts. GENERATED — do not edit.
+ *
+ * Derived from packages/tokens/src/primitive/typography.json, so it can never
+ * request a face the tokens do not declare:
+ *
+${list}
+ *
+ * PREFER a <link> in your <head> — it starts the download earlier than an
+ * @import inside a stylesheet, which the browser cannot see until the
+ * stylesheet itself has arrived:
+ *
+ *   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ *   <link rel="stylesheet" href="${href}">
+ *
+ * Import this file only where editing the HTML shell is impractical.
+ */
+@import url('${href}');
+`;
+
+  await writeFile('dist/fonts.css', css, 'utf8');
+  return roles.length;
+}
+
+const faces = await buildFontLoader();
+
+console.log(
+  `@keel/tokens — built ${count} tokens: tokens.css, tokens.dark.css, fonts.css (${faces} faces), index.ts, tokens.json`,
+);

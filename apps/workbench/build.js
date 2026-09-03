@@ -53,7 +53,7 @@ const GROUPS = [
   { id: 'color-focus', title: 'Focus', hint: 'Focus indication.', test: (k) => k.startsWith('color.focus.'), kind: 'color' },
 ];
 
-const RAMPS = ['neutral', 'blue', 'green', 'amber', 'red'];
+const RAMPS = ['neutral', 'rose', 'green', 'amber', 'red'];
 
 const SCALES = [
   { id: 'space', title: 'Space', prefix: 'space.', kind: 'space' },
@@ -326,64 +326,72 @@ const PLAY_DATA = JSON.stringify(
 const html = `<title>Keel Workbench</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
 
 <style>
 /* ============================================================
    Workbench chrome.
-   Deliberately not Keel's palette — brass on sea-glass rather than
-   Keel's blue — so nothing on this page can be mistaken for the
-   system it is inspecting. Chrome tokens are --wb-*, Keel's are
-   --keel-*, and the two never meet.
+   Deliberately near-achromatic — warm paper and ink. Keel's palette is a
+   high-chroma magenta-rose, and the frame around it has to stay quiet or the
+   page reads as two palettes arguing. Every saturated colour here belongs to
+   the system under inspection. Chrome tokens are --wb-*, Keel's are --keel-*,
+   and the two never meet.
    ============================================================ */
 :root {
-  --wb-ground: #f3f5f2;
+  --wb-ground: #faf8f5;
   --wb-panel: #ffffff;
-  --wb-inset: #eaeee9;
-  --wb-ink: #131916;
-  --wb-muted: #5c6660;
-  --wb-line: #dbe0da;
-  --wb-line-strong: #c3ccc4;
-  --wb-brass: #8a6512;
-  --wb-brass-soft: #f0e6cf;
-  --wb-pass: #2c7d52;
-  --wb-fail: #b3303f;
+  --wb-inset: #f2ede7;
+  --wb-ink: #1b1613;
+  --wb-muted: #6d625b;
+  --wb-line: #e6dfd7;
+  --wb-line-strong: #cec4b9;
+  /* The chrome accent is the ink itself — deliberately achromatic. Every
+     saturated colour on this page should belong to the system under
+     inspection, not to the frame around it. A brass chrome accent competed
+     with Keel's rose and made the page read as two palettes arguing. */
+  --wb-accent: #1b1613;
+  --wb-accent-on: #faf8f5;
+  --wb-accent-soft: #efe8df;
+  --wb-pass: #1f6b46;
+  --wb-fail: #a32b2b;
   --wb-shadow: 0 1px 2px rgba(19, 25, 22, .06), 0 8px 24px -12px rgba(19, 25, 22, .18);
 
-  --wb-display: 'Fraunces', ui-serif, Georgia, serif;
-  --wb-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --wb-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --wb-display: 'Bodoni Moda', Didot, Cochin, Georgia, serif;
+  --wb-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --wb-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --wb-ground: #0f1210;
-    --wb-panel: #171b18;
-    --wb-inset: #1e231f;
-    --wb-ink: #e9eee9;
-    --wb-muted: #929d96;
-    --wb-line: #272d29;
-    --wb-line-strong: #3a423c;
-    --wb-brass: #d3a244;
-    --wb-brass-soft: #2e2716;
-    --wb-pass: #4fb383;
-    --wb-fail: #e2707c;
+    --wb-ground: #14110f;
+    --wb-panel: #1c1815;
+    --wb-inset: #241f1b;
+    --wb-ink: #f0eae4;
+    --wb-muted: #a09589;
+    --wb-line: #2d2721;
+    --wb-line-strong: #443c34;
+    --wb-accent: #f0eae4;
+    --wb-accent-on: #14110f;
+    --wb-accent-soft: #2a241e;
+    --wb-pass: #52b184;
+    --wb-fail: #e0797a;
     --wb-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 24px -12px rgba(0, 0, 0, .7);
   }
 }
 :root[data-theme="dark"] {
-  --wb-ground: #0f1210;
-  --wb-panel: #171b18;
-  --wb-inset: #1e231f;
-  --wb-ink: #e9eee9;
-  --wb-muted: #929d96;
-  --wb-line: #272d29;
-  --wb-line-strong: #3a423c;
-  --wb-brass: #d3a244;
-  --wb-brass-soft: #2e2716;
-  --wb-pass: #4fb383;
-  --wb-fail: #e2707c;
+  --wb-ground: #14110f;
+  --wb-panel: #1c1815;
+  --wb-inset: #241f1b;
+  --wb-ink: #f0eae4;
+  --wb-muted: #a09589;
+  --wb-line: #2d2721;
+  --wb-line-strong: #443c34;
+  --wb-accent: #f0eae4;
+  --wb-accent-on: #14110f;
+  --wb-accent-soft: #2a241e;
+  --wb-pass: #52b184;
+  --wb-fail: #e0797a;
   --wb-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 24px -12px rgba(0, 0, 0, .7);
 }
 
@@ -428,7 +436,7 @@ body {
 .rail nav { display: flex; flex-direction: column; gap: 1px; }
 .rail a { color: var(--wb-muted); text-decoration: none; padding: 5px 10px; border-radius: 5px; border-left: 2px solid transparent; }
 .rail a:hover { color: var(--wb-ink); background: var(--wb-inset); }
-.rail a:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: 1px; }
+.rail a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .rail .rail-head { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--wb-muted); padding: 14px 10px 4px; font-weight: 600; }
 
 /* ---- sections ---- */
@@ -461,13 +469,13 @@ code { font-family: var(--wb-mono); font-size: 12.5px; }
 
 /* ---- swatches ---- */
 .chip { display: block; inline-size: 40px; block-size: 24px; padding: 0; border: 1px solid var(--wb-line-strong); border-radius: 5px; overflow: hidden; cursor: pointer; display: flex; background: none; }
-.chip:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: 2px; }
+.chip:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 2px; }
 .chip-half { flex: 1; }
 .tok-chip { inline-size: 56px; }
 .tok-demo { inline-size: 120px; }
-.bar { display: block; block-size: 12px; background: var(--wb-brass); border-radius: 2px; min-inline-size: 1px; }
-.radius-demo { display: block; inline-size: 34px; block-size: 22px; background: var(--wb-brass-soft); border: 1px solid var(--wb-brass); }
-.size-demo { display: block; inline-size: 34px; background: var(--wb-brass-soft); border: 1px solid var(--wb-brass); border-radius: 3px; }
+.bar { display: block; block-size: 12px; background: var(--wb-accent); border-radius: 2px; min-inline-size: 1px; }
+.radius-demo { display: block; inline-size: 34px; block-size: 22px; background: var(--wb-accent-soft); border: 1px solid var(--wb-accent); }
+.size-demo { display: block; inline-size: 34px; background: var(--wb-accent-soft); border: 1px solid var(--wb-accent); border-radius: 3px; }
 
 /* ---- tags ---- */
 .tag { display: inline-block; font-family: var(--wb-mono); font-size: 10.5px; padding: 1px 6px; border-radius: 4px; border: 1px solid transparent; white-space: nowrap; }
@@ -481,14 +489,11 @@ code { font-family: var(--wb-mono); font-size: 12.5px; }
 .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
 .field { flex: 1 1 220px; min-inline-size: 180px; }
 input[type="search"] { inline-size: 100%; font: inherit; font-size: 13.5px; padding: 7px 11px; border-radius: 7px; border: 1px solid var(--wb-line-strong); background: var(--wb-panel); color: var(--wb-ink); }
-input[type="search"]:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: 1px; border-color: var(--wb-brass); }
+input[type="search"]:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; border-color: var(--wb-accent); }
 .seg { display: inline-flex; border: 1px solid var(--wb-line-strong); border-radius: 7px; overflow: hidden; background: var(--wb-panel); }
 .seg button { font: inherit; font-size: 12.5px; padding: 6px 12px; background: none; border: 0; color: var(--wb-muted); cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--wb-line-strong); }
-.seg button[aria-pressed="true"] { background: var(--wb-brass); color: #fff; }
-:root[data-theme="dark"] .seg button[aria-pressed="true"], :root:not([data-theme="light"]) .seg button[aria-pressed="true"] { color: #1a1408; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .seg button[aria-pressed="true"] { color: #fff; } }
-.seg button:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: -2px; }
+.seg button[aria-pressed="true"] { background: var(--wb-accent); color: var(--wb-accent-on); }
 .seg-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); font-weight: 600; }
 
 /* ---- specimen stage ----
@@ -522,7 +527,7 @@ input[type="search"]:focus-visible { outline: 2px solid var(--wb-brass); outline
 .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 8px; }
 .usage-col { padding: 14px 16px; border-radius: 9px; background: var(--wb-panel); border: 1px solid var(--wb-line); }
 /* One rail each, coloured by verdict — the only place semantic colour appears
-   in the chrome, so it does not compete with the brass accent. */
+   in the chrome, and the only place it appears at all. */
 .usage-use { border-inline-start: 3px solid var(--wb-pass); }
 .usage-avoid { border-inline-start: 3px solid var(--wb-fail); }
 .usage-col h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); }
@@ -539,10 +544,10 @@ input[type="search"]:focus-visible { outline: 2px solid var(--wb-brass); outline
 .seg-wrap { flex-wrap: wrap; border-radius: 6px; }
 .seg-wrap button { font-family: var(--wb-mono); font-size: 11.5px; padding: 4px 9px; }
 .ctrl-input { font: inherit; font-family: var(--wb-mono); font-size: 12px; padding: 6px 9px; border-radius: 6px; border: 1px solid var(--wb-line-strong); background: var(--wb-ground); color: var(--wb-ink); resize: vertical; }
-.ctrl-input:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: 1px; }
+.ctrl-input:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .ctrl-flags { display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .flag { display: inline-flex; align-items: center; gap: 5px; font-family: var(--wb-mono); font-size: 11.5px; color: var(--wb-ink); cursor: pointer; }
-.flag input { accent-color: var(--wb-brass); margin: 0; }
+.flag input { accent-color: var(--wb-accent); margin: 0; }
 
 .play-right { display: flex; flex-direction: column; gap: 12px; min-inline-size: 0; }
 .play-stage { display: flex; align-items: center; justify-content: center; min-block-size: 150px; padding: 28px 22px; }
@@ -551,8 +556,8 @@ input[type="search"]:focus-visible { outline: 2px solid var(--wb-brass); outline
 .snippet { border: 1px solid var(--wb-line); border-radius: 10px; overflow: hidden; background: var(--wb-panel); }
 .snippet-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; border-bottom: 1px solid var(--wb-line); font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--wb-muted); font-weight: 600; }
 .snippet-copy { font: inherit; font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; font-weight: 600; padding: 3px 9px; border-radius: 5px; border: 1px solid var(--wb-line-strong); background: var(--wb-ground); color: var(--wb-muted); cursor: pointer; }
-.snippet-copy:hover { color: var(--wb-ink); border-color: var(--wb-brass); }
-.snippet-copy:focus-visible { outline: 2px solid var(--wb-brass); outline-offset: 1px; }
+.snippet-copy:hover { color: var(--wb-ink); border-color: var(--wb-accent); }
+.snippet-copy:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .snippet-body { margin: 0; padding: 12px; overflow-x: auto; font-family: var(--wb-mono); font-size: 12.5px; line-height: 1.6; color: var(--wb-ink); }
 
 [data-specimen] { text-align: center; }
