@@ -1,103 +1,112 @@
 /**
- * Workbench chrome palette — generated, and contrast-checked like everything else.
+ * Workbench chrome palette — built from Keel's own ramps.
  *
- * This file replaces 39 hand-written hex values that had quietly gone stale.
- * They were authored warm, to sit against a warm system neutral; when the
- * palette was re-themed to the lotus seeds the system went cool and the frame
- * did not, so the page rendered as two temperatures arguing. Nothing caught it,
- * because nothing was checking — the chrome was the one part of a project built
- * entirely around "generate it and verify it" that was neither.
+ * ── What this file used to be, and why it changed twice
  *
- * So the chrome is now derived from the same OKLCH conversion as the system's
- * own ramps, from the seeds below, and its own text/background pairs are gated
- * at WCAG AA before the page will build. A docs page that reports 56 passing
- * contrast requirements while its own body text sits at 3:1 is not a good look.
+ * First it was 39 hand-written hex values. They had been authored warm, to sit
+ * against a warm system neutral, and when the palette was re-themed to the
+ * lotus seeds the system went cool and the frame did not. Nothing caught it,
+ * because the chrome was the one part of a project built entirely around
+ * "generate it and verify it" that was neither.
  *
- * ── Why the chrome is cool, and why that is a decision rather than a default
+ * The first fix generated them — but from a SEPARATE near-achromatic blue-grey
+ * at hue 258, on the argument that the frame must stay out of the way of the
+ * system under inspection. That argument was wrong, and it was wrong in a way
+ * worth recording rather than quietly deleting. A design system's own
+ * documentation is its single most legible piece of evidence: a page framed in
+ * a palette the system does not ship demonstrates nothing, and a reader is
+ * entitled to assume the thing on screen is the thing being sold. The chrome
+ * now uses `pond` for every surface and `lotus` for every accent, read straight
+ * out of the generated ramps. If the seeds change, this page changes with them.
  *
- * The obvious move is a warm paper frame: maximum separation from a cool
- * system, and it reads as a printed reference sheet. It was rejected. `pond`
- * sits at hue 168 specifically because it is the near-complement of the lotus
- * magenta, which is what makes the accent pop on every Keel surface. Wrapping
- * that in warm cream introduces a third temperature and spends the effect.
+ * ── What the indirection is still for
  *
- * The chrome is therefore cool too, at hue 258 — far enough from pond's 168
- * that a chrome surface never reads as a Keel surface, close enough in
- * temperature that the page has one climate and `lotus` is the only thing on
- * screen that registers as colour. Separation is carried by hue distance and
- * value, not by temperature.
+ * The chrome does NOT reference `--keel-*` variables directly, and the
+ * `--wb-*` layer is not vestigial. Keel's CSS is re-scoped to
+ * `[data-keel-theme]` at build time precisely so the PAGE and the SPECIMENS
+ * can carry independent themes — reviewing Keel's dark palette while reading
+ * the page in light is the normal way to work. If the chrome read `--keel-*`
+ * live, flipping the specimen switch would repaint the whole page. So the
+ * values are resolved from the ramps at BUILD time and emitted as `--wb-*`,
+ * which follow the page theme alone.
  *
- * The chrome accent is the ink itself, deliberately achromatic. Every saturated
- * colour on this page should belong to the system under inspection, not to the
- * frame around it.
+ * ── What now carries the frame/specimen separation
+ *
+ * Colour used to do that job and can no longer, since there is one palette.
+ * It is carried structurally instead: a specimen sits on `bg.canvas` inside a
+ * dashed `line-strong` stage, on a `panel` that is a step lighter than the
+ * `ground` around it. That is a better signal anyway — it survives a re-theme,
+ * and it survives someone viewing the page in the other theme.
  */
-import { oklch } from '../../packages/tokens/oklch.js';
+import { readFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ratio } from '../../packages/tokens/contrast.lib.js';
 
+const here = dirname(fileURLToPath(import.meta.url));
+
+const ramps = JSON.parse(
+  await readFile(resolve(here, '../../packages/tokens/src/primitive/color.json'), 'utf8'),
+).color;
+
+/** `p('pond', 600)` → the hex the generator produced for that step. */
+const p = (ramp, step) => {
+  const v = ramps[ramp]?.[String(step)]?.$value;
+  if (!v) throw new Error(`chrome.js: no such ramp step — ${ramp}.${step}`);
+  return v;
+};
+
 /**
- * Near-achromatic blue-grey.
+ * Chrome roles, as ramp steps.
  *
- * 0.004 rather than the 0.008 first tried, and the reason is a measurement.
- * Keel's own neutral tops out at C 0.010 and its light surfaces land near
- * C 0.0025 — pond.100 is #eff2f0, a grey you have to look for. At 0.008 the
- * chrome ground rendered #edf0f6: visibly lavender, and roughly three times
- * more chromatic than any surface in the system it frames. A frame louder than
- * its contents is the opposite of the stated intent, so the chrome was pulled
- * below the system rather than the intent rewritten to match the code.
- */
-const CHROME_HUE = 258;
-const CHROME_C = 0.004;
-
-/** Status colours borrow the system's hues so the report reads consistently — but not its tokens. */
-const PASS_HUE = 145;
-const FAIL_HUE = 30;
-
-const g = (L, C = CHROME_C, H = CHROME_HUE) => oklch(L, C, H).hex;
-
-/**
- * Lightness assignments. The one non-obvious choice: `panel` is 0.985, not
- * pure white, so that a Keel specimen — whose `bg.canvas` IS pure white —
- * reads as brighter than the frame holding it. The thing under inspection
- * should be the brightest thing on the page.
+ * These deliberately echo Keel's own semantic assignments rather than
+ * inventing a parallel scheme — `line-control` is `pond.500` because that is
+ * what `border.control` is, and the chrome's inputs have exactly the same
+ * WCAG 1.4.11 obligation as the system's. Where the chrome needs a role Keel
+ * does not have, the step is chosen to sit between two it does.
  */
 export const CHROME = {
   light: {
-    ground: g(0.955),
-    panel: g(0.985),
-    inset: g(0.925),
-    ink: g(0.18, 0.008),
-    muted: g(0.5, 0.008),
-    line: g(0.9),
-    'line-strong': g(0.8, 0.006),
-    'line-control': g(0.62, 0.006),
-    accent: g(0.18, 0.008),
-    'accent-on': g(0.985),
-    'accent-soft': g(0.915),
-    pass: g(0.45, 0.09, PASS_HUE),
-    fail: g(0.45, 0.15, FAIL_HUE),
-    shadow: '0 1px 2px rgba(17, 20, 28, .06), 0 8px 24px -12px rgba(17, 20, 28, .18)',
+    // `ground` is a step down from `panel` so a specimen — which sits on
+    // Keel's pure-white `bg.canvas` — is the brightest thing on the page.
+    ground: p('pond', 100),
+    panel: p('pond', 0),
+    inset: p('pond', 100),
+    ink: p('pond', 900),
+    muted: p('pond', 600),
+    line: p('pond', 200),
+    'line-strong': p('pond', 300),
+    'line-control': p('pond', 500),
+    accent: p('lotus', 600),
+    'accent-on': p('pond', 0),
+    'accent-soft': p('lotus', 50),
+    pass: p('leaf', 700),
+    fail: p('russet', 700),
+    shadow: '0 1px 2px rgba(13, 16, 15, .05), 0 8px 24px -12px rgba(13, 16, 15, .16)',
   },
   dark: {
-    ground: g(0.155, 0.006),
-    panel: g(0.205, 0.006),
-    inset: g(0.245, 0.006),
-    ink: g(0.93),
-    muted: g(0.68, 0.007),
-    line: g(0.275, 0.008),
-    'line-strong': g(0.38, 0.008),
-    'line-control': g(0.52, 0.008),
-    accent: g(0.93),
-    'accent-on': g(0.155, 0.006),
-    'accent-soft': g(0.27, 0.008),
-    pass: g(0.74, 0.09, PASS_HUE),
-    fail: g(0.72, 0.14, FAIL_HUE),
+    ground: p('pond', 950),
+    panel: p('pond', 900),
+    inset: p('pond', 800),
+    ink: p('pond', 50),
+    muted: p('pond', 300),
+    line: p('pond', 800),
+    'line-strong': p('pond', 700),
+    'line-control': p('pond', 500),
+    // The accent inverts exactly as the system's does: light fill, dark label.
+    accent: p('lotus', 400),
+    'accent-on': p('pond', 950),
+    'accent-soft': p('lotus', 950),
+    pass: p('leaf', 300),
+    fail: p('russet', 300),
     shadow: '0 1px 2px rgba(0, 0, 0, .5), 0 8px 24px -12px rgba(0, 0, 0, .7)',
   },
 };
 
 /**
- * The chrome's own accessibility gate. Same thresholds the system is held to:
- * 4.5:1 for text, 3:1 for the borders that carry structure.
+ * The chrome's own accessibility gate — the same thresholds the system is held
+ * to. A docs page reporting 56 passing contrast requirements from inside a
+ * frame that fails them would be worse than publishing no report at all.
  */
 const CHROME_PAIRS = [
   ['ink', 'ground', 4.5, 'chrome body text'],
@@ -108,6 +117,14 @@ const CHROME_PAIRS = [
   ['pass', 'panel', 4.5, 'contrast-report pass label'],
   ['fail', 'panel', 4.5, 'contrast-report fail label'],
   ['accent-on', 'accent', 4.5, 'label on the chrome accent'],
+  // `accent` is a focus ring and an active-state fill, so 1.4.11 applies to it
+  // against every surface it can appear on — including the accent-soft chips.
+  ['accent', 'ground', 3, 'accent focus ring on the ground'],
+  ['accent', 'panel', 3, 'accent focus ring on a panel'],
+  ['accent', 'accent-soft', 3, 'accent border on its own soft fill'],
+  // The rail's hover state is accent text on the soft accent fill, so this
+  // pair carries a 4.5:1 text obligation and not merely the 3:1 border one.
+  ['accent', 'accent-soft', 4.5, 'accent text on its own soft fill'],
   // Split from `line-strong` for exactly the reason Keel had to split
   // `border.default` from `border.control`: a single value cannot be both a
   // quiet table rule and the sole visible boundary of a text input. The rule
@@ -135,7 +152,7 @@ export function verifyChrome() {
     throw new Error(
       'Workbench chrome fails its own contrast gate:\n  ' +
         failures.join('\n  ') +
-        '\n\nAdjust the lightness values in apps/workbench/chrome.js.',
+        '\n\nAdjust the ramp steps in apps/workbench/chrome.js.',
     );
   }
 
