@@ -64,5 +64,8 @@
   "bugs": {
     "url": "https://github.com/doosemavis/keel/issues"
   },
-  "author": "Moose Davis"
+  "author": "Moose Davis",
+  "engines": {
+    "node": ">=22"
+  }
 }

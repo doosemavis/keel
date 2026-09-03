@@ -6,11 +6,12 @@
   "description": "Keel \u2014 a design system with a shared token foundation and verified cross-framework parity.",
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=22.11"
+    "node": ">=22",
+    "pnpm": ">=11"
   },
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "pnpm --filter @keel/workbench dev",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "lint:packaging": "turbo run lint:packaging",

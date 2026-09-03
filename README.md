@@ -122,13 +122,26 @@ Storage access is wrapped in `try`/`catch` throughout: `localStorage` throws out
 
 ## Development
 
+Requires **Node 22 or newer** and **pnpm 11**.
+
 ```bash
+# Corepack is NOT bundled with Node 25+ — the Node TSC stopped distributing it,
+# so `corepack enable pnpm` fails on newer Node. Install pnpm directly instead:
+brew install pnpm          # or: curl -fsSL https://get.pnpm.io/install.sh | sh -
+
 pnpm install
-pnpm build          # tokens (incl. contrast gate) -> contracts -> react
+pnpm build          # tokens (incl. contrast gate) -> contracts -> react -> workbench
 pnpm test
 pnpm typecheck
 pnpm lint:packaging # publint + are-the-types-wrong
+
+pnpm dev            # workbench on localhost with watch + live reload
+open apps/workbench/dist/index.html   # or just open the built file
 ```
+
+`packageManager` pins pnpm to an exact version, and pnpm self-manages that pin — it does not need corepack, so whatever pnpm you install will switch itself to the pinned version inside this repo.
+
+The workbench is a single self-contained HTML file with everything inlined, so `open`ing it works with no server. `pnpm dev` exists for when you are iterating on tokens and would rather not rebuild by hand.
 
 TypeScript is pinned to the **6.0** line in a pnpm catalog. TypeScript 7 (the native Go port) does not yet expose a stable programmatic API, so Angular tooling cannot consume it — `@angular/compiler-cli` and `ng-packagr` both declare `typescript: ">=6.0 <6.1"`. The Angular package has to build against the same compiler the React package uses, so the line is held now rather than discovered later.
 
