@@ -29,9 +29,9 @@
       "$comment": "A saturated jewel-tone jade rather than the muted sage-green most systems use for status-success — chosen to read as professional but outgoing rather than corporate-safe."
     },
     "warning": {
-      "hue": 50,
-      "maxChroma": 0.14,
-      "$comment": "Deep amber-gold, chosen for hue separation from both accent and success."
+      "hue": 55,
+      "maxChroma": 0.12,
+      "$comment": "Deep amber-gold, chosen for hue separation from both accent and success. Originally h50/C0.14, which sRGB gamut-mapped 8 of 11 steps (73%, worse than this palette's other five ramps at 4-5/11 each) — most of that loss fell on the palest tints and darkest shades, with steps 300-500 still delivered at full requested chroma. Nudging hue to 55 and trimming maxChroma to 0.12 brings it to 6/11 (55%) steps clipped with 96.8% of requested chroma delivered on average (up from 91.0%), while steps 500-700 (#b96e34 / #964d09 / #7b3d00) still read as amber-gold rather than sliding toward the brown-olive the old gold ramp produced under worse clipping."
     },
     "danger": {
       "hue": 20,

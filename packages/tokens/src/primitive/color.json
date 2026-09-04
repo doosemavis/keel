@@ -204,48 +204,48 @@
     },
     "warning": {
       "50": {
-        "$value": "#fff4ef",
-        "$description": "OKLCH L 0.975 C 0.0137 H 50 — gamut-mapped from C 0.0224 (sRGB holds 61% of the requested chroma at this lightness)"
+        "$value": "#fff4ee",
+        "$description": "OKLCH L 0.975 C 0.0144 H 55 — gamut-mapped from C 0.0192 (sRGB holds 75% of the requested chroma at this lightness)"
       },
       "100": {
-        "$value": "#ffe7db",
-        "$description": "OKLCH L 0.945 C 0.0309 H 50 — gamut-mapped from C 0.0420 (sRGB holds 74% of the requested chroma at this lightness)"
+        "$value": "#ffe8d9",
+        "$description": "OKLCH L 0.945 C 0.0324 H 55 — gamut-mapped from C 0.0360 (sRGB holds 90% of the requested chroma at this lightness)"
       },
       "200": {
-        "$value": "#ffd1b9",
-        "$description": "OKLCH L 0.895 C 0.0613 H 50 — gamut-mapped from C 0.0728 (sRGB holds 84% of the requested chroma at this lightness)"
+        "$value": "#fed2b6",
+        "$description": "OKLCH L 0.895 C 0.0624 H 55"
       },
       "300": {
-        "$value": "#fcb085",
-        "$description": "OKLCH L 0.82 C 0.1064 H 50"
+        "$value": "#f3b58b",
+        "$description": "OKLCH L 0.82 C 0.0912 H 55"
       },
       "400": {
-        "$value": "#e68a54",
-        "$description": "OKLCH L 0.72 C 0.1316 H 50"
+        "$value": "#db915d",
+        "$description": "OKLCH L 0.72 C 0.1128 H 55"
       },
       "500": {
-        "$value": "#c46628",
-        "$description": "OKLCH L 0.61 C 0.1400 H 50"
+        "$value": "#b96e34",
+        "$description": "OKLCH L 0.61 C 0.1200 H 55"
       },
       "600": {
-        "$value": "#9c4700",
-        "$description": "OKLCH L 0.5 C 0.1322 H 50 — gamut-mapped from C 0.1400 (sRGB holds 94% of the requested chroma at this lightness)"
+        "$value": "#964d09",
+        "$description": "OKLCH L 0.5 C 0.1200 H 55"
       },
       "700": {
-        "$value": "#7f3900",
-        "$description": "OKLCH L 0.43 C 0.1137 H 50 — gamut-mapped from C 0.1288 (sRGB holds 88% of the requested chroma at this lightness)"
+        "$value": "#7b3d00",
+        "$description": "OKLCH L 0.43 C 0.1065 H 55 — gamut-mapped from C 0.1104 (sRGB holds 96% of the requested chroma at this lightness)"
       },
       "800": {
-        "$value": "#632a00",
-        "$description": "OKLCH L 0.36 C 0.0952 H 50 — gamut-mapped from C 0.1120 (sRGB holds 85% of the requested chroma at this lightness)"
+        "$value": "#5f2e00",
+        "$description": "OKLCH L 0.36 C 0.0892 H 55 — gamut-mapped from C 0.0960 (sRGB holds 93% of the requested chroma at this lightness)"
       },
       "900": {
-        "$value": "#4a1e00",
-        "$description": "OKLCH L 0.295 C 0.0780 H 50 — gamut-mapped from C 0.0924 (sRGB holds 84% of the requested chroma at this lightness)"
+        "$value": "#472100",
+        "$description": "OKLCH L 0.295 C 0.0731 H 55 — gamut-mapped from C 0.0792 (sRGB holds 92% of the requested chroma at this lightness)"
       },
       "950": {
-        "$value": "#311100",
-        "$description": "OKLCH L 0.225 C 0.0596 H 50 — gamut-mapped from C 0.0700 (sRGB holds 85% of the requested chroma at this lightness)"
+        "$value": "#2f1300",
+        "$description": "OKLCH L 0.225 C 0.0558 H 55 — gamut-mapped from C 0.0600 (sRGB holds 93% of the requested chroma at this lightness)"
       }
     },
     "danger": {
