@@ -112,7 +112,7 @@ Three of those numbers are load-bearing in ways worth stating.
 
 **The neutral is not grey, and it is not one ramp.** Both neutrals sit at a chroma of 0.020, where the colour is felt rather than seen — but at different hues. The light theme's neutral leans toward the accent and the dark theme's toward success, so each theme carries a quiet echo of a different signature colour rather than a theme-neutral grey. That is why there are six seeds rather than five: the previous palette drew both themes from different lightness steps of one neutral ramp, and one ramp cannot lean two ways. Radix Colors ships a tinted grey beside each accent for the same reason. A pure grey also reads as unconsidered.
 
-**`accent` and `danger` are 92° apart.** A primary button and a destructive button are both saturated fills carrying a contrasting label, so they have to be separable at a glance, and hue does most of that work. `warning` and `danger` sit only 30° apart by convention: amber-caution and red-danger are adjacent warm hues in nearly every system, and context and iconography carry the rest.
+**`accent` and `danger` are 68° apart.** A primary button and a destructive button are both saturated fills carrying a contrasting label, so they have to be separable at a glance, and hue does most of that work. `warning` and `danger` sit only 35° apart by convention: amber-caution and red-danger are adjacent warm hues in nearly every system, and context and iconography carry the rest.
 
 **Chroma is concentrated where boldness is wanted.** `accent` and `danger` carry the most, at 0.185 and 0.180 — they are the two fills that have to read as emphatic. `success` and `warning` sit lower, and the neutrals are effectively silent. Boldness spread evenly is just noise.
 

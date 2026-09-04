@@ -3,7 +3,7 @@
 
   "$direction": "Bold and outgoing rather than corporate-safe. success is deliberately a saturated jewel-tone rather than the muted status-green most systems ship, and the neutral is not one shared ramp: light theme tints toward accent's own hue family, dark theme tints toward success's, so each theme carries a quiet echo of the brand rather than a theme-neutral grey.",
 
-  "hueNote": "OKLCH hue, in degrees. accent (312) and danger (20) sit 92 degrees apart (the short way around), which keeps them separable when both appear as bold same-treatment fills — the same requirement the previous palette's lotus/russet pair had to satisfy. warning (50) and danger (20) sit closer together (30 degrees) by convention: amber-caution and red-danger are adjacent warm hues in most design systems, differentiated by context and icon as much as by hue alone.",
+  "hueNote": "OKLCH hue, in degrees. accent (312) and danger (20) sit 68 degrees apart (the short way around), which keeps them separable when both appear as bold same-treatment fills — the same requirement the previous palette's lotus/russet pair had to satisfy. warning (55) and danger (20) sit closer together (35 degrees) by convention: amber-caution and red-danger are adjacent warm hues in most design systems, differentiated by context and icon as much as by hue alone.",
 
   "ramps": {
     "neutral-light": {
