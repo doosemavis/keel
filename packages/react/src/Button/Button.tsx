@@ -3,6 +3,7 @@ import type { ReactNode, Ref } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
 import type { ButtonProps as AriaButtonProps } from 'react-aria-components';
 import type { buttonSpec } from '@keel/specs';
+import { SwirlGlyph } from '../swirl.js';
 
 type Spec = typeof buttonSpec;
 
@@ -10,6 +11,8 @@ type Spec = typeof buttonSpec;
 export type ButtonVariant = Spec['props']['variant']['values'][number];
 /** Control height. */
 export type ButtonSize = Spec['props']['size']['values'][number];
+/** Outline. `round` is the icon-only form. */
+export type ButtonShape = Spec['props']['shape']['values'][number];
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'isDisabled' | 'isPending' | 'className' | 'style' | 'children'> {
@@ -25,6 +28,16 @@ export interface ButtonProps
    * @default 'md'
    */
   size?: ButtonSize;
+  /**
+   * `round` is for a single icon with no visible label. The label you pass
+   * as `children` still supplies the accessible name — it is hidden
+   * visually, not removed from the DOM, so no separate `aria-label` is
+   * needed and screen readers hear exactly what a sighted user would read
+   * in a tooltip. With no `iconStart`, a round button shows the blank-state
+   * glyph rather than an empty circle.
+   * @default 'default'
+   */
+  shape?: ButtonShape;
   /**
    * Prevents activation and communicates unavailability.
    *
@@ -69,6 +82,7 @@ export const Button = forwardRef(function Button(
   {
     variant = 'secondary',
     size = 'md',
+    shape = 'default',
     disabled = false,
     loading = false,
     fullWidth = false,
@@ -135,6 +149,7 @@ export const Button = forwardRef(function Button(
       {...(inert ? { 'aria-disabled': true as const } : {})}
       data-variant={variant}
       data-size={size}
+      data-shape={shape}
       data-disabled={disabled || undefined}
       data-loading={loading || undefined}
       data-full-width={fullWidth || undefined}
@@ -148,6 +163,10 @@ export const Button = forwardRef(function Button(
       {iconStart ? (
         <span className="keel-Button-icon" aria-hidden="true">
           {iconStart}
+        </span>
+      ) : shape === 'round' ? (
+        <span className="keel-Button-icon" aria-hidden="true">
+          <SwirlGlyph />
         </span>
       ) : null}
       {children != null ? <span className="keel-Button-label">{children}</span> : null}

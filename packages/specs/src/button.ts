@@ -30,6 +30,12 @@ export const buttonSpec = {
       description:
         'Control height. `md` and `lg` clear the 44px AAA hit target; `sm` is for dense data UI and must not be the only way to reach an action.',
     },
+    shape: {
+      values: ['default', 'round'],
+      defaultValue: 'default',
+      description:
+        'Round is for a single icon with no visible label — the label still supplies the accessible name, hidden visually rather than removed from the DOM. With no icon given, a round button shows the blank-state glyph.',
+    },
   },
 
   booleans: {
@@ -68,7 +74,7 @@ export const buttonSpec = {
     notes: [
       'A disabled Button stays focusable and announces aria-disabled, so assistive technology can still find it.',
       'The loading state sets aria-busy and keeps the accessible name stable, so the announcement does not churn mid-action.',
-      'An icon-only Button must be given an accessible name via aria-label — the build fails without one.',
+      'An icon-only Button is `shape="round"` with its label as children: the label is visually hidden but stays in the DOM as the accessible name, so nothing has to police a separate aria-label.',
       'The focus ring uses an outline with an offset so it stays visible against filled variants.',
     ],
   },

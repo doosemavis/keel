@@ -79,19 +79,21 @@ describe('Button — shared behaviour spec', () => {
 describe('Button — spec matrix', () => {
   // Generated from the spec, not hand-listed. A variant added to the
   // spec without an implementation fails here automatically.
-  const combos = propMatrix(buttonSpec) as Array<{ variant: string; size: string }>;
+  const combos = propMatrix(buttonSpec) as Array<{ variant: string; size: string; shape: string }>;
 
   it(`covers all ${combos.length} prop combinations`, () => {
     expect(combos).toHaveLength(
-      buttonSpec.props.variant.values.length * buttonSpec.props.size.values.length,
+      buttonSpec.props.variant.values.length *
+        buttonSpec.props.size.values.length *
+        buttonSpec.props.shape.values.length,
     );
   });
 
-  it.each(combos.map((c) => [`${c.variant}/${c.size}`, c] as const))(
+  it.each(combos.map((c) => [`${c.variant}/${c.size}/${c.shape}`, c] as const))(
     'renders %s with the attributes the spec declares',
     (_label, combo) => {
       const { unmount } = render(
-        <Button variant={combo.variant as never} size={combo.size as never}>
+        <Button variant={combo.variant as never} size={combo.size as never} shape={combo.shape as never}>
           Save
         </Button>,
       );
@@ -107,5 +109,27 @@ describe('Button — defaults match the contract', () => {
     const el = screen.getByRole('button');
     expect(el.getAttribute('data-variant')).toBe(buttonSpec.props.variant.defaultValue);
     expect(el.getAttribute('data-size')).toBe(buttonSpec.props.size.defaultValue);
+    expect(el.getAttribute('data-shape')).toBe(buttonSpec.props.shape.defaultValue);
+  });
+});
+
+describe('Button — round shape', () => {
+  it('renders the swirl glyph on a round button with no icon', () => {
+    const { container } = render(<Button shape="round">Delete</Button>);
+    expect(container.querySelector('.keel-Swirl')).not.toBeNull();
+  });
+
+  it('does not render the swirl glyph when a round button has an icon', () => {
+    const { container } = render(
+      <Button shape="round" iconStart={<span>icon</span>}>
+        Delete
+      </Button>,
+    );
+    expect(container.querySelector('.keel-Swirl')).toBeNull();
+  });
+
+  it('keeps the visible label in the DOM as the accessible name', () => {
+    render(<Button shape="round">Delete</Button>);
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeTruthy();
   });
 });
