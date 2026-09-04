@@ -29,7 +29,11 @@ describe('every published contract', () => {
 
 describe('matrix()', () => {
   it('is the full product of prop axes and states', () => {
-    const propCombos = buttonSpec.props.variant.values.length * buttonSpec.props.size.values.length;
+    // Multiplied over every declared prop rather than naming variant and size,
+    // so adding an axis to the spec (shape was the first) changes the expected
+    // count here automatically instead of failing a test that was silently
+    // assuming two axes.
+    const propCombos = Object.values(buttonSpec.props).reduce((n, p) => n * p.values.length, 1);
     expect(propMatrix(buttonSpec)).toHaveLength(propCombos);
     expect(matrix(buttonSpec)).toHaveLength(propCombos * buttonSpec.states.length);
   });
