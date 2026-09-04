@@ -158,6 +158,15 @@ component of the seven whose own `disabled` prop documents *why* it's
 without the reasoning attached to it in the code a consumer actually
 reads — and, it turns out, without it actually working.
 
+**Benchmark:** Radix UI Primitives take the same position — `aria-disabled`
+managed automatically from a `disabled` prop, with a `[data-disabled]`
+attribute exposed separately for styling (confirmed via web search of
+Radix's accessibility and Select documentation, September 2026). This is
+worth stating plainly: Keel's convention isn't an idiosyncratic choice, it
+matches how a widely-used, respected library in the same space does it.
+The finding above is entirely about the four-component implementation gap
+and the documentation gap, not about the convention itself being wrong.
+
 **Why this matters more than a typical bug:** the *convention* (aria-disabled,
 never native) is documented for a consumer who reaches it — root
 `README.md`'s "Accessibility decisions" section states it plainly (see
@@ -257,6 +266,14 @@ check:**
   after Keel's CSS loads should work by normal CSS cascade rules — but this
   isn't stated or demonstrated anywhere, so it's an undocumented and
   untested path rather than a confirmed one either way.
+
+**Benchmark:** shadcn/ui's theming documentation is a direct example of
+what's missing — it walks a consumer through opening their own CSS file,
+finding a specific semantic variable (its equivalent of
+`--keel-color-bg-accent`), and overriding it directly, with generator tools
+built around exactly that workflow (confirmed via web search of shadcn/ui's
+theming docs, September 2026). This is a small, cheap thing to add and
+there's a concrete pattern to model it on.
 
 **Recommendation:** add a short, explicit "overriding one token" example to
 whatever documentation ships with the package (see Entry points) —
