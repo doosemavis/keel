@@ -265,3 +265,47 @@ something as small as showing a consumer setting
 stylesheet — so brand customization doesn't require understanding that the
 five-seed re-theming story is a different, source-level operation aimed at
 a different audience.
+
+## Entry points
+
+A Keel consumer's install is two packages: `npm install @keel/react
+@keel/tokens` (`README.md:8`), with `@keel/tokens` declared as a
+peer dependency of `@keel/react` (`packages/react/package.json` —
+`peerDependencies: { "@keel/tokens": "^0.1.0", ... }`, captured earlier in
+this audit). React Aria Components — the library Keel wraps — installs as
+a single package (`npm install react-aria-components`) with no separate
+peer package, and ships intentionally unstyled, leaving all visual styling
+to the consumer (confirmed via web search of Adobe's React Aria
+documentation and npm listing, September 2026).
+
+**This is a real difference in install shape, but not a finding to fix —
+it's the correct tradeoff given Keel's stated thesis.** React Aria can be
+a single package precisely because it has no opinion on visual styling;
+Keel's entire value proposition is the opposite — a shared, framework-
+agnostic token layer is what makes `@keel/angular` (Phase 3) possible
+without a second, drifting copy of the color/spacing/typography decisions.
+Collapsing `@keel/tokens` into `@keel/react` would save one line in an
+install command at the cost of the exact thing the project exists to
+prove. Stated explicitly as a non-finding: two packages is the right
+number here, not a DX defect to streamline away.
+
+What *is* a real gap, and ties together findings from every section above:
+neither `packages/react/package.json` nor `packages/tokens/package.json`
+declares a package-level README (`files: ["dist"]` in both, confirmed
+earlier — no README.md exists in either package's own directory). Both
+packages' `homepage` field points to
+`https://github.com/doosemavis/keel#readme` — the *monorepo root* README,
+which is excellent (see Theming API section) but requires a consumer to
+leave npm and go to GitHub to find it. The published tarballs will ship
+with no README at all, and the npm registry pages for `@keel/react` and
+`@keel/tokens` will show npm's default "no readme" state regardless of how
+good the root document is.
+
+**Recommendation:** copy (or symlink at publish time) the root `README.md`
+— or a package-scoped excerpt of it — into `packages/react/` and
+`packages/tokens/` before publishing, so the documentation that already
+exists and already answers most of a first-time consumer's questions
+actually ships with the thing they installed. This is a packaging/build
+concern more than an API one, so it's flagged here for the separate npm
+packaging hardening workstream to pick up, rather than acted on in this
+analysis-only cycle.
