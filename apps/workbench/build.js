@@ -13,17 +13,20 @@
  * without anyone remembering to update the docs.
  *
  * One transform is applied to Keel's CSS on the way in. Keel scopes its themes
- * with `[data-theme="dark"]`, and so does the page host — so inlining the CSS
- * unchanged would mean switching the PAGE to dark also switched every specimen.
- * The selectors are rewritten to `[data-keel-theme]`, which lets the workbench
- * chrome and the system under inspection carry independent themes. That
- * matters: reviewing Keel's dark palette while reading the page in light is the
- * normal way to work.
+ * with `[data-theme="dark"]`, and so does the page host, so inlining the CSS
+ * unchanged would leave no way to theme a specimen separately from the document.
+ * The selectors are rewritten to `[data-keel-theme]` and the stamp is applied to
+ * `.stage` elements rather than to `<html>`.
+ *
+ * Today a single control in the app bar drives both, because two switches cost
+ * every visitor a control whose job was not guessable from looking at it. The
+ * rescope still earns its place: it is what would let a future compare-both-
+ * themes view set two stages differently without any of this being rebuilt.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { report } from '../../packages/tokens/contrast.lib.js';
+import { luminance, report } from '../../packages/tokens/contrast.lib.js';
 import { contracts, propMatrix } from '../../packages/contracts/dist/index.js';
 import { RENDERERS } from './renderers.js';
 import { chromeCss, verifyChrome } from './chrome.js';
@@ -39,6 +42,14 @@ const esc = (s) =>
 const tokensJson = JSON.parse(await readFile(resolve(root, 'packages/tokens/dist/tokens.json'), 'utf8'));
 const keelCssRaw = await readFile(resolve(root, 'packages/react/dist/styles.css'), 'utf8');
 const { rows: contrastRows, failures, resolved } = await report();
+
+// The webfont URL is lifted out of the GENERATED fonts.css rather than retyped.
+// @keel/tokens derives that file from the typography tokens, so this page can
+// never request a face the system does not declare — and, more usefully, can
+// never keep requesting one it has stopped declaring.
+const fontsCss = await readFile(resolve(root, 'packages/tokens/dist/fonts.css'), 'utf8');
+const fontHref = fontsCss.match(/@import url\('([^']+)'\)/)?.[1];
+if (!fontHref) throw new Error('workbench: could not read the webfont URL out of @keel/tokens dist/fonts.css');
 
 // Gate the chrome before a single byte of the page is assembled. The docs page
 // is held to the same bar as the system it documents; a build that reports
@@ -77,14 +88,56 @@ const semanticCount = entries.filter(([k]) => /^color\.(bg|fg|border|focus)\./.t
 
 // ---------------------------------------------------------------- fragments
 
+/**
+ * Swatch halves are ordered DARKER FIRST, by measured relative luminance.
+ *
+ * They used to be ordered light-theme-then-dark-theme, which is the more
+ * obvious mapping and the wrong one to scan a long table by. The two rules
+ * cannot both hold: background roles get darker in the dark theme while
+ * foreground roles get LIGHTER — `fg.default` is near-black in light and
+ * near-white in dark — so a fixed theme order makes the `fg.*` block visibly
+ * reverse direction halfway down the page, which reads as a rendering bug.
+ *
+ * Sorting by luminance costs the chip its ability to say which half is which.
+ * That information does not disappear: the LIGHT and DARK columns sit two cells
+ * to the right on the same row and carry the exact values. A `title` on each
+ * half names its theme on hover, and the order is stated in the section lede.
+ */
+function orderedHalves(key) {
+  const light = resolved.light[key] ?? '';
+  const dark = resolved.dark[key] ?? '';
+  const halves = [
+    { hex: light, theme: 'light' },
+    { hex: dark, theme: 'dark' },
+  ];
+  if (light && dark && luminance(light) > luminance(dark)) halves.reverse();
+
+  // Asserted, not assumed. The first version of this comparison was inverted —
+  // 36 of 95 rows rendered lighter-first — and it looked plausible enough in a
+  // screenshot that it took a script to catch. A rule stated in the lede that
+  // the markup does not actually hold is worse than no rule.
+  if (light && dark && luminance(halves[0].hex) > luminance(halves[1].hex) + 1e-9) {
+    throw new Error(
+      `workbench: swatch for ${key} is ordered lighter-first (${halves[0].hex} then ${halves[1].hex})`,
+    );
+  }
+  return halves;
+}
+
 function swatchRow([key, meta]) {
   const light = resolved.light[key] ?? '';
   const dark = resolved.dark[key] ?? '';
   const changes = light.toLowerCase() !== dark.toLowerCase();
+  const halves = orderedHalves(key);
   return `<tr class="tok" data-token="${esc(key)}">
   <td class="tok-chip">
     <button class="chip" type="button" data-copy="var(${esc(meta.cssVar)})" title="Copy var(${esc(meta.cssVar)})">
-      <span class="chip-half" style="background:${esc(light)}"></span><span class="chip-half" style="background:${esc(dark)}"></span>
+      ${halves
+        .map(
+          (h) =>
+            `<span class="chip-half" style="background:${esc(h.hex)}" title="${h.theme} theme — ${esc(h.hex)}"></span>`,
+        )
+        .join('')}
     </button>
   </td>
   <td class="tok-name"><code>${esc(key)}</code>${changes ? '' : '<span class="tag tag-quiet" title="Same value in both themes">shared</span>'}</td>
@@ -332,7 +385,7 @@ const PLAY_DATA = JSON.stringify(
 const html = `<title>Keel Workbench</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
+<link rel="stylesheet" href="${fontHref}">
 
 <style>
 /* ============================================================
@@ -360,21 +413,32 @@ body {
 .wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 40px; max-width: 1240px; margin: 0 auto; padding: 40px 28px 96px; }
 @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
 
+/* ---- application bar ----
+   A real top-level nav: brand, section links, theme control pinned right. It
+   sits OUTSIDE .wrap so it can span the full viewport while its contents stay
+   aligned to the same 1240px measure as the page below. Sticky, because the
+   theme control is the one thing you reach for from anywhere on a page this
+   long. */
+.appbar { position: sticky; top: 0; z-index: 20; background: var(--wb-panel); border-bottom: 1px solid var(--wb-line); }
+.appbar-inner { max-width: 1240px; margin: 0 auto; padding: 0 28px; block-size: 58px; display: flex; align-items: center; gap: 28px; }
+.appbar-brand { display: inline-flex; align-items: baseline; gap: 8px; text-decoration: none; color: var(--wb-ink); flex-shrink: 0; }
+.appbar-brand b { font-family: var(--wb-display); font-optical-sizing: auto; font-weight: 700; font-size: 21px; letter-spacing: -.01em; line-height: 1; }
+.appbar-brand span { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--wb-muted); font-weight: 600; }
+.appbar-brand:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 3px; border-radius: 4px; }
+.appbar-nav { display: flex; align-items: center; gap: 2px; }
+.appbar-nav a { font-size: 13.5px; font-weight: 500; color: var(--wb-muted); text-decoration: none; padding: 7px 11px; border-radius: 6px; }
+.appbar-nav a:hover { color: var(--wb-accent); background: var(--wb-accent-soft); }
+.appbar-nav a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
+/* Pushes the theme control to the far right, whatever the nav ends up holding. */
+.appbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+@media (max-width: 760px) { .appbar-nav { display: none; } .appbar-inner { padding: 0 18px; gap: 14px; } }
+
 /* ---- masthead ---- */
 .masthead { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 2px solid var(--wb-accent); margin-bottom: 8px; }
 .brand h1 { font-family: var(--wb-display); font-optical-sizing: auto; font-weight: 600; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
 .brand p { margin: 8px 0 0; color: var(--wb-muted); max-width: 56ch; }
-.masthead-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-/* Two controls, deliberately separate. "Page" themes this workbench; "Specimen"
-   themes the system under inspection. Keeping them independent is the point —
-   reviewing Keel's dark palette while reading the page in light is the normal
-   way to work. */
-.theme-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-.theme-ctl { display: flex; align-items: center; gap: 8px; }
-/* The specimen control IS the ThemeToggle component, running on Keel's own
-   stylesheet. It is pinned to the light theme so the control itself stays in a
-   known state while it switches everything else. */
-#specimenToggle { padding: 4px 10px; border: 1px dashed var(--wb-line-control); border-radius: 999px; background: var(--keel-color-bg-canvas); }
+.masthead-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; justify-content: flex-end; }
+
 .stats { display: flex; gap: 26px; flex-wrap: wrap; }
 .stat { display: flex; flex-direction: column; gap: 2px; }
 .stat b { font-family: var(--wb-mono); font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.1; }
@@ -519,27 +583,31 @@ input[type="search"]:focus-visible { outline: 2px solid var(--wb-accent); outlin
 ${keelCss}
 </style>
 
-<div class="wrap">
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="appbar-brand" href="#top"><b>Keel</b><span>Workbench</span></a>
+    <nav class="appbar-nav" aria-label="Primary">
+      <a href="#semantic">Foundations</a>
+      <a href="#contrast">Verification</a>
+      <a href="#button">Components</a>
+    </nav>
+    <div class="appbar-right">
+      <div class="seg" role="group" aria-label="Theme">
+        <button type="button" data-pagetheme="light" aria-pressed="false">Light</button>
+        <button type="button" data-pagetheme="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-pagetheme="system" aria-pressed="true">System</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="top">
   <header class="masthead">
     <div class="brand">
       <h1>Keel Workbench</h1>
       <p>Every token, contrast result and component in the system — with a live playground on each. Generated from the built packages, so this page cannot drift from the code.</p>
     </div>
     <div class="masthead-right">
-      <div class="theme-controls">
-        <div class="theme-ctl">
-          <span class="seg-label">Page</span>
-          <div class="seg" role="group" aria-label="Page theme">
-            <button type="button" data-pagetheme="light" aria-pressed="false">Light</button>
-            <button type="button" data-pagetheme="dark" aria-pressed="false">Dark</button>
-            <button type="button" data-pagetheme="system" aria-pressed="true">System</button>
-          </div>
-        </div>
-        <div class="theme-ctl">
-          <span class="seg-label">Specimen</span>
-          <div id="specimenToggle"></div>
-        </div>
-      </div>
       <div class="stats">
       <div class="stat"><b>${entries.length}</b><span>tokens</span></div>
       <div class="stat"><b>${semanticCount}</b><span>semantic roles</span></div>
@@ -566,7 +634,7 @@ ${keelCss}
   <main>
     <section id="semantic">
       <h2>Semantic color</h2>
-      <p class="lede">The only color layer a component may reference. Each swatch shows light on the left, dark on the right — click one to copy its <code>var()</code>. Roles marked <span class="tag tag-quiet">shared</span> resolve to the same value in both themes, so they are authored once.</p>
+      <p class="lede">The only color layer a component may reference. Each swatch shows its two theme values <strong>darker on the left, lighter on the right</strong> — which half is which theme varies, because backgrounds darken in the dark theme while foregrounds lighten. The <em>light</em> and <em>dark</em> columns carry that mapping exactly; hovering a half names its theme. Click a swatch to copy its <code>var()</code>. Roles marked <span class="tag tag-quiet">shared</span> resolve to the same value in both themes, so they are authored once.</p>
       <div class="toolbar">
         <div class="field"><input type="search" id="tokenFilter" placeholder="Filter tokens — try “accent”, “border”, “on”" aria-label="Filter tokens"></div>
       </div>
@@ -704,12 +772,32 @@ ${keelCss}
   // attribute entirely so the prefers-color-scheme media query takes over.
   var PAGE_KEY = 'keel-workbench-page-theme';
 
+  // The specimens follow this control too. There used to be a second switch
+  // that themed them independently, on the theory that reviewing the dark
+  // palette while reading the page in light is a normal thing to want. It is —
+  // but it is a maintainer's want, and it cost every visitor a control whose
+  // job was not guessable from looking at it. One switch, everything moves.
+  //
+  // The [data-keel-theme] rescope still earns its place: it is what lets the
+  // stamp be applied to stages specifically rather than to the document, so a
+  // future compare-both-themes view can set two stages differently without any
+  // of this being rebuilt.
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function stampSpecimens(choice) {
+    var effective = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.querySelectorAll('.stage').forEach(function (st) {
+      st.setAttribute('data-keel-theme', effective);
+    });
+  }
+
   function applyPageTheme(choice) {
     if (choice === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', choice);
     document.querySelectorAll('[data-pagetheme]').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-pagetheme') === choice));
     });
+    stampSpecimens(choice);
     // Storage throws outright in some privacy modes; a theme preference is not
     // worth breaking the page over.
     try { localStorage.setItem(PAGE_KEY, choice); } catch (e) {}
@@ -728,32 +816,12 @@ ${keelCss}
     });
   });
 
-  // The specimen control is the real ThemeToggle, rendered by its own renderer
-  // and driving every stage on the page — the component documenting itself.
-  var specimenTheme = 'light';
-  function paintSpecimenToggle() {
-    var d = DATA['theme-toggle'];
-    var host = document.getElementById('specimenToggle');
-    if (!d || !host) return;
-    var state = {};
-    Object.keys(d.props).forEach(function (k) { state[k] = d.props[k]; });
-    Object.keys(d.booleans).forEach(function (k) { state[k] = d.booleans[k]; });
-    Object.keys(d.slots).forEach(function (k) { state[k] = d.slots[k]; });
-    state.theme = specimenTheme;
-    state.size = 'sm';
-    host.innerHTML = d.fn(state, h);
-    host.setAttribute('data-keel-theme', 'light');
-  }
-  var specimenHost = document.getElementById('specimenToggle');
-  if (specimenHost) {
-    specimenHost.addEventListener('click', function () {
-      specimenTheme = specimenTheme === 'light' ? 'dark' : 'light';
-      document.querySelectorAll('.stage').forEach(function (st) {
-        st.setAttribute('data-keel-theme', specimenTheme);
-      });
-      paintSpecimenToggle();
-    });
-  }
+  // Following the OS means following it as it changes, not only at load.
+  mql.addEventListener('change', function () {
+    var current = 'system';
+    try { current = localStorage.getItem(PAGE_KEY) || 'system'; } catch (e) {}
+    if (current === 'system') stampSpecimens('system');
+  });
 
   bindSeg('data-crtheme', function (theme) {
     document.querySelectorAll('[data-crbody]').forEach(function (b) { b.hidden = b.getAttribute('data-crbody') !== theme; });
@@ -829,7 +897,6 @@ ${keelCss}
     return '<' + d.name + NL + attrs.map(function (a) { return '  ' + a; }).join(NL) + NL + '/>';
   }
 
-  paintSpecimenToggle();
 
   document.querySelectorAll('[data-play]').forEach(function (root) {
     var id = root.getAttribute('data-play');

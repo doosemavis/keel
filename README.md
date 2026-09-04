@@ -19,10 +19,18 @@ Keel sets its own faces, so load them in `<head>` — a `<link>` starts the down
 
 ```html
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
 ```
 
-`import '@keel/tokens/fonts.css'` does the same thing where editing the HTML shell is impractical. That file is **generated from the typography tokens**, so it can never request a face the system does not declare.
+`import '@keel/tokens/fonts.css'` does the same thing where editing the HTML shell is impractical. That file is **generated from the typography tokens**, so it can never request a face the system does not declare — and, more usefully, can never keep requesting one it has stopped declaring. Each family names the weight axes it needs beside itself in `typography.json`, because which axes exist is a property of the face and not of the role it plays.
+
+### The interface face is Atkinson Hyperlegible
+
+Commissioned by the Braille Institute and drawn so that low-vision readers can tell characters apart: the letterforms are deliberately *differentiated* exactly where sans-serifs normally unify them for rhythm — `I` / `l` / `1`, `O` / `0`, `b` / `d` / `p` / `q`. It carries every label, every table cell and every component in the system, and its companion mono carries every hex value, where confusing `0` with `O` costs a reader real time.
+
+This is the largest single legibility decision available in a design system, and picking it is consistent with the rest: the whole project's claim is that accessibility is *enforced by measurement* rather than promised in a heading. The **Next** revision is used rather than the 2019 original because the original ships only 400 and 700 while the interface leans on 500 and 600 — synthesising those weights would undo the drawing.
+
+Bodoni Moda stays as the display face, and the two are not in tension. A hyperlegible sans does the work at 12–16px where character confusion actually costs something; the didone runs at 25px and up, where no such risk exists and the job is voice.
 
 ---
 

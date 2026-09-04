@@ -49,6 +49,24 @@ const ramps = JSON.parse(
   await readFile(resolve(here, '../../packages/tokens/src/primitive/color.json'), 'utf8'),
 ).color;
 
+const typography = JSON.parse(
+  await readFile(resolve(here, '../../packages/tokens/src/primitive/typography.json'), 'utf8'),
+);
+
+/**
+ * The chrome's type comes from the same token that sets the system's.
+ *
+ * These used to be three hardcoded stacks in the page generator, which is the
+ * font equivalent of the 39 hand-written hex values this file replaced — and it
+ * would have survived the switch to Atkinson Hyperlegible without complaint,
+ * leaving the docs page in DM Sans while every component it documented had
+ * moved. Reading the token is the only version that cannot drift.
+ */
+const stack = (role) =>
+  typography.font.family[role].$value
+    .map((f) => (/[^a-zA-Z-]/.test(f) ? `'${f}'` : f))
+    .join(', ');
+
 /** `p('pond', 600)` → the hex the generator produced for that step. */
 const p = (ramp, step) => {
   const v = ramps[ramp]?.[String(step)]?.$value;
@@ -169,9 +187,9 @@ export function chromeCss() {
   return `:root {
 ${block('light', '  ')}
 
-  --wb-display: 'Bodoni Moda', Didot, Cochin, Georgia, serif;
-  --wb-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --wb-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --wb-display: ${stack('display')};
+  --wb-sans: ${stack('sans')};
+  --wb-mono: ${stack('mono')};
 
   color-scheme: light dark;
 }

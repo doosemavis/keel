@@ -182,22 +182,24 @@ async function buildFontLoader() {
   const typography = JSON.parse(await readFile('src/primitive/typography.json', 'utf8'));
   const families = typography.font.family;
 
-  // Weight axes actually used by the system. Requesting more is wasted bytes;
-  // requesting fewer makes the browser synthesise them, which looks wrong.
-  const AXES = {
-    display: 'opsz,wght@6..96,500;6..96,700',
-    sans: 'opsz,wght@9..40,400;9..40,500;9..40,600',
-    mono: 'wght@400;500',
-  };
-
   // Object.entries over a DTCG group yields its `$type` metadata key too.
   const roles = Object.entries(families).filter(([k, v]) => !k.startsWith('$') && v && v.$value);
 
+  // Which weight axes to request is a property of the FACE, not of the role, so
+  // it is declared beside the family in typography.json rather than mapped by
+  // role here. This file used to hold that map, and it was wrong the moment the
+  // sans changed: it asked every sans for an `opsz` axis, which Atkinson
+  // Hyperlegible Next does not have, and Google Fonts answers an unknown axis
+  // with a 400 — a silently missing webfont and a page that falls back to
+  // system sans with nothing in the build to say so.
+  //
+  // A family with no declared axes is a pure fallback stack and is not fetched.
   const specs = roles
-    .filter(([role]) => role in AXES)
-    .map(([role, def]) => {
+    .filter(([, def]) => def.$extensions?.['keel.webfont']?.axes)
+    .map(([, def]) => {
       const webfont = def.$value[0];
-      return `family=${webfont.replace(/ /g, '+')}:${AXES[role]}`;
+      const { axes } = def.$extensions['keel.webfont'];
+      return `family=${webfont.replace(/ /g, '+')}:${axes}`;
     });
 
   const href = `https://fonts.googleapis.com/css2?${specs.join('&')}&display=swap`;

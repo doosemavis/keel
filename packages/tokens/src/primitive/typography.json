@@ -1,20 +1,23 @@
 {
-  "$description": "Type, weight, size, rhythm and motion primitives. Three families with three distinct jobs — display carries the voice, sans does the work, mono aligns the digits. Every family declares a real fallback stack, because a webfont that fails to load must degrade to something with similar metrics rather than to Times.",
+  "$description": "Type, weight, size, rhythm and motion primitives. Three families with three distinct jobs — display carries the voice, sans does the work, mono aligns the digits. Every family declares a real fallback stack, because a webfont that fails to load must degrade to something with similar metrics rather than to Times. Each webfont family also declares the weight axes it actually needs, under $extensions, so the generated fonts.css requests exactly those and no more.",
 
   "font": {
     "family": {
       "$type": "fontFamily",
       "display": {
         "$value": ["Bodoni Moda", "Didot", "Cochin", "Georgia", "serif"],
-        "$description": "Headings and display type only. A didone: hairline-to-stem contrast is extreme, which is precisely where the elegance lives — and at its heavy weights that same contrast reads as bold rather than delicate. Never set below 20px; the hairlines vanish and it turns to mush at UI sizes."
+        "$description": "Headings and display type only. A didone: hairline-to-stem contrast is extreme, which is precisely where the elegance lives — and at its heavy weights that same contrast reads as bold rather than delicate. Kept alongside a legibility face on purpose. The two are not in tension: a hyperlegible sans is doing the work at 12–16px where character confusion actually costs a reader something, while the display face runs at 25px and up where no such risk exists and the job is voice. Never set below 20px; the hairlines vanish and it turns to mush at UI sizes.",
+        "$extensions": { "keel.webfont": { "axes": "opsz,wght@6..96,500;6..96,700" } }
       },
       "sans": {
-        "$value": ["DM Sans", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
-        "$description": "Every interface surface — labels, body, buttons, help text. Chosen over the obvious geometric options because it holds up at 12px in dense tables, which a Futura-lineage face does not. Its terminals are slightly humanist rather than mechanically circular, which is what lets it sit under a didone without looking like a different system."
+        "$value": ["Atkinson Hyperlegible Next", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+        "$description": "Every interface surface — labels, body, buttons, help text. Commissioned by the Braille Institute and drawn specifically so that low-vision readers can tell characters apart: the letterforms are differentiated at the points where sans-serifs normally collapse into each other — I/l/1, O/0, b/d/p/q — rather than being unified for rhythm. Choosing it is not decoration. This system's whole claim is that accessibility is enforced by measurement rather than promised, and the face carrying 90 percent of its words is the largest legibility decision available. The Next revision is used rather than the 2019 original because the original ships only 400 and 700, and the interface leans on 500 and 600 for labels and emphasis; synthesising those weights would undo the drawing.",
+        "$extensions": { "keel.webfont": { "axes": "wght@400;500;600;700" } }
       },
       "mono": {
-        "$value": ["DM Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-        "$description": "Token names, hex values, code, and any column of digits. Deliberately DM Mono rather than an unrelated mono: it shares DM Sans's skeleton and metrics, so a code snippet beside body text reads as the same voice at a different pitch instead of as a foreign object."
+        "$value": ["Atkinson Hyperlegible Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+        "$description": "Token names, hex values, code, and any column of digits. The designed companion to the sans rather than an unrelated mono, so a hex value beside body text reads as the same voice at a different pitch instead of as a foreign object — and it carries the same character-differentiation work, which matters more here than anywhere else on the page: `#0d100f` is exactly the string where confusing 0 with O costs someone real time.",
+        "$extensions": { "keel.webfont": { "axes": "wght@400;500" } }
       }
     },
     "weight": {
@@ -22,7 +25,7 @@
       "regular": { "$value": 400 },
       "medium": { "$value": 500 },
       "semibold": { "$value": 600 },
-      "bold": { "$value": 700, "$description": "Display face only. DM Sans at 700 in UI reads as shouting; the hierarchy is carried by size and colour instead." }
+      "bold": { "$value": 700, "$description": "Display face only. A 700 in the UI sans reads as shouting at these sizes; hierarchy is carried by size and colour instead." }
     },
     "size": {
       "$type": "dimension",
