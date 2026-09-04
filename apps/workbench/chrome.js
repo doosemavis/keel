@@ -16,8 +16,12 @@
  * documentation is its single most legible piece of evidence: a page framed in
  * a palette the system does not ship demonstrates nothing, and a reader is
  * entitled to assume the thing on screen is the thing being sold. The chrome
- * now uses `pond` for every surface and `lotus` for every accent, read straight
- * out of the generated ramps. If the seeds change, this page changes with them.
+ * now reads the neutral ramp for every surface and `accent` for every accent,
+ * straight out of the generated ramps. The neutral is two ramps — `neutral-light`
+ * for the light theme, `neutral-dark` for the dark, each tinted toward a
+ * different one of the system's signature hues — so each page theme reads its
+ * own, exactly as the semantic layer does. If the seeds change, this page
+ * changes with them.
  *
  * ── What the indirection is still for
  *
@@ -67,7 +71,7 @@ const stack = (role) =>
     .map((f) => (/[^a-zA-Z-]/.test(f) ? `'${f}'` : f))
     .join(', ');
 
-/** `p('pond', 600)` → the hex the generator produced for that step. */
+/** `p('neutral-light', 600)` → the hex the generator produced for that step. */
 const p = (ramp, step) => {
   const v = ramps[ramp]?.[String(step)]?.$value;
   if (!v) throw new Error(`chrome.js: no such ramp step — ${ramp}.${step}`);
@@ -78,7 +82,7 @@ const p = (ramp, step) => {
  * Chrome roles, as ramp steps.
  *
  * These deliberately echo Keel's own semantic assignments rather than
- * inventing a parallel scheme — `line-control` is `pond.500` because that is
+ * inventing a parallel scheme — `line-control` is the neutral's step 500 because that is
  * what `border.control` is, and the chrome's inputs have exactly the same
  * WCAG 1.4.11 obligation as the system's. Where the chrome needs a role Keel
  * does not have, the step is chosen to sit between two it does.
@@ -87,36 +91,36 @@ export const CHROME = {
   light: {
     // `ground` is a step down from `panel` so a specimen — which sits on
     // Keel's pure-white `bg.canvas` — is the brightest thing on the page.
-    ground: p('pond', 100),
-    panel: p('pond', 0),
-    inset: p('pond', 100),
-    ink: p('pond', 900),
-    muted: p('pond', 600),
-    line: p('pond', 200),
-    'line-strong': p('pond', 300),
-    'line-control': p('pond', 500),
-    accent: p('lotus', 600),
-    'accent-on': p('pond', 0),
-    'accent-soft': p('lotus', 50),
-    pass: p('leaf', 700),
-    fail: p('russet', 700),
+    ground: p('neutral-light', 100),
+    panel: p('neutral-light', 0),
+    inset: p('neutral-light', 100),
+    ink: p('neutral-light', 900),
+    muted: p('neutral-light', 600),
+    line: p('neutral-light', 200),
+    'line-strong': p('neutral-light', 300),
+    'line-control': p('neutral-light', 500),
+    accent: p('accent', 600),
+    'accent-on': p('neutral-light', 0),
+    'accent-soft': p('accent', 50),
+    pass: p('success', 700),
+    fail: p('danger', 700),
     shadow: '0 1px 2px rgba(13, 16, 15, .05), 0 8px 24px -12px rgba(13, 16, 15, .16)',
   },
   dark: {
-    ground: p('pond', 950),
-    panel: p('pond', 900),
-    inset: p('pond', 800),
-    ink: p('pond', 50),
-    muted: p('pond', 300),
-    line: p('pond', 800),
-    'line-strong': p('pond', 700),
-    'line-control': p('pond', 500),
+    ground: p('neutral-dark', 950),
+    panel: p('neutral-dark', 900),
+    inset: p('neutral-dark', 800),
+    ink: p('neutral-dark', 50),
+    muted: p('neutral-dark', 300),
+    line: p('neutral-dark', 800),
+    'line-strong': p('neutral-dark', 700),
+    'line-control': p('neutral-dark', 500),
     // The accent inverts exactly as the system's does: light fill, dark label.
-    accent: p('lotus', 400),
-    'accent-on': p('pond', 950),
-    'accent-soft': p('lotus', 950),
-    pass: p('leaf', 300),
-    fail: p('russet', 300),
+    accent: p('accent', 400),
+    'accent-on': p('neutral-dark', 950),
+    'accent-soft': p('accent', 950),
+    pass: p('success', 300),
+    fail: p('danger', 300),
     shadow: '0 1px 2px rgba(0, 0, 0, .5), 0 8px 24px -12px rgba(0, 0, 0, .7)',
   },
 };

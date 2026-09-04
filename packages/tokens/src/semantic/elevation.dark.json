@@ -1,5 +1,5 @@
 {
-  "$description": "Dark-theme elevation. Not a tint change — a different lighting model.\n\nOn a light surface a shadow works because the surface is brighter than the shadow. On a near-black canvas there is almost nothing left to darken, so the same values render as an invisible smudge and every card reads as flat. The response is to push opacity far higher than looks reasonable on paper (0.5 and 0.7 against 0.05 and 0.16) and let the shadow do its work as an occlusion cue rather than as a visible grey.\n\nThe tint is neutral black rather than pond-tinted: at these opacities a hue shift in the shadow reads as a coloured halo.",
+  "$description": "Dark-theme elevation. Not a tint change — a different lighting model.\n\nOn a light surface a shadow works because the surface is brighter than the shadow. On a near-black canvas there is almost nothing left to darken, so the same values render as an invisible smudge and every card reads as flat. The response is to push opacity far higher than looks reasonable on paper (0.5 and 0.7 against 0.05 and 0.16) and let the shadow do its work as an occlusion cue rather than as a visible grey.\n\nThe tint is neutral black rather than tinted like the neutral ramp: at these opacities a hue shift in the shadow reads as a coloured halo.",
 
   "elevation": {
     "$type": "shadow",

@@ -79,10 +79,11 @@ const gamut = {};
 let count = 0;
 
 for (const [name, spec] of Object.entries(seeds.ramps)) {
-  // Selected by declared ROLE, not by name. The generator must not know that the
-  // neutral is currently called `pond` — that is a palette decision, and the last
-  // re-theme renamed all five ramps. A seed says what job it does; this file
-  // decides what shape that job needs.
+  // Selected by declared ROLE, not by name. The generator must not know what
+  // the neutral is called — that is a palette decision, and the last two
+  // re-themes renamed every ramp. Nor how many there are: the current palette
+  // ships two neutrals, one per theme, and this loop never noticed. A seed says
+  // what job it does; this file decides what shape that job needs.
   const steps = spec.role === 'neutral' ? NEUTRAL_STEPS : COLOR_STEPS;
   color[name] = {};
   let peak = { step: null, chroma: -1 };

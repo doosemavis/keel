@@ -70,7 +70,7 @@ const GROUPS = [
   { id: 'color-focus', title: 'Focus', hint: 'Focus indication.', test: (k) => k.startsWith('color.focus.'), kind: 'color' },
 ];
 
-const RAMPS = ['pond', 'lotus', 'leaf', 'gold', 'russet'];
+const RAMPS = ['neutral-light', 'neutral-dark', 'accent', 'success', 'warning', 'danger'];
 
 const SCALES = [
   { id: 'space', title: 'Space', prefix: 'space.', kind: 'space' },
@@ -658,7 +658,7 @@ ${keelCss}
 
     <section id="primitives">
       <h2>Primitive ramps</h2>
-      <p class="lede">Raw values with no meaning attached. Components must never reference these directly — they exist only to be aliased by the semantic roles above. Both themes draw from the same ramps; only the aliasing changes.</p>
+      <p class="lede">Raw values with no meaning attached. Components must never reference these directly — they exist only to be aliased by the semantic roles above. The four colour ramps serve both themes with only the aliasing changing; the neutral is two ramps, one per theme, each tinted toward a different one of the system's signature hues.</p>
       ${RAMPS.map((ramp) => {
         const rows = entries.filter(([k]) => k.startsWith(`color.${ramp}.`));
         if (!rows.length) return '';
