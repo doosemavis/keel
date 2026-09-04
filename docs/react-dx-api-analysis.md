@@ -158,14 +158,23 @@ component of the seven whose own `disabled` prop documents *why* it's
 without the reasoning attached to it in the code a consumer actually
 reads — and, it turns out, without it actually working.
 
-**Why this matters more than a typical bug:** a consumer who reads
-`Checkbox`'s `disabled?: boolean` in their editor gets zero indication this
-prop behaves differently from every other component with the same name in
-the same package. Root `CLAUDE.md` documents the defect precisely — but
-`CLAUDE.md` is a repo file, not something that ships in the npm package or
-appears in an IDE tooltip. A first-time consumer has no way to discover
-either the convention or its silent failure short of writing an integration
-test that checks the DOM directly.
+**Why this matters more than a typical bug:** the *convention* (aria-disabled,
+never native) is documented for a consumer who reaches it — root
+`README.md`'s "Accessibility decisions" section states it plainly (see
+Theming API section below for the full README review), and
+`packages/react/package.json:68`'s `homepage` field points at it via
+GitHub. But that requires a consumer to click through from npm to GitHub;
+nothing in the published package itself (no README ships in the
+`@keel/react` tarball — see Entry points section) or in an IDE tooltip says
+it for four of the seven components. And the *defect* — that the
+convention silently does nothing on those four — is documented nowhere a
+consumer would ever see it: only in root `CLAUDE.md`, a file written as
+instructions for an AI coding agent, not consumer documentation, and one
+that never ships with the package either way. A consumer who reads
+`Checkbox`'s bare `disabled?: boolean` in their editor, and even one who
+read the README's accessibility section, has no way to learn this specific
+prop is currently non-functional short of writing an integration test that
+checks the rendered DOM directly.
 
 **Recommendation:** this is the single highest-priority item in this
 analysis, and it's already the repo's own stated next priority — fixing it
@@ -206,3 +215,53 @@ implementation — it isn't just a convention engineers are expected to
 maintain by discipline, it's structurally enforced by the type system
 itself. Nothing to fix here; noted so a later plan doesn't spend time
 re-verifying it.
+
+## Theming API
+
+`packages/react/src/theme.ts` is a genuinely well-designed, framework-free
+theming module — kept dependency-free on purpose so the future `@keel/angular`
+package imports the same functions rather than re-implementing the storage
+key, attribute name, and media query in a second place
+(`theme.ts:1-9`). It exports `applyTheme`, `resolveTheme`, `systemTheme`,
+`readStoredPreference`/`writeStoredPreference`, `initialTheme`, and
+`themeInitScript` — the last of which even carries a working `@example`
+usage snippet directly in its JSDoc (`theme.ts:80-81`) explaining the
+flash-of-wrong-theme problem it solves and why it has to be a blocking
+inline script rather than component logic (`theme.ts:71-78`).
+
+**Root `README.md` documents day-one theming clearly** — a full "Theming"
+section (`README.md:163-179`) shows the exact `themeInitScript()` +
+`<ThemeToggle />` pairing needed, and a separate "Accessibility decisions"
+section (`README.md:181-186`) explicitly documents the `aria-disabled`
+convention this analysis's Cross-component conventions section discusses.
+**This corrects a claim in that section** — I initially found no
+consumer-facing documentation of the convention because I checked
+`apps/workbench/build.js` and `docs/` but not the root README; the README
+does state it plainly. The open question is not *whether* it's documented,
+but *where* — see the Entry points section below, because this document
+lives at the monorepo root, not inside the `@keel/react` package itself.
+
+**What's answered vs. not, for the two questions this section set out to
+check:**
+
+- *"How do I get light/dark theming working?"* — answered clearly, by both
+  the code's own JSDoc and the README.
+- *"How do I override one semantic color for my brand?"* — **not
+  answered.** The README's re-theming story (`README.md:94-96`) is about
+  editing `packages/tokens/seeds.json` and rebuilding the token package
+  from source — i.e., forking or contributing to Keel itself, not something
+  a consumer of the published `@keel/tokens` package does from their own
+  app. Since components reference semantic roles as ordinary CSS custom
+  properties (`--keel-color-bg-accent`, per root `CLAUDE.md`'s stated
+  convention), a consumer overriding that variable in their own stylesheet
+  after Keel's CSS loads should work by normal CSS cascade rules — but this
+  isn't stated or demonstrated anywhere, so it's an undocumented and
+  untested path rather than a confirmed one either way.
+
+**Recommendation:** add a short, explicit "overriding one token" example to
+whatever documentation ships with the package (see Entry points) —
+something as small as showing a consumer setting
+`:root { --keel-color-bg-accent: ... }` in their own CSS after Keel's
+stylesheet — so brand customization doesn't require understanding that the
+five-seed re-theming story is a different, source-level operation aimed at
+a different audience.
