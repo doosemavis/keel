@@ -49,12 +49,5 @@
       "default": { "$value": "0em" },
       "label": { "$value": "0.08em", "$description": "Uppercase micro-labels only. Caps set at default tracking read as cramped." }
     }
-  },
-
-  "duration": {
-    "$type": "duration",
-    "instant": { "$value": "0ms" },
-    "fast": { "$value": "120ms" },
-    "medium": { "$value": "200ms" }
   }
 }

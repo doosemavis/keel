@@ -15,7 +15,7 @@
   line-height: var(--keel-font-line-height-tight);
   text-align: start;
   cursor: pointer;
-  transition: border-color var(--keel-duration-fast) ease;
+  transition: border-color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -66,7 +66,7 @@
   inline-size: 0.75rem;
   block-size: 0.75rem;
   color: var(--keel-color-fg-muted);
-  transition: rotate var(--keel-duration-fast) ease;
+  transition: rotate var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 .keel-Select-trigger[aria-expanded='true'] .keel-Select-chevron {
@@ -85,7 +85,7 @@
   border: var(--keel-border-width-thin) solid var(--keel-color-border-default);
   border-radius: var(--keel-radius-lg);
   background: var(--keel-color-bg-surface);
-  box-shadow: 0 4px 6px -2px rgb(0 0 0 / 0.1), 0 12px 24px -8px rgb(0 0 0 / 0.18);
+  box-shadow: var(--keel-elevation-overlay);
 }
 
 .keel-Select-list {

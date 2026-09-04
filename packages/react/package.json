@@ -1,7 +1,7 @@
 {
   "name": "@keel/react",
   "version": "0.1.0",
-  "description": "Keel components for React 19 \u2014 accessible behaviour from React Aria, styling from the shared Keel token layer.",
+  "description": "Keel components for React 19 — accessible behaviour from React Aria, styling from the shared Keel token layer.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -24,10 +24,11 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsdown && node build-css.js",
+    "build": "node lint-css.js && tsdown && node build-css.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
-    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css components.css"
+    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css components.css",
+    "lint:css": "node lint-css.js"
   },
   "peerDependencies": {
     "@keel/tokens": "^0.1.0",

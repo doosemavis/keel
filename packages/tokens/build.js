@@ -30,8 +30,8 @@ StyleDictionary.registerFileHeader({
 });
 
 const PRIMITIVES = ['src/primitive/*.json'];
-const LIGHT = [...PRIMITIVES, 'src/semantic/color.json'];
-const DARK = [...LIGHT, 'src/semantic/color.dark.json'];
+const LIGHT = [...PRIMITIVES, 'src/semantic/color.json', 'src/semantic/elevation.json'];
+const DARK = [...LIGHT, 'src/semantic/color.dark.json', 'src/semantic/elevation.dark.json'];
 
 /** Emit only the tokens that came from a semantic source, for the dark pass. */
 StyleDictionary.registerFilter({

@@ -58,8 +58,8 @@
   background: var(--keel-color-bg-surface);
   color: var(--keel-color-fg-on-accent);
   transition:
-    background-color var(--keel-duration-fast) ease,
-    border-color var(--keel-duration-fast) ease;
+    background-color var(--keel-duration-fast) var(--keel-easing-standard),
+    border-color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {

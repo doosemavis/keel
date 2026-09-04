@@ -54,8 +54,8 @@
   font-size: var(--keel-font-size-sm);
   line-height: var(--keel-font-line-height-tight);
   transition:
-    border-color var(--keel-duration-fast) ease,
-    background-color var(--keel-duration-fast) ease;
+    border-color var(--keel-duration-fast) var(--keel-easing-standard),
+    background-color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {
