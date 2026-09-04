@@ -44,3 +44,64 @@ absence of one) and/or a Workbench section, not only in source.
 
 ## Cross-component conventions
 
+Keel's stated convention is `aria-disabled`, never native `disabled`, on
+every interactive component — because a natively disabled element leaves
+the tab order entirely, so a screen-reader user sweeping the page never
+learns the control exists (`packages/specs/src/types.ts:110-113`). This is
+a genuinely good, deliberate choice. But the codebase's actual behavior
+splits cleanly into two groups, and the split maps exactly onto both a real
+functional defect and a documentation gap:
+
+| Component | Root element | `aria-disabled` reaches the DOM? | `disabled` prop JSDoc |
+|---|---|---|---|
+| Button | `<button>` (`Button.tsx:82`) | Yes | Full explanation (`Button.tsx:28-36`) |
+| TextField | `<input>` (`TextField.tsx:66`) | Yes | — |
+| Select | root `<div>` (`Select.tsx:72`), trigger is `AriaButton` (`Select.tsx:99-102`) | Yes | — |
+| Checkbox | `<label>` (`Checkbox.tsx:51`, via React Aria's `AriaCheckbox`) | **No** | Bare `@default false` (`Checkbox.tsx:18-19`) |
+| Switch | `<label>` (`Switch.tsx:47`, via `AriaSwitch`) | **No** | Bare `@default false` (`Switch.tsx:18-19`) |
+| RadioGroup | per-option `AriaRadio`, also `<label>`-rooted (`RadioGroup.tsx:97-102`) | **No** | Bare `@default false` (`RadioGroup.tsx:36-37`) |
+| ThemeToggle | `<label>` (via `AriaSwitch`, `ThemeToggle.tsx:107-114`) | **No** | Bare `@default false` (`ThemeToggle.tsx:26-27`) |
+
+This is the known defect recorded in root `CLAUDE.md` — `<Checkbox disabled>`
+renders fully focusable and operable, because React Aria Components filters
+`aria-disabled` as an unrecognized prop on these specific primitives while
+Keel's own `onChange`-guard logic (e.g. `Checkbox.tsx:64-67`,
+`ThemeToggle.tsx:93-104`) is the *only* thing actually preventing the
+callback from firing — and in the uncontrolled case, React Aria still
+flips its own internal selected state regardless, so the control visibly
+toggles with no error, no warning, and no signal to the consumer that
+anything is wrong.
+
+**What the code itself reveals about the root cause:** every affected
+component shares one structural trait the three working components don't —
+their interactive root is a React Aria Components primitive that renders as
+a `<label>` wrapping a hidden native input (`AriaCheckbox`, `AriaRadio`,
+`AriaSwitch`), rather than a real `<button>` (confirmed for Select's
+trigger too — it's an `AriaButton`, `Select.tsx:99-102`). `aria-disabled` is
+a recognized state attribute on a widget role; it appears to be silently
+dropped as an unrecognized prop on these library-internal `<label>` roots.
+Button, the one component the spec itself calls out as built first and
+deliberately ("Button is the first component on purpose", with everything
+after it "comparatively mechanical" — `packages/specs/src/button.ts:4,8-10`),
+is also the only
+component of the seven whose own `disabled` prop documents *why* it's
+`aria-disabled` rather than native. The other four inherited the pattern
+without the reasoning attached to it in the code a consumer actually
+reads — and, it turns out, without it actually working.
+
+**Why this matters more than a typical bug:** a consumer who reads
+`Checkbox`'s `disabled?: boolean` in their editor gets zero indication this
+prop behaves differently from every other component with the same name in
+the same package. Root `CLAUDE.md` documents the defect precisely — but
+`CLAUDE.md` is a repo file, not something that ships in the npm package or
+appears in an IDE tooltip. A first-time consumer has no way to discover
+either the convention or its silent failure short of writing an integration
+test that checks the DOM directly.
+
+**Recommendation:** this is the single highest-priority item in this
+analysis, and it's already the repo's own stated next priority — fixing it
+is an accessibility correctness issue, not just a DX one. From a DX
+standpoint specifically: once fixed, backfill the same explanatory JSDoc
+Button already has onto `disabled` on Checkbox, RadioGroup, Switch, and
+ThemeToggle, so the convention is visible at the call site instead of only
+in a repo file the npm package never ships.
