@@ -978,6 +978,40 @@ ${keelCss}
     });
   });
 })();
+
+// Every h3 inside a top-level <section> gets a stable, scoped id, so the
+// "on this page" rail (next IIFE) can link and scroll to it. Scoped to the
+// section's own id rather than the heading text alone, because sibling
+// component sections reuse the same headings — every component has a
+// Playground, Matrix, API and Accessibility h3.
+(function () {
+  function slug(s) {
+    return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+  // The heading's own words only. Several h3s carry an inline .h3-hint span,
+  // and textContent would fold "Background" and "Surfaces and fills." into
+  // one string — wrong for the id and worse as link text.
+  function labelOf(h3) {
+    var out = '';
+    for (var i = 0; i < h3.childNodes.length; i++) {
+      if (h3.childNodes[i].nodeType === 3) out += h3.childNodes[i].textContent;
+    }
+    out = out.trim();
+    return out || (h3.textContent || '').trim();
+  }
+  document.querySelectorAll('main > section').forEach(function (section, n) {
+    var base = section.id || 'section-' + (n + 1);
+    section.querySelectorAll('h3').forEach(function (h3) {
+      var label = labelOf(h3);
+      h3.setAttribute('data-label', label);
+      if (h3.id) return;
+      var id = base + '-' + slug(label);
+      var candidate = id;
+      for (var k = 2; document.getElementById(candidate); k++) candidate = id + '-' + k;
+      h3.id = candidate;
+    });
+  });
+})();
 </script>
 </body>
 </html>
