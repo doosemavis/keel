@@ -37,12 +37,24 @@ const HOST = process.env.HOST ?? 'localhost';
 /** How many ports to try past PORT before giving up. */
 const PORT_ATTEMPTS = 10;
 
-/** Source trees whose contents affect the generated page. */
+/**
+ * Source trees whose contents affect the generated page.
+ *
+ * `recursive: false` on the tokens package ROOT is the important entry and was
+ * missing. Only `packages/tokens/src` was watched, which meant the two files a
+ * re-theme actually edits — `seeds.json` and `ramps.js` — produced no rebuild
+ * and no reload. The failure mode is quietly awful: you change a hue, the page
+ * does not move, and the natural conclusion is that the change did nothing.
+ * The generators live beside the sources rather than inside them, so the watch
+ * has to as well. Non-recursive, because `dist/` and `node_modules/` are under
+ * that same root and a recursive watch there is mostly noise.
+ */
 const WATCHED = [
-  join(root, 'packages/tokens/src'),
-  join(root, 'packages/contracts/src'),
-  join(root, 'packages/react/src'),
-  here,
+  { dir: join(root, 'packages/tokens'), recursive: false },
+  { dir: join(root, 'packages/tokens/src'), recursive: true },
+  { dir: join(root, 'packages/contracts/src'), recursive: true },
+  { dir: join(root, 'packages/react/src'), recursive: true },
+  { dir: here, recursive: true },
 ];
 
 /** Files that are build output, not input — watching them would loop forever. */
@@ -192,12 +204,13 @@ function onListening(port) {
     console.log(`  (${PORT} was busy — using ${port}. Set PORT to choose your own.)\n`);
   }
   console.log('  watching:');
-  for (const dir of WATCHED) console.log(`    ${dir.replace(root + '/', '')}`);
+  for (const { dir, recursive } of WATCHED)
+    console.log(`    ${dir.replace(root + '/', '')}${recursive ? '/**' : '/*'}`);
   console.log();
 
-  for (const dir of WATCHED) {
+  for (const { dir, recursive } of WATCHED) {
     try {
-      watch(dir, { recursive: true }, (_evt, file) => onChange(file));
+      watch(dir, { recursive }, (_evt, file) => onChange(file));
     } catch (e) {
       console.warn(`  (could not watch ${dir}: ${e.message})`);
     }
