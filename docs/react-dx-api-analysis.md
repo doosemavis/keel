@@ -5,6 +5,36 @@ the perspective of a developer discovering Keel for the first time via npm.
 See `docs/superpowers/specs/2026-09-04-react-dx-api-analysis-design.md` for
 scope and method.
 
+## Executive summary
+
+Ranked by how much friction each costs a first-time consumer, not by how
+easy the fix is:
+
+1. **The `aria-disabled` convention silently doesn't work on 4 of 7
+   interactive components** (Checkbox, RadioGroup, Switch, ThemeToggle) —
+   and nothing a consumer would ever see says so. This is the repo's own
+   already-stated top priority, and correctly so: it's a real accessibility
+   defect, not just a DX one. See Cross-component conventions.
+2. **The excellent root `README.md` never ships with the npm package.**
+   Neither `@keel/react` nor `@keel/tokens` has a package-level README, so
+   the documentation that already answers most of a first-time consumer's
+   questions — install, theming, the accessibility conventions — is
+   invisible from npm and only reachable by clicking through to GitHub.
+   This one gap is upstream of several other findings below. See Entry
+   points.
+3. **`Select` and `RadioGroup` flatten consumer content into a data array**
+   (`options: SelectOption[]`), removing composition flexibility that the
+   underlying React Aria Components primitives they wrap already support
+   for free. See Composition style.
+4. **No documented path to override a single brand color.** The README's
+   re-theming story is about editing the token package's source and
+   rebuilding — not something a consumer of the published package can do
+   from their own app, even though the underlying CSS custom properties
+   should support it. See Theming API.
+5. **Workbench has no link back to installation instructions** for a
+   consumer who discovers it before the README. Minor, and a one-line fix.
+   See Discoverability.
+
 ## The spec contract
 
 `@keel/specs` (re-exported as `@keel/react/specs`) is the single
@@ -355,3 +385,47 @@ link back to "here's how to install this." A single "Install" link in the
 `appbar-nav` (`apps/workbench/build.js:589-593`) pointing at the README's
 install section would close this without asking Workbench to become
 something it isn't.
+
+## Appendix: component-specific outliers
+
+- **`TextField` uses a different (arguably more robust) technique for the
+  same disabled/readonly problem.** Instead of relying solely on the
+  `aria-disabled` spread + `onChange`-guard pattern every other component
+  uses, `TextField` passes `isReadOnly={readOnly || disabled}` directly to
+  `AriaTextField` (`TextField.tsx:76`) — using React Aria's own read-only
+  semantics rather than working around `isDisabled`. This works because
+  `TextField`'s primitive renders a real `<input>`, where `isReadOnly` is a
+  meaningful native concept; it isn't necessarily portable to the
+  `<label>`-rooted toggle components, but it's worth knowing this
+  alternative approach exists in the codebase already when the
+  aria-disabled defect gets fixed — it may generalize better than patching
+  the existing pattern for some of the four affected components.
+
+## Checked, and already good
+
+Recorded explicitly so a future implementation plan doesn't re-spend time
+verifying these:
+
+- **The `@keel/specs` subpath-import design** (not a static property on
+  each component) is a deliberate, measured bundle-size tradeoff, and the
+  reasoning is recorded in code (`packages/react/src/specs.ts:1-35`). See
+  The spec contract.
+- **No boolean-prop-proliferation anti-pattern exists anywhere in the
+  twelve components.** Multiple booleans on `TextField` and `Select` are
+  independent flags, not interacting modes. See Composition style.
+- **Zero TypeScript drift risk between `@keel/specs` and `@keel/react`.**
+  All 21 variation-axis types across all 12 components are derived from
+  the spec via indexed-access types, never hand-declared independently.
+  See TypeScript ergonomics.
+- **The two-package install (`@keel/react` + `@keel/tokens`) is the
+  correct tradeoff**, not a DX defect — it's what makes the future
+  `@keel/angular` package possible without a second, drifting copy of the
+  token layer. See Entry points.
+- **`Badge`, `Alert`, `Spinner`, and `Avatar` have no composition gap** —
+  they're simple, single-purpose components where a flat prop API is
+  already the right fit. See Composition style.
+- **The `aria-disabled`-over-native convention itself is sound and
+  industry-consistent** — Radix UI Primitives take the same position. The
+  finding in this analysis is entirely about the four-component
+  implementation gap and documentation gap, not the convention. See
+  Cross-component conventions.
