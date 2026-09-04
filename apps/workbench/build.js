@@ -417,7 +417,7 @@ body {
 
 .wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr) 200px; gap: 40px; padding: 40px clamp(24px, 4vw, 56px) 96px; }
 @media (max-width: 1200px) { .wrap { grid-template-columns: 216px minmax(0, 1fr); } .rail-right { display: none; } }
-@media (max-width: 900px) { .wrap { grid-template-columns: 1fr; gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
 
 /* ---- application bar ----
    A real top-level nav: brand, section links, theme control pinned right. It
@@ -452,14 +452,13 @@ body {
 .stat.ok b { color: var(--wb-pass); }
 
 /* ---- rail ---- */
-.rail { position: sticky; top: 24px; align-self: start; font-size: 13.5px; }
+.rail { position: sticky; top: 83px; align-self: start; font-size: 13.5px; }
 .rail nav { display: flex; flex-direction: column; gap: 1px; }
 .rail a { color: var(--wb-muted); text-decoration: none; padding: 5px 10px; border-radius: 5px; border-left: 2px solid transparent; }
 .rail a:hover { color: var(--wb-accent); background: var(--wb-accent-soft); border-left-color: var(--wb-accent); }
 .rail a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .rail .rail-head { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--wb-muted); padding: 14px 10px 4px; font-weight: 600; }
 .rail-right { font-size: 12.5px; }
-.rail-right .rail-head { padding-top: 0; }
 .rail-right a.active { color: var(--wb-accent); border-left-color: var(--wb-accent); font-weight: 600; }
 
 /* ---- sections ---- */
