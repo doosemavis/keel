@@ -103,7 +103,7 @@ The ramps are named for the job they do — `accent`, `success`, `warning`, `dan
 | `neutral-dark` | 155 | 0.020 | The dark theme's neutral. Tinted toward success's hue family instead, so the two themes lean toward different signature colours. |
 | `accent` | 312 | 0.185 | The accent, and the signature. A deep magenta-violet carrying the largest chroma budget in the palette. |
 | `success` | 155 | 0.150 | Success. A saturated jewel-tone jade rather than the muted sage most systems ship for status-green — professional, not corporate-safe. |
-| `warning` | 50 | 0.140 | Warning. Deep amber-gold, placed for hue separation from both accent and success. |
+| `warning` | 55 | 0.120 | Warning. Deep amber-gold, placed for hue separation from both accent and success. |
 | `danger` | 20 | 0.180 | Danger. Deep crimson, placed for hue separation from the accent. |
 
 Three of those numbers are load-bearing in ways worth stating.
@@ -125,11 +125,11 @@ neutral-light h310  C≤0.020  fully in gamut
 neutral-dark h155  C≤0.020  fully in gamut
 accent  h312  C≤0.185  4/11 steps gamut-mapped, chroma peaks at 500
 success h155  C≤0.150  5/11 steps gamut-mapped, chroma peaks at 500
-warning h 50  C≤0.140  8/11 steps gamut-mapped, chroma peaks at 500
+warning h 55  C≤0.120  6/11 steps gamut-mapped, chroma peaks at 500
 danger  h 20  C≤0.180  5/11 steps gamut-mapped, chroma peaks at 500
 ```
 
-That line is the point of the exercise. `warning` gives up chroma at 8 of its 11 steps — an amber at hue 50 cannot hold its full request in sRGB anywhere below step 500, and delivers 84–94% of it through the dark end — and every shortfall is recorded on the token that carries it. Without the report, the only symptom is a palette that "looks slightly wrong" months later with nobody able to say why. The fix is never to bend the shared lightness curve for one ramp: that curve is what makes semantic roles swappable between hues, and it holds for all six ramps or for none.
+That line is the point of the exercise. `warning` is the ramp sRGB likes least: an amber cannot hold much chroma near white or near black, so its two palest tints and four darkest shades are gamut-mapped, and every shortfall is recorded on the token that carries it. It was seeded at hue 50 and chroma 0.140, which clipped 8 of 11 steps and delivered 91% of the requested chroma on average; the report made that visible, and moving to 55 / 0.120 brought it to 6 of 11 at 97% — with steps 200 through 600, the ones that actually appear as fills, now delivered in full. The reasoning is in `seeds.json` under `warning.$comment`. Without the report, the only symptom would have been a palette that "looks slightly wrong" months later with nobody able to say why. What never changes is the shared lightness curve: it is what makes semantic roles swappable between hues, and it holds for all six ramps or for none.
 
 Tokens are then authored in [DTCG](https://www.designtokens.org/) format and compiled with Style Dictionary in two passes:
 
