@@ -38,7 +38,7 @@ framework — Workbench is a self-contained generated HTML file by design.
 
 **Interfaces:** none — pure CSS, no HTML/JS interface change in this task.
 
-- [ ] **Step 1: Update the `.wrap` grid**
+- [x] **Step 1: Update the `.wrap` grid**
 
 In `apps/workbench/build.js`, find:
 ```css
@@ -53,7 +53,7 @@ true viewport edge instead of the edge of a centered column. The third
 `200px` column is for Task 3's right rail — added here so Task 1 and
 Task 3 don't both touch this exact line.)
 
-- [ ] **Step 2: Update the 900px breakpoint, add a 1200px one**
+- [x] **Step 2: Update the 900px breakpoint, add a 1200px one**
 
 Find:
 ```css
@@ -65,7 +65,7 @@ Replace with:
 @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
 ```
 
-- [ ] **Step 3: Align the app bar to the same edge**
+- [x] **Step 3: Align the app bar to the same edge**
 
 Find:
 ```css
@@ -79,7 +79,7 @@ Replace with:
 lines up with the rail and content below it instead of being centered
 independently.)
 
-- [ ] **Step 4: Rebuild and check visually**
+- [x] **Step 4: Rebuild and check visually**
 
 ```bash
 cd apps/workbench && node build.js
@@ -90,7 +90,7 @@ centered with large margins on both sides), and the page content extends
 much closer to the right edge too. The third grid column will look like
 unused empty space at this point — that's expected, Task 3 fills it.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -111,14 +111,14 @@ git commit -m "feat(workbench): edge-pin the shell and drop the centered max-wid
   (`<section-id>-<slugified-heading-text>`) if it doesn't already have
   one. Task 3 depends on these ids existing before it queries for them.
 
-- [ ] **Step 1: Locate the script's closing IIFE**
+- [x] **Step 1: Locate the script's closing IIFE**
 
 Read `apps/workbench/build.js` from around line 950 to the `</script>`
 tag (the exact line numbers may have shifted slightly from earlier edits
 this session — search for the last `})();` before `</script>` to find the
 insertion point).
 
-- [ ] **Step 2: Add the id-assignment IIFE**
+- [x] **Step 2: Add the id-assignment IIFE**
 
 Insert this new IIFE immediately before the closing `</script>` tag:
 
@@ -144,7 +144,7 @@ Insert this new IIFE immediately before the closing `</script>` tag:
 })();
 ```
 
-- [ ] **Step 3: Verify in the browser**
+- [x] **Step 3: Verify in the browser**
 
 ```bash
 cd apps/workbench && node build.js && open dist/index.html
@@ -157,7 +157,7 @@ Expected: a non-empty string like `semantic-<something>` or
 `c-button-playground` (exact slug depends on that section's actual first
 h3 text) — not empty, not `undefined`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -178,7 +178,7 @@ git commit -m "feat(workbench): assign stable ids to section subheadings"
   the active top-level section changes, and highlights whichever
   subheading is currently nearest the top of the viewport.
 
-- [ ] **Step 1: Add the CSS**
+- [x] **Step 1: Add the CSS**
 
 Add immediately after the existing `.rail .rail-head { ... }` rule
 (search for that exact rule to anchor the insertion, since earlier tasks
@@ -194,7 +194,7 @@ in this plan shift subsequent line numbers):
 .rail-right a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 ```
 
-- [ ] **Step 2: Add the HTML**
+- [x] **Step 2: Add the HTML**
 
 Find (this is the `</main>` / `.wrap` closing pair):
 ```html
@@ -212,7 +212,7 @@ Replace with:
 </div>
 ```
 
-- [ ] **Step 3: Add the scroll-spy script**
+- [x] **Step 3: Add the scroll-spy script**
 
 Insert this new IIFE right after the id-assignment IIFE from Task 2 (so it
 can rely on every `h3` already having an id):
@@ -278,7 +278,7 @@ can rely on every `h3` already having an id):
 })();
 ```
 
-- [ ] **Step 4: Rebuild and verify manually**
+- [x] **Step 4: Rebuild and verify manually**
 
 ```bash
 cd apps/workbench && node build.js && open dist/index.html
@@ -295,7 +295,7 @@ Verify:
 5. Resize the browser below 1200px width — the right rail disappears
    (Task 1's breakpoint) without any layout shift/overlap.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -309,7 +309,7 @@ git commit -m "feat(workbench): add scroll-spy 'on this page' right rail"
 
 **Files:** none modified — verification only.
 
-- [ ] **Step 1: Full workspace build**
+- [x] **Step 1: Full workspace build**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -320,7 +320,7 @@ gate (28/28 pairs) — this plan makes no color changes, so that gate should
 be unaffected, but a full rebuild confirms no CSS syntax errors were
 introduced.
 
-- [ ] **Step 2: Responsive check across breakpoints**
+- [x] **Step 2: Responsive check across breakpoints**
 
 ```bash
 open apps/workbench/dist/index.html
@@ -329,7 +329,7 @@ Manually resize the browser window through ~1400px, ~1200px, ~900px, and
 ~600px widths. Confirm no horizontal scrollbar appears at any width, and
 no column visibly overlaps another during the transition.
 
-- [ ] **Step 3: Commit any fixes found in Step 2**
+- [x] **Step 3: Commit any fixes found in Step 2**
 
 ```bash
 git add apps/workbench/build.js

@@ -52,7 +52,7 @@ Dictionary), `packages/react` (React 19, TypeScript).
 - Produces: six primitive ramp names (`neutral-light`, `neutral-dark`,
   `accent`, `success`, `warning`, `danger`) that Task 2 references by name.
 
-- [ ] **Step 1: Replace the file**
+- [x] **Step 1: Replace the file**
 
 Replace the full contents of `packages/tokens/seeds.json` with:
 
@@ -101,7 +101,7 @@ Replace the full contents of `packages/tokens/seeds.json` with:
 }
 ```
 
-- [ ] **Step 2: Regenerate the primitive ramps**
+- [x] **Step 2: Regenerate the primitive ramps**
 
 Run:
 ```bash
@@ -116,7 +116,7 @@ proceeding), followed by one gamut line per ramp (e.g.
 gamut-mapped steps; if one does, note it — this mirrors how the existing
 `gold` ramp's gamut shortfall was discovered and is not itself a failure.
 
-- [ ] **Step 3: Verify the generated file has the right keys**
+- [x] **Step 3: Verify the generated file has the right keys**
 
 Run:
 ```bash
@@ -124,7 +124,7 @@ node -e "const c = require('./src/primitive/color.json'); console.log(Object.key
 ```
 Expected: `[ 'neutral-light', 'neutral-dark', 'accent', 'success', 'warning', 'danger' ]`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -147,7 +147,7 @@ git commit -m "feat(tokens): replace lotus palette with six standardized ramps"
   renamed, only which primitive ramp each resolves to changes. Components
   in `packages/react` reference these role names and require no changes.
 
-- [ ] **Step 1: Replace `color.json` (light theme)**
+- [x] **Step 1: Replace `color.json` (light theme)**
 
 Replace the full contents of `packages/tokens/src/semantic/color.json`
 with (mechanical rename: `pond`→`neutral-light`, `lotus`→`accent`,
@@ -209,7 +209,7 @@ unchanged):
 }
 ```
 
-- [ ] **Step 2: Replace `color.dark.json` (dark theme overrides)**
+- [x] **Step 2: Replace `color.dark.json` (dark theme overrides)**
 
 Replace the full contents of `packages/tokens/src/semantic/color.dark.json`
 with (same mechanical rename, `pond`→`neutral-dark` for this file
@@ -269,7 +269,7 @@ specifically, since dark theme uses the green-tinted neutral ramp):
 }
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add packages/tokens/src/semantic/color.json packages/tokens/src/semantic/color.dark.json
@@ -290,14 +290,14 @@ git commit -m "feat(tokens): repoint semantic color roles at the new ramp names"
 - Consumes: Tasks 1–2's output.
 - Produces: a passing `npm run build --workspace @keel/tokens`.
 
-- [ ] **Step 1: Run the token build**
+- [x] **Step 1: Run the token build**
 
 ```bash
 cd /Users/moosedavis/dev/keel
 npm run build --workspace @keel/tokens
 ```
 
-- [ ] **Step 2: Read the contrast report**
+- [x] **Step 2: Read the contrast report**
 
 The build runs `contrast.js` as part of `build`. If it exits non-zero, it
 prints the failing pair(s) with their measured ratio and required minimum.
@@ -313,12 +313,12 @@ For each failure:
   them to fix one palette's failure would silently move every other ramp's
   steps too.
 
-- [ ] **Step 3: Confirm all 56 pairs pass**
+- [x] **Step 3: Confirm all 56 pairs pass**
 
 Expected final output includes a line confirming all pairs pass (matching
 the format already used for the previous lotus palette's 56/56 result).
 
-- [ ] **Step 4: Rebuild the full workspace**
+- [x] **Step 4: Rebuild the full workspace**
 
 ```bash
 npm run build
@@ -329,7 +329,7 @@ Expected: `@keel/tokens`, `@keel/specs`, `@keel/react`, and
 own chrome (`apps/workbench/chrome.js`), which derives from the same
 generated ramps and must independently pass its own 28-pair gate.
 
-- [ ] **Step 5: Commit any seed adjustments from Step 2**
+- [x] **Step 5: Commit any seed adjustments from Step 2**
 
 ```bash
 git add packages/tokens/seeds.json packages/tokens/src/primitive/color.json
@@ -350,7 +350,7 @@ git commit -m "fix(tokens): calibrate chroma to clear the contrast gate"
 - Consumes: nothing new.
 - Produces: no code interface — documentation only.
 
-- [ ] **Step 1: Replace the palette narrative**
+- [x] **Step 1: Replace the palette narrative**
 
 Read the current `README.md` "Design tokens" section (`### The palette is
 five numbers` through the end of `#### Why generate rather than hand-pick`,
@@ -363,13 +363,13 @@ still entirely accurate and should be kept, just without the flower
 framing) and update the seed table to the new six ramps with their hue/
 chroma/role values from Task 1.
 
-- [ ] **Step 2: Update the gamut report example**
+- [x] **Step 2: Update the gamut report example**
 
 The README shows an example gamut report output block
 (`README.md:122-128`). Replace it with the actual output captured from
 running `node ramps.js` in Task 1, Step 2.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add README.md
@@ -388,7 +388,7 @@ git commit -m "docs: update README palette section for the new color system"
   rendering an `aria-hidden="true"` decorative SVG spiral. Used by Task 6
   (`Avatar`) and Task 7 (`Button`).
 
-- [ ] **Step 1: Write the component**
+- [x] **Step 1: Write the component**
 
 Create `packages/react/src/swirl.tsx`:
 
@@ -419,14 +419,14 @@ export function SwirlGlyph({ className }: { className?: string }) {
 }
 ```
 
-- [ ] **Step 2: Verify it compiles**
+- [x] **Step 2: Verify it compiles**
 
 ```bash
 cd packages/react && npx tsc --noEmit -p tsconfig.json
 ```
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add packages/react/src/swirl.tsx
@@ -447,7 +447,7 @@ git commit -m "feat(react): add the swirl blank-state glyph"
 - Produces: `AvatarProps.name` becomes optional; when absent (and no
   `src`), `Avatar` renders `SwirlGlyph` instead of initials.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/react/src/Avatar/Avatar.test.tsx`:
 
@@ -470,7 +470,7 @@ describe('Avatar', () => {
 });
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 ```bash
 cd packages/react && npx vitest run src/Avatar/Avatar.test.tsx
@@ -479,7 +479,7 @@ Expected: FAIL — `name` is currently required, so
 `<Avatar unknownLabel="Unknown user" />` is a TypeScript error, and
 `.keel-Swirl` doesn't exist yet.
 
-- [ ] **Step 3: Update the spec**
+- [x] **Step 3: Update the spec**
 
 In `packages/specs/src/avatar.ts`, find the `name` slot definition and
 change its `required` field. Read the current file first to get the exact
@@ -487,7 +487,7 @@ surrounding structure, then set the `name` slot's `required: false` and
 update its `description` to state that omitting it renders the blank-state
 glyph.
 
-- [ ] **Step 4: Update `Avatar.tsx`**
+- [x] **Step 4: Update `Avatar.tsx`**
 
 Modify `packages/react/src/Avatar/Avatar.tsx`:
 
@@ -576,7 +576,7 @@ Add the import at the top of the file:
 import { SwirlGlyph } from '../swirl.js';
 ```
 
-- [ ] **Step 5: Add the CSS rule**
+- [x] **Step 5: Add the CSS rule**
 
 In `packages/react/src/Avatar/avatar.css`, add (referencing the semantic
 `fg.subtle` role for the glyph color, per the token-discipline rule — no
@@ -589,14 +589,14 @@ raw color):
 }
 ```
 
-- [ ] **Step 6: Run the test to verify it passes**
+- [x] **Step 6: Run the test to verify it passes**
 
 ```bash
 npx vitest run src/Avatar/Avatar.test.tsx
 ```
 Expected: PASS, 2 tests.
 
-- [ ] **Step 7: Run the full spec-conformance suite**
+- [x] **Step 7: Run the full spec-conformance suite**
 
 ```bash
 npx vitest run src/spec-conformance.test.tsx
@@ -604,7 +604,7 @@ npx vitest run src/spec-conformance.test.tsx
 Expected: PASS — this confirms the `avatar.ts` spec change (Step 3) didn't
 break the generated story matrix.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -629,7 +629,7 @@ git commit -m "feat(react): Avatar renders the swirl glyph when no name or image
   `children`-as-accessible-name contract is unchanged — no new prop is
   needed for the accessible name.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Read `packages/react/src/Button/Button.test.tsx` first to match its exact
 import/setup style, then add:
@@ -650,14 +650,14 @@ it('does not render the swirl glyph when a round button has an icon', () => {
 });
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 ```bash
 cd packages/react && npx vitest run src/Button/Button.test.tsx
 ```
 Expected: FAIL — `shape` is not a recognized prop yet.
 
-- [ ] **Step 3: Update the spec**
+- [x] **Step 3: Update the spec**
 
 In `packages/specs/src/button.ts`, add a new prop to the `props` object
 (alongside `variant` and `size`):
@@ -670,7 +670,7 @@ In `packages/specs/src/button.ts`, add a new prop to the `props` object
     },
 ```
 
-- [ ] **Step 4: Update `Button.tsx`**
+- [x] **Step 4: Update `Button.tsx`**
 
 Add the type export near the other type exports:
 ```tsx
@@ -723,7 +723,7 @@ Add the import at the top of the file:
 import { SwirlGlyph } from '../swirl.js';
 ```
 
-- [ ] **Step 5: Add the CSS**
+- [x] **Step 5: Add the CSS**
 
 In `packages/react/src/Button/button.css`, add:
 ```css
@@ -748,14 +748,14 @@ while removing it visually — the standard "visually hidden" technique,
 not `display: none`, which would remove it from the accessible name
 computation entirely.)
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [x] **Step 6: Run the tests to verify they pass**
 
 ```bash
 npx vitest run src/Button/Button.test.tsx
 ```
 Expected: PASS, all tests including the two new ones.
 
-- [ ] **Step 7: Run the full spec-conformance suite**
+- [x] **Step 7: Run the full spec-conformance suite**
 
 ```bash
 npx vitest run src/spec-conformance.test.tsx
@@ -763,7 +763,7 @@ npx vitest run src/spec-conformance.test.tsx
 Expected: PASS — confirms the new `shape` prop's story-matrix generation
 works.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -779,7 +779,7 @@ git commit -m "feat(react): add round icon-only Button shape with swirl blank st
 
 **Interfaces:** none — this task validates Tasks 1–7 together.
 
-- [ ] **Step 1: Full build**
+- [x] **Step 1: Full build**
 
 ```bash
 cd /Users/moosedavis/dev/keel
@@ -789,7 +789,7 @@ Expected: all five workspace packages build successfully, including the
 Workbench rebuild (which picks up the new palette automatically since it
 inlines `packages/react/dist/styles.css` verbatim).
 
-- [ ] **Step 2: Full test suite**
+- [x] **Step 2: Full test suite**
 
 ```bash
 npm test
@@ -798,14 +798,14 @@ Expected: all tests pass (the 4 pre-existing `it.fails` markers for the
 known `aria-disabled` defect are unrelated to this plan and still fail as
 expected — do not treat them as a regression).
 
-- [ ] **Step 3: Typecheck**
+- [x] **Step 3: Typecheck**
 
 ```bash
 npm run typecheck
 ```
 Expected: no errors.
 
-- [ ] **Step 4: Packaging lint**
+- [x] **Step 4: Packaging lint**
 
 ```bash
 npm run lint:packaging
@@ -814,7 +814,7 @@ Expected: passes — confirms the new `swirl.tsx` internal module doesn't
 leak into the public type surface incorrectly (it's imported by `Avatar`
 and `Button` but not re-exported from `index.ts`).
 
-- [ ] **Step 5: Manual visual check**
+- [x] **Step 5: Manual visual check**
 
 ```bash
 open apps/workbench/dist/index.html
@@ -826,7 +826,7 @@ faint green tint, and a blank `<Avatar unknownLabel="Unknown" />` (add one
 temporarily to a Workbench preview if none exists, or verify via the test
 suite's coverage instead) shows the spiral glyph.
 
-- [ ] **Step 6: Final commit if any fixes were needed**
+- [x] **Step 6: Final commit if any fixes were needed**
 
 ```bash
 git add -A
