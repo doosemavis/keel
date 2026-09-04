@@ -458,6 +458,9 @@ body {
 .rail a:hover { color: var(--wb-accent); background: var(--wb-accent-soft); border-left-color: var(--wb-accent); }
 .rail a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .rail .rail-head { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--wb-muted); padding: 14px 10px 4px; font-weight: 600; }
+.rail-right { font-size: 12.5px; }
+.rail-right .rail-head { padding-top: 0; }
+.rail-right a.active { color: var(--wb-accent); border-left-color: var(--wb-accent); font-weight: 600; }
 
 /* ---- sections ---- */
 section { margin-bottom: 52px; scroll-margin-top: 20px; }
@@ -711,6 +714,11 @@ ${keelCss}
 
     ${componentSections}
   </main>
+
+  <aside class="rail rail-right">
+    <div class="rail-head">On this page</div>
+    <nav aria-label="On this page"></nav>
+  </aside>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1011,6 +1019,81 @@ ${keelCss}
       h3.id = candidate;
     });
   });
+})();
+
+// "On this page" right rail. Workbench is one long page rather than per-page
+// routing, so instead of a fixed table of contents this tracks which
+// top-level <section> the reader is in and lists THAT section's own h3s.
+// Generic over any section — Foundations and Verification have h3s too, not
+// only components. Section and heading are both chosen the same way, by
+// scroll position ("the last one whose top has passed the reading line"),
+// rather than with an IntersectionObserver: the observer only reports the
+// elements whose visibility changed, so "most visible among the changed" is
+// not the same question as "which section am I in", and it answered wrongly
+// at every boundary between a short section and a long one.
+(function () {
+  var main = document.querySelector('main');
+  var rail = document.querySelector('.rail-right');
+  var nav = rail ? rail.querySelector('nav') : null;
+  if (!main || !nav) return;
+  var sections = Array.prototype.slice.call(main.querySelectorAll(':scope > section'));
+  if (!sections.length) return;
+
+  // The sticky app bar is 58px; the rest is breathing room so a heading
+  // counts as "current" once it is comfortably below the bar, not the
+  // instant its top edge touches it.
+  var READING_LINE = 96;
+  var active = null;
+
+  function headsOf(section) {
+    return Array.prototype.slice.call(section.querySelectorAll('h3')).filter(function (h) {
+      return h.offsetParent !== null; // skip headings inside hidden panels
+    });
+  }
+  function lastPassed(list) {
+    var current = list[0];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].getBoundingClientRect().top <= READING_LINE) current = list[i];
+    }
+    return current;
+  }
+
+  function render(section) {
+    var heads = headsOf(section);
+    nav.textContent = '';
+    heads.forEach(function (h) {
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.setAttribute('data-target', h.id);
+      a.textContent = h.getAttribute('data-label') || h.textContent;
+      nav.appendChild(a);
+    });
+    rail.hidden = heads.length === 0;
+  }
+
+  function update() {
+    var section = lastPassed(sections);
+    if (section !== active) { active = section; render(active); }
+    var heads = headsOf(active);
+    if (!heads.length) return;
+    var current = lastPassed(heads);
+    nav.querySelectorAll('a').forEach(function (a) {
+      var on = a.getAttribute('data-target') === current.id;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  var queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; update(); });
+  }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  window.addEventListener('hashchange', schedule);
+  update();
 })();
 </script>
 </body>
