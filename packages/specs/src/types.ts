@@ -25,6 +25,21 @@ export interface SpecProp<T extends string = string> {
   readonly values: readonly T[];
   /** The value used when the consumer passes nothing. Must be one of `values`. */
   readonly defaultValue: T;
+  /**
+   * How this prop reaches the DOM, when it is not the default
+   * `data-<kebab-prop>`.
+   *
+   * `'native'` means the prop maps onto a real HTML attribute of the same name
+   * and must NOT be mirrored as a data attribute — `<input type="text">` needs
+   * no `data-type` beside it, and having both creates two sources of truth for
+   * one fact, only one of which the browser reads.
+   *
+   * A literal string names a deliberate rename. It exists so that a rename is
+   * a recorded decision rather than a discrepancy someone finds later: the
+   * shared parity suite reads this field, so an implementation and its spec
+   * cannot disagree about where a value lands.
+   */
+  readonly attribute?: 'native' | (string & {});
   /** One line, used verbatim as the prop description in generated docs. */
   readonly description: string;
 }
@@ -76,8 +91,19 @@ export type SpecState = 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 
 
 /** Accessibility obligations, asserted against the rendered DOM in both frameworks. */
 export interface SpecA11y {
-  /** The implicit or explicit ARIA role the root element must expose. */
-  readonly role: string;
+  /**
+   * The implicit or explicit ARIA role the root element must expose, or `null`
+   * for a component that deliberately has none.
+   *
+   * `null` is a real answer and not an omission. A Badge is static text: giving
+   * it `role="status"` would make every badge on the page a live region, so a
+   * screen reader announces a table of forty of them on load. A non-interactive
+   * Card is a plain container: `role="group"` announces "group" around every
+   * card in a list, which is noise. Both of those roles were declared here and
+   * contradicted by these specs' own `notes` — the implementations were right
+   * and the field was wrong, which the shared parity suite caught.
+   */
+  readonly role: string | null;
   /** Keys that must activate the component, as `KeyboardEvent.key` values. */
   readonly activationKeys?: readonly string[];
   /**

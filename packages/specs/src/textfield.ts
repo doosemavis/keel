@@ -23,6 +23,7 @@ export const textFieldSpec = {
       description: 'Control height, matching Button so the two line up when placed side by side.',
     },
     type: {
+      attribute: 'native',
       values: ['text', 'email', 'password', 'tel', 'url', 'search'],
       defaultValue: 'text',
       description: 'Native input type. Drives the mobile keyboard and browser autofill, so set it accurately.',

@@ -5,7 +5,8 @@
   "description": "Framework-agnostic DOM behaviour assertions shared by every Keel framework package. Test infrastructure \u2014 never published.",
   "type": "module",
   "exports": {
-    "./button": "./src/button.behaviors.ts"
+    "./button": "./src/button.behaviors.ts",
+    "./shared": "./src/shared.behaviors.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

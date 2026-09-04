@@ -18,6 +18,7 @@ export const themeToggleSpec = {
 
   props: {
     theme: {
+      attribute: 'data-theme-value',
       values: ['light', 'dark'],
       defaultValue: 'light',
       description: 'The active theme. Controlled — pair it with onChange, or leave it off and use defaultTheme.',

@@ -39,7 +39,10 @@ export const cardSpec = {
   states: ['default', 'hover', 'focus'],
 
   a11y: {
-    role: 'group',
+    // Deliberately none, matching the first note below. `role="group"` announces
+    // "group" around every card in a list, which is noise. An INTERACTIVE Card is
+    // a button or a link and takes that role from the element it renders.
+    role: null,
     disabledStrategy: 'aria-disabled',
     keyboardOperable: false,
     notes: [
