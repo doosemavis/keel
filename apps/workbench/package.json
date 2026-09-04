@@ -10,7 +10,7 @@
     "dev": "node serve.js"
   },
   "devDependencies": {
-    "@keel/contracts": "*",
+    "@keel/specs": "*",
     "@keel/react": "*",
     "@keel/tokens": "*"
   },

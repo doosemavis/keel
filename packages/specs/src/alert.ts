@@ -1,6 +1,6 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
-export const alertContract = {
+export const alertSpec = {
   id: 'alert',
   name: 'Alert',
   status: 'experimental',
@@ -60,4 +60,4 @@ export const alertContract = {
   },
 
   related: ['badge'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

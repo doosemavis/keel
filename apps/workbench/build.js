@@ -7,7 +7,7 @@
  * own contract.
  *
  * Everything on the page is read from BUILT artifacts — packages/tokens/dist,
- * packages/react/dist and packages/contracts/dist — never re-typed here. A
+ * packages/react/dist and packages/specs/dist — never re-typed here. A
  * hand-maintained gallery is exactly the drift this project exists to prevent,
  * so `npm run build` regenerates the page and any change to a token shows up
  * without anyone remembering to update the docs.
@@ -27,7 +27,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { luminance, report } from '../../packages/tokens/contrast.lib.js';
-import { contracts, propMatrix } from '../../packages/contracts/dist/index.js';
+import { specs, propMatrix } from '../../packages/specs/dist/index.js';
 import { RENDERERS } from './renderers.js';
 import { chromeCss, verifyChrome } from './chrome.js';
 
@@ -182,8 +182,8 @@ const enforced = contrastRows.filter((r) => !r.exempt);
 
 // ------------------------------------------------------- component sections
 
-/** Contracts that have a preview renderer. Everything else is skipped. */
-const COMPONENTS = contracts.filter((c) => RENDERERS[c.id]);
+/** Specs that have a preview renderer. Everything else is skipped. */
+const COMPONENTS = specs.filter((c) => RENDERERS[c.id]);
 
 const propsTable = (c) => `<table>
   <thead><tr><th>Prop</th><th>Values</th><th>Default</th><th>Description</th></tr></thead>
@@ -856,7 +856,7 @@ ${keelCss}
    * Fully generic: enum props appear only when they differ from the contract
    * default, booleans appear as bare attributes when true, and one designated
    * slot becomes children. Nothing here knows which component it is looking at,
-   * which is why adding a component to @keel/contracts is enough to give it a
+   * which is why adding a component to @keel/specs is enough to give it a
    * working snippet.
    */
   function snippetFor(id, state) {

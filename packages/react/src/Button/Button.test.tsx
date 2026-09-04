@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { buttonContract, propMatrix } from '@keel/contracts';
+import { buttonSpec, propMatrix } from '@keel/specs';
 import {
-  assertsActivatesOnContractKeys,
+  assertsActivatesOnSpecKeys,
   assertsDisabledRefusesActivation,
   assertsDisabledStaysFocusable,
   assertsLoadingIsBusy,
-  assertsRendersContractAttributes,
+  assertsRendersSpecAttributes,
   assertsRole,
   type BehaviorContext,
 } from '@keel/behaviors/button';
@@ -24,16 +24,16 @@ function ctxFor(element: HTMLElement): BehaviorContext {
   };
 }
 
-describe('Button — shared behaviour contract', () => {
-  it('exposes the contract role', () => {
+describe('Button — shared behaviour spec', () => {
+  it('exposes the role the spec declares', () => {
     render(<Button>Save</Button>);
     assertsRole(ctxFor(screen.getByRole('button')), expect as never);
   });
 
-  it('activates on every key the contract lists', async () => {
+  it('activates on every key the spec lists', async () => {
     const onPress = vi.fn();
     render(<Button onPress={onPress}>Save</Button>);
-    await assertsActivatesOnContractKeys(
+    await assertsActivatesOnSpecKeys(
       ctxFor(screen.getByRole('button')),
       expect as never,
       () => onPress.mock.calls.length,
@@ -76,26 +76,26 @@ describe('Button — shared behaviour contract', () => {
   });
 });
 
-describe('Button — contract matrix', () => {
-  // Generated from the contract, not hand-listed. A variant added to the
-  // contract without an implementation fails here automatically.
-  const combos = propMatrix(buttonContract) as Array<{ variant: string; size: string }>;
+describe('Button — spec matrix', () => {
+  // Generated from the spec, not hand-listed. A variant added to the
+  // spec without an implementation fails here automatically.
+  const combos = propMatrix(buttonSpec) as Array<{ variant: string; size: string }>;
 
   it(`covers all ${combos.length} prop combinations`, () => {
     expect(combos).toHaveLength(
-      buttonContract.props.variant.values.length * buttonContract.props.size.values.length,
+      buttonSpec.props.variant.values.length * buttonSpec.props.size.values.length,
     );
   });
 
   it.each(combos.map((c) => [`${c.variant}/${c.size}`, c] as const))(
-    'renders %s with contract attributes',
+    'renders %s with the attributes the spec declares',
     (_label, combo) => {
       const { unmount } = render(
         <Button variant={combo.variant as never} size={combo.size as never}>
           Save
         </Button>,
       );
-      assertsRendersContractAttributes(ctxFor(screen.getByRole('button')), expect as never, combo);
+      assertsRendersSpecAttributes(ctxFor(screen.getByRole('button')), expect as never, combo);
       unmount();
     },
   );
@@ -105,7 +105,7 @@ describe('Button — defaults match the contract', () => {
   it('uses the contract default variant and size when none is given', () => {
     render(<Button>Save</Button>);
     const el = screen.getByRole('button');
-    expect(el.getAttribute('data-variant')).toBe(buttonContract.props.variant.defaultValue);
-    expect(el.getAttribute('data-size')).toBe(buttonContract.props.size.defaultValue);
+    expect(el.getAttribute('data-variant')).toBe(buttonSpec.props.variant.defaultValue);
+    expect(el.getAttribute('data-size')).toBe(buttonSpec.props.size.defaultValue);
   });
 });

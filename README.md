@@ -53,10 +53,10 @@ Drift is not a discipline problem. It is a tooling problem — nothing mechanica
 
 ## How parity is enforced
 
-A component is described once, as data, in `@keel/contracts`:
+A component is described once, as data, in `@keel/specs`:
 
 ```ts
-export const buttonContract = {
+export const buttonSpec = {
   id: 'button',
   name: 'Button',
   status: 'experimental',
@@ -67,7 +67,7 @@ export const buttonContract = {
   },
   states: ['default', 'hover', 'focus', 'active', 'disabled', 'loading'],
   a11y: { role: 'button', activationKeys: ['Enter', ' '], disabledStrategy: 'aria-disabled', keyboardOperable: true },
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;
 ```
 
 Four mechanisms hang off it:
@@ -75,14 +75,14 @@ Four mechanisms hang off it:
 1. **Story and test matrices are generated from the contract**, not hand-listed. A variant added on one side and not the other fails the build.
 2. **Behavioural assertions live in `@keel/behaviors`** and are written against the rendered DOM using `@testing-library/dom` — no hooks, no signals, no framework internals. The same function body is imported by the React test today and the Angular test in Phase 3.
 3. **Both frameworks consume the same compiled CSS**, so a visual diff between them is a real implementation bug rather than a styling divergence.
-4. **`validateContract()` runs in CI** — a component cannot be marked `stable` without a recorded accessibility review date.
+4. **`validateSpec()` runs in CI** — a component cannot be marked `stable` without a recorded accessibility review date.
 
 ## Packages
 
 | Package | What it is |
 |---|---|
 | `@keel/tokens` | DTCG token source compiled to CSS custom properties + typed TS. Zero runtime dependencies. |
-| `@keel/contracts` | Machine-readable component contracts. The shared source of truth. |
+| `@keel/specs` | Machine-readable component specs. The shared source of truth. |
 | `@keel/react` | React 19 components. Behaviour from React Aria, styling from the token layer. |
 | `@keel/behaviors` | Framework-agnostic DOM assertions. Private — test infrastructure, never published. |
 | `@keel/angular` | *Phase 3.* |
@@ -191,7 +191,7 @@ Requires **Node 22 or newer** and **npm 11 or newer**.
 
 ```bash
 npm install
-npm run build          # tokens (incl. contrast gate) -> contracts -> react -> workbench
+npm run build          # tokens (incl. contrast gate) -> specs -> react -> workbench
 npm test
 npm run typecheck
 npm run lint:packaging # publint + are-the-types-wrong
@@ -229,7 +229,7 @@ The workbench is a single self-contained HTML file with everything inlined, so o
 | Spinner | experimental | — | ✅ | — |
 | ThemeToggle | experimental | — | ✅ | — |
 
-Three lifecycle stages, deliberately: `experimental` → `stable` → `deprecated`. Status is load-bearing — `validateContract()` refuses to let a component be `stable` without a recorded accessibility review date.
+Three lifecycle stages, deliberately: `experimental` → `stable` → `deprecated`. Status is load-bearing — `validateSpec()` refuses to let a component be `stable` without a recorded accessibility review date.
 
 ## License
 

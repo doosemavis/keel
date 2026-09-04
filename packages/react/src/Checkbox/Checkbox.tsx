@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 import { Checkbox as AriaCheckbox } from 'react-aria-components';
-import type { checkboxContract } from '@keel/contracts';
+import type { checkboxSpec } from '@keel/specs';
 
-type Contract = typeof checkboxContract;
-export type CheckboxSize = Contract['props']['size']['values'][number];
+type Spec = typeof checkboxSpec;
+export type CheckboxSize = Spec['props']['size']['values'][number];
 
 export interface CheckboxProps {
   /** Box size. The hit target stays at least 24px square at both sizes. @default 'md' */

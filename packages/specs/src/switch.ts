@@ -1,4 +1,4 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
 /**
  * Switch and Checkbox are visually interchangeable and semantically are not.
@@ -6,7 +6,7 @@ import type { ComponentContract } from './types.js';
  * Choosing the wrong one teaches people to distrust the control, so the usage
  * guidance is the most important part of this contract.
  */
-export const switchContract = {
+export const switchSpec = {
   id: 'switch',
   name: 'Switch',
   status: 'experimental',
@@ -70,4 +70,4 @@ export const switchContract = {
   },
 
   related: ['checkbox'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

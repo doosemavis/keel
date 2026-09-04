@@ -1,4 +1,4 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
 /**
  * The theme toggle is a system-level control, not a form control.
@@ -9,7 +9,7 @@ import type { ComponentContract } from './types.js';
  * announcement is "Dark theme, on" — which says what will happen — instead of
  * the icons' meaning, which assistive technology never sees.
  */
-export const themeToggleContract = {
+export const themeToggleSpec = {
   id: 'theme-toggle',
   name: 'ThemeToggle',
   status: 'experimental',
@@ -86,4 +86,4 @@ export const themeToggleContract = {
   },
 
   related: ['switch'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

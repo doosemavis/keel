@@ -1,6 +1,6 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
-export const selectContract = {
+export const selectSpec = {
   id: 'select',
   name: 'Select',
   status: 'experimental',
@@ -71,4 +71,4 @@ export const selectContract = {
   },
 
   related: ['radio-group', 'text-field'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

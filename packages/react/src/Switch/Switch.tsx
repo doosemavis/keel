@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 import { Switch as AriaSwitch } from 'react-aria-components';
-import type { switchContract } from '@keel/contracts';
+import type { switchSpec } from '@keel/specs';
 
-type Contract = typeof switchContract;
-export type SwitchSize = Contract['props']['size']['values'][number];
-export type SwitchLabelPosition = Contract['props']['labelPosition']['values'][number];
+type Spec = typeof switchSpec;
+export type SwitchSize = Spec['props']['size']['values'][number];
+export type SwitchLabelPosition = Spec['props']['labelPosition']['values'][number];
 
 export interface SwitchProps {
   /** Track size. The hit target stays at least 24px tall at both sizes. @default 'md' */

@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@keel/contracts": "*"
+    "@keel/specs": "*"
   },
   "devDependencies": {
     "typescript": "6.0.3"

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Switch as AriaSwitch } from 'react-aria-components';
-import type { themeToggleContract } from '@keel/contracts';
+import type { themeToggleSpec } from '@keel/specs';
 import {
   applyTheme,
   initialTheme,
@@ -10,8 +10,8 @@ import {
 } from '../theme.js';
 import { LightEmblem, DarkEmblem } from './emblems.js';
 
-type Contract = typeof themeToggleContract;
-export type ThemeToggleSize = Contract['props']['size']['values'][number];
+type Spec = typeof themeToggleSpec;
+export type ThemeToggleSize = Spec['props']['size']['values'][number];
 
 export interface ThemeToggleProps {
   /** Track size. @default 'md' */

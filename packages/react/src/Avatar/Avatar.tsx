@@ -1,10 +1,10 @@
 import { forwardRef, useState } from 'react';
 import type { Ref } from 'react';
-import type { avatarContract } from '@keel/contracts';
+import type { avatarSpec } from '@keel/specs';
 
-type Contract = typeof avatarContract;
-export type AvatarSize = Contract['props']['size']['values'][number];
-export type AvatarShape = Contract['props']['shape']['values'][number];
+type Spec = typeof avatarSpec;
+export type AvatarSize = Spec['props']['size']['values'][number];
+export type AvatarShape = Spec['props']['shape']['values'][number];
 
 export interface AvatarProps {
   /** @default 'md' */

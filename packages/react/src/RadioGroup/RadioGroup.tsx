@@ -7,11 +7,11 @@ import {
   Text,
   FieldError,
 } from 'react-aria-components';
-import type { radioGroupContract } from '@keel/contracts';
+import type { radioGroupSpec } from '@keel/specs';
 
-type Contract = typeof radioGroupContract;
-export type RadioGroupSize = Contract['props']['size']['values'][number];
-export type RadioGroupOrientation = Contract['props']['orientation']['values'][number];
+type Spec = typeof radioGroupSpec;
+export type RadioGroupSize = Spec['props']['size']['values'][number];
+export type RadioGroupOrientation = Spec['props']['orientation']['values'][number];
 
 export interface RadioOption {
   value: string;

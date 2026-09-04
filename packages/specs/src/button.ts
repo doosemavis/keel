@@ -1,4 +1,4 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
 /**
  * Button is the first component on purpose.
@@ -9,7 +9,7 @@ import type { ComponentContract } from './types.js';
  * Button genuinely right forces every token and every convention to be settled,
  * and everything after it is comparatively mechanical.
  */
-export const buttonContract = {
+export const buttonSpec = {
   id: 'button',
   name: 'Button',
   status: 'experimental',
@@ -86,4 +86,4 @@ export const buttonContract = {
   },
 
   related: ['link', 'icon-button'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

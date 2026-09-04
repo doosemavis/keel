@@ -1,7 +1,7 @@
 {
   "name": "@keel/react",
   "version": "0.1.0",
-  "description": "Keel components for React 19 — accessible behaviour from React Aria, styling from the shared Keel token layer.",
+  "description": "Keel components for React 19 \u2014 accessible behaviour from React Aria, styling from the shared Keel token layer.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -17,7 +17,11 @@
     },
     "./styles.css": "./dist/styles.css",
     "./components.css": "./dist/components.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./specs": {
+      "types": "./dist/specs.d.ts",
+      "default": "./dist/specs.js"
+    }
   },
   "publishConfig": {
     "access": "public",
@@ -36,11 +40,11 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "react-aria-components": "^1.21.0"
+    "react-aria-components": "^1.21.0",
+    "@keel/specs": "^0.1.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@keel/contracts": "*",
     "@keel/tokens": "*",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.0",

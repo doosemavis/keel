@@ -2,14 +2,14 @@ import { forwardRef, useCallback, useLayoutEffect, useRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
 import type { ButtonProps as AriaButtonProps } from 'react-aria-components';
-import type { buttonContract } from '@keel/contracts';
+import type { buttonSpec } from '@keel/specs';
 
-type Contract = typeof buttonContract;
+type Spec = typeof buttonSpec;
 
 /** Visual weight. Exactly one `primary` per view. */
-export type ButtonVariant = Contract['props']['variant']['values'][number];
+export type ButtonVariant = Spec['props']['variant']['values'][number];
 /** Control height. */
-export type ButtonSize = Contract['props']['size']['values'][number];
+export type ButtonSize = Spec['props']['size']['values'][number];
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'isDisabled' | 'isPending' | 'className' | 'style' | 'children'> {

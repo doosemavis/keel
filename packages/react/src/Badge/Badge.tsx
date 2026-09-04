@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
-import type { badgeContract } from '@keel/contracts';
+import type { badgeSpec } from '@keel/specs';
 
-type Contract = typeof badgeContract;
-export type BadgeTone = Contract['props']['tone']['values'][number];
-export type BadgeVariant = Contract['props']['variant']['values'][number];
-export type BadgeSize = Contract['props']['size']['values'][number];
+type Spec = typeof badgeSpec;
+export type BadgeTone = Spec['props']['tone']['values'][number];
+export type BadgeVariant = Spec['props']['variant']['values'][number];
+export type BadgeSize = Spec['props']['size']['values'][number];
 
 export interface BadgeProps {
   /** Semantic meaning. Never the only carrier of that meaning. @default 'neutral' */

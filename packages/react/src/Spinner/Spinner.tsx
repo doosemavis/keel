@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
-import type { spinnerContract } from '@keel/contracts';
+import type { spinnerSpec } from '@keel/specs';
 
-type Contract = typeof spinnerContract;
-export type SpinnerSize = Contract['props']['size']['values'][number];
-export type SpinnerTone = Contract['props']['tone']['values'][number];
+type Spec = typeof spinnerSpec;
+export type SpinnerSize = Spec['props']['size']['values'][number];
+export type SpinnerTone = Spec['props']['tone']['values'][number];
 
 export interface SpinnerProps {
   /** Diameter. @default 'md' */

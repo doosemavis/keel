@@ -5,7 +5,7 @@
  * hook, an Angular signal, or any framework internal. That is the entire point:
  * the same function body is imported by `@keel/react`'s Button test today and
  * by `@keel/angular`'s Button test in Phase 3, so the two implementations are
- * held to one behavioural contract rather than two that drift apart.
+ * held to one behavioural spec rather than two that drift apart.
  *
  * The rule for anything added here: assert on roles, ARIA attributes, focus and
  * keyboard behaviour. If an assertion cannot be written without knowing which
@@ -13,7 +13,7 @@
  *
  * This package is private and never published — it is test infrastructure.
  */
-import { buttonContract } from '@keel/contracts';
+import { buttonSpec } from '@keel/specs';
 
 export interface BehaviorContext {
   /** The rendered button element under test. */
@@ -34,12 +34,12 @@ export interface Assertion {
   };
 }
 
-/** The button must expose the role the contract declares. */
+/** The button must expose the role the spec declares. */
 export function assertsRole(ctx: BehaviorContext, expect: Assertion): void {
   const explicit = ctx.element.getAttribute('role');
   const isNativeButton = ctx.element.tagName.toLowerCase() === 'button';
   // Either a native <button> (implicit role) or an explicit matching role.
-  expect(explicit === buttonContract.a11y.role || isNativeButton).toBe(true);
+  expect(explicit === buttonSpec.a11y.role || isNativeButton).toBe(true);
 }
 
 /**
@@ -69,19 +69,19 @@ export async function assertsDisabledRefusesActivation(
   expect(getCallCount()).toBe(before);
 
   ctx.element.focus();
-  for (const key of buttonContract.a11y.activationKeys ?? []) {
+  for (const key of buttonSpec.a11y.activationKeys ?? []) {
     await ctx.keyDown(key);
   }
   expect(getCallCount()).toBe(before);
 }
 
-/** An enabled button must activate on every key the contract lists. */
-export async function assertsActivatesOnContractKeys(
+/** An enabled button must activate on every key the spec lists. */
+export async function assertsActivatesOnSpecKeys(
   ctx: BehaviorContext,
   expect: Assertion,
   getCallCount: () => number,
 ): Promise<void> {
-  for (const key of buttonContract.a11y.activationKeys ?? []) {
+  for (const key of buttonSpec.a11y.activationKeys ?? []) {
     const before = getCallCount();
     ctx.element.focus();
     await ctx.keyDown(key);
@@ -95,8 +95,8 @@ export function assertsLoadingIsBusy(ctx: BehaviorContext, expect: Assertion, ex
   expect(ctx.element.textContent?.includes(expectedName)).toBe(true);
 }
 
-/** Every variant and size in the contract must reach the DOM as a data attribute. */
-export function assertsRendersContractAttributes(
+/** Every variant and size in the spec must reach the DOM as a data attribute. */
+export function assertsRendersSpecAttributes(
   ctx: BehaviorContext,
   expect: Assertion,
   combo: { variant: string; size: string },
