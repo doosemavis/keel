@@ -174,3 +174,35 @@ standpoint specifically: once fixed, backfill the same explanatory JSDoc
 Button already has onto `disabled` on Checkbox, RadioGroup, Switch, and
 ThemeToggle, so the convention is visible at the call site instead of only
 in a repo file the npm package never ships.
+
+## TypeScript ergonomics
+
+**Checked for drift risk between spec-declared options and consumer-facing
+TS types — none found, across all twelve components.** Every variation-axis
+type in `@keel/react` is derived from `@keel/specs` via an indexed-access
+type, never hand-declared as an independent literal union:
+
+```ts
+export type ButtonSize = Spec['props']['size']['values'][number];
+```
+
+(`Button.tsx:12`; the identical pattern repeats for every sized/toned/
+varianted prop across every component — confirmed via
+`grep -n "= Spec\['props'\]" packages/react/src/*/*.tsx`, which returns 21
+matches across all 12 components and zero components that instead
+hand-write a literal union like `'sm' | 'md' | 'lg'` independently.) Because
+`buttonSpec` is declared `as const satisfies ComponentSpec`
+(`packages/specs/src/button.ts:89`), `values` is a readonly tuple of string
+literals, and `['values'][number]` resolves to the exact literal union —
+so a consumer typing `<Button size="` gets real autocomplete for `'sm'`,
+`'md'`, `'lg'`, sourced from the one place those values are declared. If a
+future spec adds a fourth size, every consuming component's TS type updates
+automatically with no second edit required and no possibility of the type
+and the spec disagreeing.
+
+This is a stronger guarantee than the "spec is the source of truth" claim
+in root `CLAUDE.md` might suggest to someone who hasn't read the
+implementation — it isn't just a convention engineers are expected to
+maintain by discipline, it's structurally enforced by the type system
+itself. Nothing to fix here; noted so a later plan doesn't spend time
+re-verifying it.
