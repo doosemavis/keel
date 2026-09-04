@@ -19,7 +19,7 @@ Keel sets its own faces, so load them in `<head>` — a `<link>` starts the down
 
 ```html
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
 ```
 
 `import '@keel/tokens/fonts.css'` does the same thing where editing the HTML shell is impractical. That file is **generated from the typography tokens**, so it can never request a face the system does not declare — and, more usefully, can never keep requesting one it has stopped declaring. Each family names the weight axes it needs beside itself in `typography.json`, because which axes exist is a property of the face and not of the role it plays.
@@ -30,7 +30,9 @@ Commissioned by the Braille Institute and drawn so that low-vision readers can t
 
 This is the largest single legibility decision available in a design system, and picking it is consistent with the rest: the whole project's claim is that accessibility is *enforced by measurement* rather than promised in a heading. The **Next** revision is used rather than the 2019 original because the original ships only 400 and 700 while the interface leans on 500 and 600 — synthesising those weights would undo the drawing.
 
-Bodoni Moda stays as the display face, and the two are not in tension. A hyperlegible sans does the work at 12–16px where character confusion actually costs something; the didone runs at 25px and up, where no such risk exists and the job is voice.
+The display face is Verdana, for the same reason. Matthew Carter drew it for on-screen reading at small sizes — exaggerated counters, wide sidebearings, unambiguous letterforms — which is the brief Atkinson answers, thirty years earlier. It replaced Bodoni Moda: a didone's whole character is extreme hairline-to-stem contrast, which is beautiful and is the first thing to vanish for a low-vision reader, and a system claiming accessibility is measured rather than promised should not have been setting its own headings in the least legible face on the page. It is also a system font, so the display role now costs zero webfont bytes. Nobody edited the URL above to remove it: a family that declares no axes is not fetched, so the generated loader dropped the request on its own — which is exactly the property the generation exists to provide.
+
+The trade is real. Verdana and Atkinson are both humanist sans faces, so headings no longer contrast with body text by shape; the display line-height and letter-spacing tokens carry that contrast instead, and are tuned for it.
 
 ---
 

@@ -226,11 +226,16 @@ ${list}
 `;
 
   await writeFile('dist/fonts.css', css, 'utf8');
-  return roles.length;
+  // Report what is FETCHED, not what is declared. The display face is now
+  // Verdana, a system font with no webfont request, and a count of "3 faces"
+  // beside a URL asking for two would be the build quietly misreporting itself.
+  return { requested: specs.length, declared: roles.length };
 }
 
 const faces = await buildFontLoader();
 
 console.log(
-  `@keel/tokens — built ${count} tokens: tokens.css, tokens.dark.css, fonts.css (${faces} faces), index.ts, tokens.json`,
+  `@keel/tokens — built ${count} tokens: tokens.css, tokens.dark.css, index.ts, tokens.json, ` +
+    `fonts.css (${faces.requested} of ${faces.declared} families fetched; ` +
+    `${faces.declared - faces.requested} system)`,
 );
