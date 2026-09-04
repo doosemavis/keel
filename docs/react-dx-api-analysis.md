@@ -42,6 +42,75 @@ you find this comment.
 see it — the package README (see Entry points/Theming findings on the
 absence of one) and/or a Workbench section, not only in source.
 
+## Composition style
+
+Checked against `vercel-composition-patterns` rules 1.1 (avoid boolean prop
+proliferation) and 1.2 (use compound components), across `Button.tsx`,
+`TextField.tsx`, `Select.tsx`, and `Card.tsx`.
+
+**Rule 1.1 — checked, and not found.** The anti-pattern this rule targets is
+*multiple interacting* booleans that combine into an exponential number of
+meaningfully different render paths (the skill's own example: `isThread` /
+`isDMThread` / `isEditing` / `isForwarding` on one `Composer`). Keel's
+components don't do this. `TextField` has four booleans (`disabled`,
+`readOnly`, `required`, `invalid`, `TextField.tsx:31-38`) and `Select` has
+three (`disabled`, `required`, `invalid`, `Select.tsx:38-43`), but every one
+of them is an independent flag that toggles an ARIA/data attribute — none
+of them branch the render tree, and none of them interact with each other.
+`Card`'s single `interactive` boolean (`Card.tsx:16`) does switch the
+entire render between an `AriaButton` and a `<div>` (`Card.tsx:53-71`), but
+it's one boolean with two clean, well-justified outcomes — the component
+comment explains exactly why (nested interactive content is invalid HTML
+and traps keyboard users, `Card.tsx:26-30`) — not a combinatorial mode
+switch. This is a genuine non-finding: state proliferation isn't a problem
+here, and there's nothing to fix.
+
+**Rule 1.2 — a real finding.** `Select` and `RadioGroup` both flatten their
+children into a plain data array (`options: SelectOption[]`,
+`Select.tsx:19-23,34`; `options: RadioOption[]`, seen via
+`RadioGroup.tsx:16-20`) rather than exposing composable subparts. The
+notable part: the React Aria Components primitives Keel wraps *already*
+support composition here — `ListBoxItem` (used internally at
+`Select.tsx:123-130`) and `AriaRadio` (used internally at
+`RadioGroup.tsx:97-103`) are meant to be rendered directly by a consumer.
+Keel's flat-array API removes that flexibility rather than adding to it: a
+consumer cannot render a custom option (an icon next to a label, a
+disabled-with-tooltip state, a visual divider between groups) without
+Keel shipping a new field on `SelectOption` for every such case. Compare:
+
+```tsx
+// Current: every future customization needs a new field on SelectOption
+<Select
+  label="Region"
+  options={[
+    { value: 'us', label: 'United States' },
+    { value: 'eu', label: 'European Union' },
+  ]}
+/>
+
+// Compound alternative: consumer composes exactly what they need, the way
+// the underlying ListBoxItem already allows
+<Select label="Region">
+  <Select.Option value="us">
+    <FlagIcon country="us" /> United States
+  </Select.Option>
+  <Select.Divider />
+  <Select.Option value="eu">
+    <FlagIcon country="eu" /> European Union
+  </Select.Option>
+</Select>
+```
+
+**Recommendation:** this doesn't need to replace the current flat API —
+plenty of consumers just want a list of strings and the current shape is
+the right default for that case. But offering compound children *in
+addition to* (not instead of) the `options` prop, the way the underlying
+React Aria primitives already support, would recover flexibility Keel is
+currently leaving on the table by hiding it behind a data shape. `Badge`,
+`Alert`, `Spinner`, and `Avatar` were also checked and have no equivalent
+gap — they're simple, single-purpose components where a flat prop API is
+already the right fit, not a limitation.
+
 ## Cross-component conventions
 
 Keel's stated convention is `aria-disabled`, never native `disabled`, on
