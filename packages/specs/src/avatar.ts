@@ -5,7 +5,8 @@ export const avatarSpec = {
   name: 'Avatar',
   status: 'experimental',
   a11yReviewed: null,
-  description: 'A person or entity, shown as an image with an initials fallback.',
+  description:
+    'A person or entity, shown as an image with an initials fallback — or, with neither, a blank-state glyph.',
 
   props: {
     size: {
@@ -27,9 +28,9 @@ export const avatarSpec = {
   slots: {
     name: {
       defaultValue: 'Moose Davis',
-      description: 'The full name. Used as the accessible name and to derive initials.',
+      description:
+        'The full name. Used as the accessible name and to derive initials. Omit it (with no image) to render the blank-state glyph for an unknown or anonymous entity — the accessible name then falls back to `unknownLabel`.',
       isAccessibleName: true,
-      required: true,
     },
     src: {
       defaultValue: '',
@@ -47,6 +48,7 @@ export const avatarSpec = {
       'Initials are aria-hidden and the name is exposed instead — "MD" read aloud is meaningless.',
       'A decorative avatar next to the same name in text should be aria-hidden, so the name is not announced twice.',
       'Presence is conveyed by text as well as the dot colour.',
+      'With no name and no image, the accessible name falls back to `unknownLabel` ("Unknown user" by default) and the glyph is aria-hidden — an unknown identity is still announced as an image with a name, not as nothing.',
     ],
   },
 
