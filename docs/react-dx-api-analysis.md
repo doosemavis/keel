@@ -309,3 +309,32 @@ actually ships with the thing they installed. This is a packaging/build
 concern more than an API one, so it's flagged here for the separate npm
 packaging hardening workstream to pick up, rather than acted on in this
 analysis-only cycle.
+
+## Discoverability (Workbench, cold-start read)
+
+`grep -in "npm install\|npm i \|getting started\|installation"
+apps/workbench/build.js` returns zero matches. Workbench's nav is exactly
+three sections — `Foundations`, `Verification`, `Components`
+(`apps/workbench/build.js:589-593`, confirmed in an earlier review this
+session) — all reference material: token tables, the live contrast report,
+and a component gallery with playgrounds. There is no install step,
+no "add this to your project" copy-paste block, and no mention of
+`npm install` anywhere in the page.
+
+**This is appropriate scope for what Workbench is, not a gap in
+Workbench itself.** Root `CLAUDE.md` calls it "the docs page... generated
+from BUILT artifacts, so it cannot drift" — its entire design is to be a
+live specimen of the system, verified against real compiled output. Adding
+hand-written onboarding prose would be the one thing in Workbench that
+*could* drift from reality, which cuts against its whole reason for
+existing. It's correctly scoped as a reference, not a tutorial — the two
+have different jobs and this repository already has a place for the
+tutorial job: the root README, covered above.
+
+**The actual gap is upstream of Workbench, not inside it:** a consumer who
+finds Workbench first (e.g., because it's more discoverable than a GitHub
+README, or linked directly) lands in the middle of a reference with no
+link back to "here's how to install this." A single "Install" link in the
+`appbar-nav` (`apps/workbench/build.js:589-593`) pointing at the README's
+install section would close this without asking Workbench to become
+something it isn't.
