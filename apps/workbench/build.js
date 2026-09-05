@@ -465,7 +465,7 @@ body {
 section { margin-bottom: 52px; scroll-margin-top: 20px; }
 section > h2 { font-family: var(--wb-display); font-weight: 600; font-size: 25px; letter-spacing: -.01em; margin: 0 0 4px; }
 section > .lede { margin: 0 0 18px; color: var(--wb-muted); max-width: 68ch; }
-h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); margin: 26px 0 10px; font-weight: 600; }
+h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); margin: 26px 0 10px; font-weight: 600; scroll-margin-top: 72px; }
 h3 .h3-hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--wb-muted); opacity: .85; margin-left: 8px; font-size: 12.5px; }
 p { max-width: 68ch; }
 
