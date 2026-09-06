@@ -415,7 +415,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr) 200px; gap: 40px; padding: 40px clamp(24px, 4vw, 56px) 96px; }
+.wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr) 200px; gap: 40px; padding-block: 40px 96px; padding-inline-start: 24px; padding-inline-end: clamp(24px, 4vw, 56px); }
 @media (max-width: 1200px) { .wrap { grid-template-columns: 216px minmax(0, 1fr); } .rail-right { display: none; } }
 @media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
 
@@ -426,7 +426,7 @@ body {
    theme control is the one thing you reach for from anywhere on a page this
    long. */
 .appbar { position: sticky; top: 0; z-index: 20; background: var(--wb-panel); border-bottom: 1px solid var(--wb-line); }
-.appbar-inner { padding: 0 clamp(24px, 4vw, 56px); block-size: 58px; display: flex; align-items: center; gap: 28px; }
+.appbar-inner { padding-inline-start: 24px; padding-inline-end: clamp(24px, 4vw, 56px); block-size: 58px; display: flex; align-items: center; gap: 28px; }
 .appbar-brand { display: inline-flex; align-items: baseline; gap: 8px; text-decoration: none; color: var(--wb-ink); flex-shrink: 0; }
 .appbar-brand b { font-family: var(--wb-display); font-optical-sizing: auto; font-weight: 700; font-size: 21px; letter-spacing: -.01em; line-height: 1; }
 .appbar-brand span { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--wb-muted); font-weight: 600; }
