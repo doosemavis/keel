@@ -1,6 +1,7 @@
 import StyleDictionary from 'style-dictionary';
 import { fileHeader } from 'style-dictionary/utils';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { utilityClassRule } from './utility-classes.lib.js';
 
 /**
  * Keel token build.
@@ -152,7 +153,20 @@ export type Theme = (typeof themes)[number];
   const json = Object.fromEntries(entries.map((e) => [e.key, { cssVar: e.cssVar, type: e.type, description: e.description }]));
   await writeFile('dist/tokens.json', `${JSON.stringify(json, null, 2)}\n`, 'utf8');
 
-  return entries.length;
+  return entries;
+}
+
+/**
+ * Emit dist/utilities.css — one class per semantic bg/fg/border role,
+ * generated from the same entries buildTypeScript() just produced, via
+ * utility-classes.lib.js's shared mapping. A class can therefore never
+ * name a role the token layer does not have.
+ */
+async function buildUtilitiesCss(entries) {
+  const header = await fileHeader({ file: {}, formatting: { fileHeaderTimestamp: false }, options: { fileHeader: 'keel' } });
+  const rules = entries.map((e) => utilityClassRule(e.key, e.cssVar)).filter(Boolean);
+  await writeFile('dist/utilities.css', `${header}\n${rules.join('\n')}\n`, 'utf8');
+  return rules.length;
 }
 
 await buildCss({ sources: LIGHT, destination: 'tokens.css', selector: ':root, [data-theme="light"]' });
@@ -162,7 +176,8 @@ await buildCss({
   selector: '[data-theme="dark"]',
   filter: 'keel/semantic-only',
 });
-const count = await buildTypeScript();
+const tsEntries = await buildTypeScript();
+const utilityClassCount = await buildUtilitiesCss(tsEntries);
 
 /**
  * Emit fonts.css — the webfont loader, DERIVED from the typography tokens.
@@ -235,7 +250,8 @@ ${list}
 const faces = await buildFontLoader();
 
 console.log(
-  `@keel/tokens — built ${count} tokens: tokens.css, tokens.dark.css, index.ts, tokens.json, ` +
+  `@keel/tokens — built ${tsEntries.length} tokens: tokens.css, tokens.dark.css, index.ts, tokens.json, ` +
+    `utilities.css (${utilityClassCount} classes), ` +
     `fonts.css (${faces.requested} of ${faces.declared} families fetched; ` +
     `${faces.declared - faces.requested} system)`,
 );

@@ -19,7 +19,8 @@
     "./tokens.dark.css": "./dist/tokens.dark.css",
     "./tokens.json": "./dist/tokens.json",
     "./package.json": "./package.json",
-    "./fonts.css": "./dist/fonts.css"
+    "./fonts.css": "./dist/fonts.css",
+    "./utilities.css": "./dist/utilities.css"
   },
   "publishConfig": {
     "access": "public",
@@ -29,7 +30,7 @@
     "build": "node ramps.js && node build.js && node contrast.js && tsdown",
     "contrast": "node build.js && node contrast.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints tokens.css tokens.dark.css fonts.css tokens.json",
+    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints tokens.css tokens.dark.css fonts.css tokens.json utilities.css",
     "ramps": "node ramps.js"
   },
   "devDependencies": {
