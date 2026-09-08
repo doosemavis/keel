@@ -11,10 +11,10 @@ import {
   Text,
   FieldError,
 } from 'react-aria-components';
-import type { selectContract } from '@keel/contracts';
+import type { selectSpec } from '@keel/specs';
 
-type Contract = typeof selectContract;
-export type SelectSize = Contract['props']['size']['values'][number];
+type Spec = typeof selectSpec;
+export type SelectSize = Spec['props']['size']['values'][number];
 
 export interface SelectOption {
   value: string;

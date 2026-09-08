@@ -7,11 +7,11 @@ import {
   Text,
   FieldError,
 } from 'react-aria-components';
-import type { textFieldContract } from '@keel/contracts';
+import type { textFieldSpec } from '@keel/specs';
 
-type Contract = typeof textFieldContract;
-export type TextFieldSize = Contract['props']['size']['values'][number];
-export type TextFieldType = Contract['props']['type']['values'][number];
+type Spec = typeof textFieldSpec;
+export type TextFieldSize = Spec['props']['size']['values'][number];
+export type TextFieldType = Spec['props']['type']['values'][number];
 
 export interface TextFieldProps {
   /** Control height, matching Button so the two line up side by side. @default 'md' */

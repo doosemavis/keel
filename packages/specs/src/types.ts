@@ -20,11 +20,26 @@
  */
 
 /** A single dimension of variation, e.g. `variant` or `size`. */
-export interface ContractProp<T extends string = string> {
+export interface SpecProp<T extends string = string> {
   /** Allowed values, in the order they should appear in docs and story matrices. */
   readonly values: readonly T[];
   /** The value used when the consumer passes nothing. Must be one of `values`. */
   readonly defaultValue: T;
+  /**
+   * How this prop reaches the DOM, when it is not the default
+   * `data-<kebab-prop>`.
+   *
+   * `'native'` means the prop maps onto a real HTML attribute of the same name
+   * and must NOT be mirrored as a data attribute — `<input type="text">` needs
+   * no `data-type` beside it, and having both creates two sources of truth for
+   * one fact, only one of which the browser reads.
+   *
+   * A literal string names a deliberate rename. It exists so that a rename is
+   * a recorded decision rather than a discrepancy someone finds later: the
+   * shared parity suite reads this field, so an implementation and its spec
+   * cannot disagree about where a value lands.
+   */
+  readonly attribute?: 'native' | (string & {});
   /** One line, used verbatim as the prop description in generated docs. */
   readonly description: string;
 }
@@ -37,7 +52,7 @@ export interface ContractProp<T extends string = string> {
  * count per flag and produces mostly meaningless combinations; the interesting
  * ones are already covered by `states`.
  */
-export interface ContractBoolean {
+export interface SpecBoolean {
   readonly defaultValue: boolean;
   readonly description: string;
 }
@@ -49,7 +64,7 @@ export interface ContractBoolean {
  * them as text fields. `defaultValue` doubles as the example content in docs,
  * which is why it should read like something a real product would say.
  */
-export interface ContractSlot {
+export interface SpecSlot {
   readonly defaultValue: string;
   readonly description: string;
   /** Render a textarea rather than a single-line input. */
@@ -72,12 +87,23 @@ export interface ContractSlot {
  * `default` is always present. The rest are opt-in because not every component
  * has them — a Badge has no hover, and asserting one would be noise.
  */
-export type ContractState = 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'invalid';
+export type SpecState = 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'invalid';
 
 /** Accessibility obligations, asserted against the rendered DOM in both frameworks. */
-export interface ContractA11y {
-  /** The implicit or explicit ARIA role the root element must expose. */
-  readonly role: string;
+export interface SpecA11y {
+  /**
+   * The implicit or explicit ARIA role the root element must expose, or `null`
+   * for a component that deliberately has none.
+   *
+   * `null` is a real answer and not an omission. A Badge is static text: giving
+   * it `role="status"` would make every badge on the page a live region, so a
+   * screen reader announces a table of forty of them on load. A non-interactive
+   * Card is a plain container: `role="group"` announces "group" around every
+   * card in a list, which is noise. Both of those roles were declared here and
+   * contradicted by these specs' own `notes` — the implementations were right
+   * and the field was wrong, which the shared parity suite caught.
+   */
+  readonly role: string | null;
   /** Keys that must activate the component, as `KeyboardEvent.key` values. */
   readonly activationKeys?: readonly string[];
   /**
@@ -93,14 +119,14 @@ export interface ContractA11y {
 }
 
 /** Component lifecycle stage. Exactly three, deliberately. */
-export type ContractStatus = 'experimental' | 'stable' | 'deprecated';
+export type SpecStatus = 'experimental' | 'stable' | 'deprecated';
 
-export interface ComponentContract {
+export interface ComponentSpec {
   /** kebab-case, unique across the system. Also the docs URL segment. */
   readonly id: string;
   /** PascalCase export name, identical in every framework. */
   readonly name: string;
-  readonly status: ContractStatus;
+  readonly status: SpecStatus;
   /**
    * ISO date of the last manual accessibility review, or null if never
    * reviewed. Required rather than optional so that "nobody has looked at
@@ -109,13 +135,13 @@ export interface ComponentContract {
   readonly a11yReviewed: string | null;
   readonly description: string;
   /** Variation axes. Keys become prop names in every framework. */
-  readonly props: Readonly<Record<string, ContractProp>>;
-  /** Boolean props. Excluded from the story matrix — see ContractBoolean. */
-  readonly booleans?: Readonly<Record<string, ContractBoolean>>;
+  readonly props: Readonly<Record<string, SpecProp>>;
+  /** Boolean props. Excluded from the story matrix — see SpecBoolean. */
+  readonly booleans?: Readonly<Record<string, SpecBoolean>>;
   /** Content slots the consumer supplies. */
-  readonly slots?: Readonly<Record<string, ContractSlot>>;
-  readonly states: readonly ContractState[];
-  readonly a11y: ContractA11y;
+  readonly slots?: Readonly<Record<string, SpecSlot>>;
+  readonly states: readonly SpecState[];
+  readonly a11y: SpecA11y;
   /** ids of components a reader should consider instead. */
   readonly related?: readonly string[];
   /** Guidance surfaced on the docs page. */
@@ -131,7 +157,7 @@ export interface ComponentContract {
  * This is what both frameworks build their story matrix from. Because it is
  * derived rather than written, the React and Angular matrices cannot diverge.
  */
-export function matrix(contract: ComponentContract): Array<Record<string, string>> {
+export function matrix(contract: ComponentSpec): Array<Record<string, string>> {
   const axes = Object.entries(contract.props);
   let combos: Array<Record<string, string>> = [{}];
 
@@ -143,7 +169,7 @@ export function matrix(contract: ComponentContract): Array<Record<string, string
 }
 
 /** Just the prop combinations, without the state axis. */
-export function propMatrix(contract: ComponentContract): Array<Record<string, string>> {
+export function propMatrix(contract: ComponentSpec): Array<Record<string, string>> {
   const axes = Object.entries(contract.props);
   let combos: Array<Record<string, string>> = [{}];
   for (const [prop, def] of axes) {
@@ -158,7 +184,7 @@ export function propMatrix(contract: ComponentContract): Array<Record<string, st
  * Run in CI. Catches the mistakes that would otherwise surface as a confusing
  * story matrix or a docs page that disagrees with the code.
  */
-export function validateContract(contract: ComponentContract): string[] {
+export function validateSpec(contract: ComponentSpec): string[] {
   const errors: string[] = [];
 
   if (!/^[a-z][a-z0-9-]*$/.test(contract.id)) {

@@ -1,7 +1,7 @@
 {
-  "name": "@keel/contracts",
+  "name": "@keel/specs",
   "version": "0.1.0",
-  "description": "Machine-readable component contracts \u2014 the shared source of truth for story matrices, parity tests and generated documentation.",
+  "description": "Machine-readable component specs \u2014 the shared source of truth for story matrices, parity tests and generated documentation.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -35,7 +35,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doosemavis/keel.git",
-    "directory": "packages/contracts"
+    "directory": "packages/specs"
   },
   "homepage": "https://github.com/doosemavis/keel#readme",
   "bugs": {

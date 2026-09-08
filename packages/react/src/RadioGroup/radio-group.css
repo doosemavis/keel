@@ -21,7 +21,7 @@
   border: var(--keel-border-width-thin) solid var(--keel-color-border-control);
   border-radius: var(--keel-radius-full);
   background: var(--keel-color-bg-surface);
-  transition: border-color var(--keel-duration-fast) ease;
+  transition: border-color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 .keel-Choice[data-size='sm'] .keel-Radio-circle {
@@ -39,7 +39,7 @@
   border-radius: var(--keel-radius-full);
   background: var(--keel-color-bg-accent);
   scale: 0;
-  transition: scale var(--keel-duration-fast) ease;
+  transition: scale var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {

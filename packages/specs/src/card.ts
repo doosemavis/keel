@@ -1,6 +1,6 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
-export const cardContract = {
+export const cardSpec = {
   id: 'card',
   name: 'Card',
   status: 'experimental',
@@ -39,7 +39,10 @@ export const cardContract = {
   states: ['default', 'hover', 'focus'],
 
   a11y: {
-    role: 'group',
+    // Deliberately none, matching the first note below. `role="group"` announces
+    // "group" around every card in a list, which is noise. An INTERACTIVE Card is
+    // a button or a link and takes that role from the element it renders.
+    role: null,
     disabledStrategy: 'aria-disabled',
     keyboardOperable: false,
     notes: [
@@ -63,4 +66,4 @@ export const cardContract = {
   },
 
   related: ['alert'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

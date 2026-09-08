@@ -14,7 +14,7 @@
   border: var(--keel-border-width-thick) solid currentColor;
   border-block-start-color: transparent;
   border-radius: var(--keel-radius-full);
-  animation: keel-Spinner-spin 700ms linear infinite;
+  animation: keel-Spinner-spin var(--keel-duration-spin) linear infinite;
 }
 
 .keel-Spinner[data-size='sm'] .keel-Spinner-ring { inline-size: 0.875rem; block-size: 0.875rem; }

@@ -32,6 +32,16 @@
   object-fit: cover;
 }
 
+/* The blank-state glyph, shown when there is neither image nor name. Sized
+   as a fraction of the avatar so it scales with every size step without a
+   per-size rule, and coloured as the quietest foreground that still carries
+   meaning — it marks an absence, so it should not compete with initials. */
+.keel-Avatar .keel-Swirl {
+  inline-size: 60%;
+  block-size: 60%;
+  color: var(--keel-color-fg-subtle);
+}
+
 .keel-Avatar-status {
   position: absolute;
   inset-block-end: 0;

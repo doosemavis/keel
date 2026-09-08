@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { buttonContract, propMatrix } from '@keel/contracts';
+import { buttonSpec, propMatrix } from '@keel/specs';
 import {
-  assertsActivatesOnContractKeys,
+  assertsActivatesOnSpecKeys,
   assertsDisabledRefusesActivation,
   assertsDisabledStaysFocusable,
   assertsLoadingIsBusy,
-  assertsRendersContractAttributes,
+  assertsRendersSpecAttributes,
   assertsRole,
   type BehaviorContext,
 } from '@keel/behaviors/button';
@@ -24,16 +24,16 @@ function ctxFor(element: HTMLElement): BehaviorContext {
   };
 }
 
-describe('Button — shared behaviour contract', () => {
-  it('exposes the contract role', () => {
+describe('Button — shared behaviour spec', () => {
+  it('exposes the role the spec declares', () => {
     render(<Button>Save</Button>);
     assertsRole(ctxFor(screen.getByRole('button')), expect as never);
   });
 
-  it('activates on every key the contract lists', async () => {
+  it('activates on every key the spec lists', async () => {
     const onPress = vi.fn();
     render(<Button onPress={onPress}>Save</Button>);
-    await assertsActivatesOnContractKeys(
+    await assertsActivatesOnSpecKeys(
       ctxFor(screen.getByRole('button')),
       expect as never,
       () => onPress.mock.calls.length,
@@ -76,26 +76,28 @@ describe('Button — shared behaviour contract', () => {
   });
 });
 
-describe('Button — contract matrix', () => {
-  // Generated from the contract, not hand-listed. A variant added to the
-  // contract without an implementation fails here automatically.
-  const combos = propMatrix(buttonContract) as Array<{ variant: string; size: string }>;
+describe('Button — spec matrix', () => {
+  // Generated from the spec, not hand-listed. A variant added to the
+  // spec without an implementation fails here automatically.
+  const combos = propMatrix(buttonSpec) as Array<{ variant: string; size: string; shape: string }>;
 
   it(`covers all ${combos.length} prop combinations`, () => {
     expect(combos).toHaveLength(
-      buttonContract.props.variant.values.length * buttonContract.props.size.values.length,
+      buttonSpec.props.variant.values.length *
+        buttonSpec.props.size.values.length *
+        buttonSpec.props.shape.values.length,
     );
   });
 
-  it.each(combos.map((c) => [`${c.variant}/${c.size}`, c] as const))(
-    'renders %s with contract attributes',
+  it.each(combos.map((c) => [`${c.variant}/${c.size}/${c.shape}`, c] as const))(
+    'renders %s with the attributes the spec declares',
     (_label, combo) => {
       const { unmount } = render(
-        <Button variant={combo.variant as never} size={combo.size as never}>
+        <Button variant={combo.variant as never} size={combo.size as never} shape={combo.shape as never}>
           Save
         </Button>,
       );
-      assertsRendersContractAttributes(ctxFor(screen.getByRole('button')), expect as never, combo);
+      assertsRendersSpecAttributes(ctxFor(screen.getByRole('button')), expect as never, combo);
       unmount();
     },
   );
@@ -105,7 +107,29 @@ describe('Button — defaults match the contract', () => {
   it('uses the contract default variant and size when none is given', () => {
     render(<Button>Save</Button>);
     const el = screen.getByRole('button');
-    expect(el.getAttribute('data-variant')).toBe(buttonContract.props.variant.defaultValue);
-    expect(el.getAttribute('data-size')).toBe(buttonContract.props.size.defaultValue);
+    expect(el.getAttribute('data-variant')).toBe(buttonSpec.props.variant.defaultValue);
+    expect(el.getAttribute('data-size')).toBe(buttonSpec.props.size.defaultValue);
+    expect(el.getAttribute('data-shape')).toBe(buttonSpec.props.shape.defaultValue);
+  });
+});
+
+describe('Button — round shape', () => {
+  it('renders the swirl glyph on a round button with no icon', () => {
+    const { container } = render(<Button shape="round">Delete</Button>);
+    expect(container.querySelector('.keel-Swirl')).not.toBeNull();
+  });
+
+  it('does not render the swirl glyph when a round button has an icon', () => {
+    const { container } = render(
+      <Button shape="round" iconStart={<span>icon</span>}>
+        Delete
+      </Button>,
+    );
+    expect(container.querySelector('.keel-Swirl')).toBeNull();
+  });
+
+  it('keeps the visible label in the DOM as the accessible name', () => {
+    render(<Button shape="round">Delete</Button>);
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeTruthy();
   });
 });

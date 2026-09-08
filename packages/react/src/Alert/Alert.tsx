@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
-import type { alertContract } from '@keel/contracts';
+import type { alertSpec } from '@keel/specs';
 
-type Contract = typeof alertContract;
-export type AlertTone = Contract['props']['tone']['values'][number];
+type Spec = typeof alertSpec;
+export type AlertTone = Spec['props']['tone']['values'][number];
 
 export interface AlertProps {
   /** Severity. Drives the icon, the colour, and the ARIA role. @default 'info' */

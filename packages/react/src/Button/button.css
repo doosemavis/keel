@@ -39,9 +39,9 @@
   cursor: pointer;
   user-select: none;
   transition:
-    background-color var(--keel-duration-fast) ease,
-    border-color var(--keel-duration-fast) ease,
-    color var(--keel-duration-fast) ease;
+    background-color var(--keel-duration-fast) var(--keel-easing-standard),
+    border-color var(--keel-duration-fast) var(--keel-easing-standard),
+    color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 /* Honour a user's reduced-motion preference rather than assuming the
@@ -146,6 +146,37 @@
   width: 100%;
 }
 
+/* ---- Shape ---- */
+
+/*
+ * Round is the icon-only form. The label stays in the DOM as the accessible
+ * name and is hidden with the clip pattern rather than display: none, which
+ * would drop it from the accessible name computation and leave a button that
+ * announces nothing. `position: relative` contains the clipped label so it
+ * cannot escape the button's box and create a stray scroll extent.
+ */
+.keel-Button[data-shape='round'] {
+  position: relative;
+  padding-inline: 0;
+  aspect-ratio: 1;
+  border-radius: var(--keel-radius-full);
+}
+
+.keel-Button[data-shape='round'] .keel-Button-label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.keel-Button[data-shape='round'] .keel-Swirl {
+  inline-size: 1.25em;
+  block-size: 1.25em;
+}
+
 .keel-Button-label {
   /* Keeps the label from being squeezed by a long icon in a narrow container. */
   overflow: hidden;
@@ -168,7 +199,7 @@
   border: var(--keel-border-width-thick) solid currentColor;
   border-block-start-color: transparent;
   border-radius: var(--keel-radius-full);
-  animation: keel-Button-spin 600ms linear infinite;
+  animation: keel-Button-spin var(--keel-duration-spin) linear infinite;
 }
 
 @keyframes keel-Button-spin {

@@ -17,17 +17,22 @@
     },
     "./styles.css": "./dist/styles.css",
     "./components.css": "./dist/components.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./specs": {
+      "types": "./dist/specs.d.ts",
+      "default": "./dist/specs.js"
+    }
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "scripts": {
-    "build": "tsdown && node build-css.js",
+    "build": "node lint-css.js && tsdown && node build-css.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
-    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css components.css"
+    "lint:packaging": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css components.css",
+    "lint:css": "node lint-css.js"
   },
   "peerDependencies": {
     "@keel/tokens": "^0.1.0",
@@ -35,11 +40,11 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "react-aria-components": "^1.21.0"
+    "react-aria-components": "^1.21.0",
+    "@keel/specs": "^0.1.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@keel/contracts": "*",
     "@keel/tokens": "*",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.0",

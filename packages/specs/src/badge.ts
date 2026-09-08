@@ -1,6 +1,6 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
-export const badgeContract = {
+export const badgeSpec = {
   id: 'badge',
   name: 'Badge',
   status: 'experimental',
@@ -36,7 +36,10 @@ export const badgeContract = {
   states: ['default'],
 
   a11y: {
-    role: 'status',
+    // Deliberately none. `role="status"` would make every Badge a live region,
+    // so a table of forty of them is announced on page load. A Badge is static
+    // text; its meaning is its text content.
+    role: null,
     keyboardOperable: false,
     notes: [
       'Meaning is carried by the text, never by colour alone — a red badge reading "Active" is a bug, not a style choice.',
@@ -59,4 +62,4 @@ export const badgeContract = {
   },
 
   related: ['alert'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

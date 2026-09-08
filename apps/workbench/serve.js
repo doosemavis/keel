@@ -11,7 +11,7 @@
  * thing to break, and Node has everything required.
  *
  * The rebuild shells out to Turbo rather than calling the generators directly,
- * because the graph matters: a token change has to flow tokens -> contracts ->
+ * because the graph matters: a token change has to flow tokens -> specs ->
  * react (which compiles the CSS) -> workbench. Turbo already knows that order
  * and caches the parts that did not change.
  */
@@ -52,7 +52,7 @@ const PORT_ATTEMPTS = 10;
 const WATCHED = [
   { dir: join(root, 'packages/tokens'), recursive: false },
   { dir: join(root, 'packages/tokens/src'), recursive: true },
-  { dir: join(root, 'packages/contracts/src'), recursive: true },
+  { dir: join(root, 'packages/specs/src'), recursive: true },
   { dir: join(root, 'packages/react/src'), recursive: true },
   { dir: here, recursive: true },
 ];

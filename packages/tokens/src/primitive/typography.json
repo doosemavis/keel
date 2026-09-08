@@ -5,9 +5,8 @@
     "family": {
       "$type": "fontFamily",
       "display": {
-        "$value": ["Bodoni Moda", "Didot", "Cochin", "Georgia", "serif"],
-        "$description": "Headings and display type only. A didone: hairline-to-stem contrast is extreme, which is precisely where the elegance lives — and at its heavy weights that same contrast reads as bold rather than delicate. Kept alongside a legibility face on purpose. The two are not in tension: a hyperlegible sans is doing the work at 12–16px where character confusion actually costs a reader something, while the display face runs at 25px and up where no such risk exists and the job is voice. Never set below 20px; the hairlines vanish and it turns to mush at UI sizes.",
-        "$extensions": { "keel.webfont": { "axes": "opsz,wght@6..96,500;6..96,700" } }
+        "$value": ["Verdana", "Geneva", "DejaVu Sans", "Tahoma", "sans-serif"],
+        "$description": "Headings and display type only. Matthew Carter drew Verdana for on-screen reading at small sizes: exaggerated counters, wide sidebearings, and unambiguous letterforms — the same design intent as the interface face, from thirty years earlier. That shared lineage is why it is here. The previous display face was Bodoni Moda, and a didone is the precise opposite of a legibility face: its whole character is extreme hairline-to-stem contrast, which is beautiful and is the first thing to disappear for a reader with low vision. A system claiming accessibility is enforced rather than promised should not have been setting its own headings in the least legible thing on the page.\n\nIt is also a system font, present on effectively every machine, so the display face now costs zero webfont bytes. The generator noticed on its own — a family with no declared axes is not requested, so Bodoni left the generated fonts.css without anyone editing a URL.\n\nThe cost is real and worth stating: Verdana and Atkinson Hyperlegible are both humanist sans faces, so headings no longer contrast with body text by SHAPE. That contrast has to be carried by size, weight and tracking instead, which is what the display line-height and letter-spacing tokens below are now tuned for. No lower size bound any more — the didone had one because its hairlines vanished under 20px, and Verdana has no hairlines to lose."
       },
       "sans": {
         "$value": ["Atkinson Hyperlegible Next", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
@@ -34,27 +33,20 @@
       "md": { "$value": "1rem" },
       "lg": { "$value": "1.125rem" },
       "xl": { "$value": "1.375rem" },
-      "display": { "$value": "2rem", "$description": "The floor for the display face. Below this a didone's hairlines drop out." }
+      "display": { "$value": "2rem", "$description": "The display size. It used to double as a floor — a didone's hairlines dropped out below it — but Verdana has none to lose, so this is a step on the scale, not a limit." }
     },
     "lineHeight": {
       "$type": "number",
       "tight": { "$value": 1.25 },
       "default": { "$value": 1.5 },
       "loose": { "$value": 1.7 },
-      "display": { "$value": 1.08, "$description": "Display type sets tighter — large didone caps leave too much optical space at 1.25." }
+      "display": { "$value": 1.15, "$description": "Loosened from the 1.08 a didone wanted. Verdana has a much larger x-height and longer ascenders, so 1.08 collides descenders with the line below on any heading that wraps." }
     },
     "letterSpacing": {
       "$type": "dimension",
-      "display": { "$value": "-0.02em", "$description": "Large type needs negative tracking; the default spacing is designed for text sizes." },
+      "display": { "$value": "-0.03em", "$description": "Large type needs negative tracking, and Verdana needs more of it than most: its generous sidebearings are what make it legible at 11px and what make it look loose and juvenile at 40px. Tightening here is the single change that most separates the display face from the body face now that both are humanist sans." },
       "default": { "$value": "0em" },
       "label": { "$value": "0.08em", "$description": "Uppercase micro-labels only. Caps set at default tracking read as cramped." }
     }
-  },
-
-  "duration": {
-    "$type": "duration",
-    "instant": { "$value": "0ms" },
-    "fast": { "$value": "120ms" },
-    "medium": { "$value": "200ms" }
   }
 }

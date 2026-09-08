@@ -1,4 +1,4 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
 /**
  * The group is the component, not the individual radio.
@@ -7,7 +7,7 @@ import type { ComponentContract } from './types.js';
  * to wire up their own grouping — which is where the arrow-key roving tabindex
  * and the group label get lost.
  */
-export const radioGroupContract = {
+export const radioGroupSpec = {
   id: 'radio-group',
   name: 'RadioGroup',
   status: 'experimental',
@@ -78,4 +78,4 @@ export const radioGroupContract = {
   },
 
   related: ['select', 'checkbox'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

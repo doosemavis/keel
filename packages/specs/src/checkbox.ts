@@ -1,6 +1,6 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
-export const checkboxContract = {
+export const checkboxSpec = {
   id: 'checkbox',
   name: 'Checkbox',
   status: 'experimental',
@@ -64,4 +64,4 @@ export const checkboxContract = {
   },
 
   related: ['switch', 'radio-group'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

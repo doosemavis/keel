@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
-import type { cardContract } from '@keel/contracts';
+import type { cardSpec } from '@keel/specs';
 
-type Contract = typeof cardContract;
-export type CardElevation = Contract['props']['elevation']['values'][number];
-export type CardPadding = Contract['props']['padding']['values'][number];
+type Spec = typeof cardSpec;
+export type CardElevation = Spec['props']['elevation']['values'][number];
+export type CardPadding = Spec['props']['padding']['values'][number];
 
 export interface CardProps {
   /** Flat uses a border, raised adds a shadow. @default 'flat' */

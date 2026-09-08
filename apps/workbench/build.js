@@ -7,7 +7,7 @@
  * own contract.
  *
  * Everything on the page is read from BUILT artifacts — packages/tokens/dist,
- * packages/react/dist and packages/contracts/dist — never re-typed here. A
+ * packages/react/dist and packages/specs/dist — never re-typed here. A
  * hand-maintained gallery is exactly the drift this project exists to prevent,
  * so `npm run build` regenerates the page and any change to a token shows up
  * without anyone remembering to update the docs.
@@ -27,7 +27,8 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { luminance, report } from '../../packages/tokens/contrast.lib.js';
-import { contracts, propMatrix } from '../../packages/contracts/dist/index.js';
+import { utilityClassName } from '../../packages/tokens/utility-classes.lib.js';
+import { specs, propMatrix } from '../../packages/specs/dist/index.js';
 import { RENDERERS } from './renderers.js';
 import { chromeCss, verifyChrome } from './chrome.js';
 
@@ -70,7 +71,7 @@ const GROUPS = [
   { id: 'color-focus', title: 'Focus', hint: 'Focus indication.', test: (k) => k.startsWith('color.focus.'), kind: 'color' },
 ];
 
-const RAMPS = ['pond', 'lotus', 'leaf', 'gold', 'russet'];
+const RAMPS = ['neutral-light', 'neutral-dark', 'accent', 'success', 'warning', 'danger'];
 
 const SCALES = [
   { id: 'space', title: 'Space', prefix: 'space.', kind: 'space' },
@@ -124,11 +125,15 @@ function orderedHalves(key) {
   return halves;
 }
 
-function swatchRow([key, meta]) {
+function swatchRow([key, meta], opts = {}) {
   const light = resolved.light[key] ?? '';
   const dark = resolved.dark[key] ?? '';
   const changes = light.toLowerCase() !== dark.toLowerCase();
   const halves = orderedHalves(key);
+  const cls = opts.utilityClass ? utilityClassName(key) : null;
+  const utilityCell = opts.utilityClass
+    ? `<td class="tok-var">${cls ? `<code>.${esc(cls)}</code>` : '<span class="dim">—</span>'}</td>`
+    : '';
   return `<tr class="tok" data-token="${esc(key)}">
   <td class="tok-chip">
     <button class="chip" type="button" data-copy="var(${esc(meta.cssVar)})" title="Copy var(${esc(meta.cssVar)})">
@@ -142,6 +147,7 @@ function swatchRow([key, meta]) {
   </td>
   <td class="tok-name"><code>${esc(key)}</code>${changes ? '' : '<span class="tag tag-quiet" title="Same value in both themes">shared</span>'}</td>
   <td class="tok-var"><code>${esc(meta.cssVar)}</code></td>
+  ${utilityCell}
   <td class="tok-val"><code>${esc(light)}</code></td>
   <td class="tok-val"><code>${esc(dark)}</code></td>
   <td class="tok-desc">${meta.description ? esc(meta.description) : '<span class="dim">—</span>'}</td>
@@ -182,8 +188,8 @@ const enforced = contrastRows.filter((r) => !r.exempt);
 
 // ------------------------------------------------------- component sections
 
-/** Contracts that have a preview renderer. Everything else is skipped. */
-const COMPONENTS = contracts.filter((c) => RENDERERS[c.id]);
+/** Specs that have a preview renderer. Everything else is skipped. */
+const COMPONENTS = specs.filter((c) => RENDERERS[c.id]);
 
 const propsTable = (c) => `<table>
   <thead><tr><th>Prop</th><th>Values</th><th>Default</th><th>Description</th></tr></thead>
@@ -382,7 +388,12 @@ const PLAY_DATA = JSON.stringify(
 
 // ---------------------------------------------------------------- page
 
-const html = `<title>Keel Workbench</title>
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keel Workbench</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${fontHref}">
@@ -410,8 +421,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 40px; max-width: 1240px; margin: 0 auto; padding: 40px 28px 96px; }
-@media (max-width: 900px) { .wrap { grid-template-columns: 1fr; gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
+.wrap { display: grid; grid-template-columns: 216px minmax(0, 1fr) 200px; gap: 40px; padding-block: 40px 96px; padding-inline-start: 24px; padding-inline-end: clamp(24px, 4vw, 56px); }
+@media (max-width: 1200px) { .wrap { grid-template-columns: 216px minmax(0, 1fr); } .rail-right { display: none; } }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 24px 18px 64px; } .rail { position: static !important; } }
 
 /* ---- application bar ----
    A real top-level nav: brand, section links, theme control pinned right. It
@@ -420,7 +432,7 @@ body {
    theme control is the one thing you reach for from anywhere on a page this
    long. */
 .appbar { position: sticky; top: 0; z-index: 20; background: var(--wb-panel); border-bottom: 1px solid var(--wb-line); }
-.appbar-inner { max-width: 1240px; margin: 0 auto; padding: 0 28px; block-size: 58px; display: flex; align-items: center; gap: 28px; }
+.appbar-inner { padding-inline-start: 24px; padding-inline-end: clamp(24px, 4vw, 56px); block-size: 58px; display: flex; align-items: center; gap: 28px; }
 .appbar-brand { display: inline-flex; align-items: baseline; gap: 8px; text-decoration: none; color: var(--wb-ink); flex-shrink: 0; }
 .appbar-brand b { font-family: var(--wb-display); font-optical-sizing: auto; font-weight: 700; font-size: 21px; letter-spacing: -.01em; line-height: 1; }
 .appbar-brand span { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--wb-muted); font-weight: 600; }
@@ -446,18 +458,20 @@ body {
 .stat.ok b { color: var(--wb-pass); }
 
 /* ---- rail ---- */
-.rail { position: sticky; top: 24px; align-self: start; font-size: 13.5px; }
+.rail { position: sticky; top: 83px; align-self: start; font-size: 13.5px; }
 .rail nav { display: flex; flex-direction: column; gap: 1px; }
 .rail a { color: var(--wb-muted); text-decoration: none; padding: 5px 10px; border-radius: 5px; border-left: 2px solid transparent; }
 .rail a:hover { color: var(--wb-accent); background: var(--wb-accent-soft); border-left-color: var(--wb-accent); }
 .rail a:focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 1px; }
 .rail .rail-head { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--wb-muted); padding: 14px 10px 4px; font-weight: 600; }
+.rail-right { font-size: 12.5px; }
+.rail-right a.active { color: var(--wb-accent); border-left-color: var(--wb-accent); font-weight: 600; }
 
 /* ---- sections ---- */
 section { margin-bottom: 52px; scroll-margin-top: 20px; }
 section > h2 { font-family: var(--wb-display); font-weight: 600; font-size: 25px; letter-spacing: -.01em; margin: 0 0 4px; }
 section > .lede { margin: 0 0 18px; color: var(--wb-muted); max-width: 68ch; }
-h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); margin: 26px 0 10px; font-weight: 600; }
+h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--wb-muted); margin: 26px 0 10px; font-weight: 600; scroll-margin-top: 72px; }
 h3 .h3-hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--wb-muted); opacity: .85; margin-left: 8px; font-size: 12.5px; }
 p { max-width: 68ch; }
 
@@ -582,6 +596,8 @@ input[type="search"]:focus-visible { outline: 2px solid var(--wb-accent); outlin
    ============================================================ */
 ${keelCss}
 </style>
+</head>
+<body>
 
 <header class="appbar">
   <div class="appbar-inner">
@@ -642,8 +658,8 @@ ${keelCss}
         const rows = entries.filter(([k]) => g.test(k));
         return `<h3>${g.title}<span class="h3-hint">${esc(g.hint)}</span></h3>
       <div class="panel scroll"><table>
-        <thead><tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>
-        <tbody>${rows.map(swatchRow).join('\n')}</tbody>
+        <thead><tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Utility class</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>
+        <tbody>${rows.map((e) => swatchRow(e, { utilityClass: true })).join('\n')}</tbody>
       </table></div>`;
       }).join('\n')}
       <div class="empty" id="tokenEmpty" hidden>No tokens match that filter.</div>
@@ -651,7 +667,7 @@ ${keelCss}
 
     <section id="primitives">
       <h2>Primitive ramps</h2>
-      <p class="lede">Raw values with no meaning attached. Components must never reference these directly — they exist only to be aliased by the semantic roles above. Both themes draw from the same ramps; only the aliasing changes.</p>
+      <p class="lede">Raw values with no meaning attached. Components must never reference these directly — they exist only to be aliased by the semantic roles above. The four colour ramps serve both themes with only the aliasing changing; the neutral is two ramps, one per theme, each tinted toward a different one of the system's signature hues.</p>
       ${RAMPS.map((ramp) => {
         const rows = entries.filter(([k]) => k.startsWith(`color.${ramp}.`));
         if (!rows.length) return '';
@@ -703,6 +719,11 @@ ${keelCss}
 
     ${componentSections}
   </main>
+
+  <aside class="rail rail-right">
+    <div class="rail-head">On this page</div>
+    <nav aria-label="On this page"></nav>
+  </aside>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -856,7 +877,7 @@ ${keelCss}
    * Fully generic: enum props appear only when they differ from the contract
    * default, booleans appear as bare attributes when true, and one designated
    * slot becomes children. Nothing here knows which component it is looking at,
-   * which is why adding a component to @keel/contracts is enough to give it a
+   * which is why adding a component to @keel/specs is enough to give it a
    * working snippet.
    */
   function snippetFor(id, state) {
@@ -970,7 +991,118 @@ ${keelCss}
     });
   });
 })();
+
+// Every h3 inside a top-level <section> gets a stable, scoped id, so the
+// "on this page" rail (next IIFE) can link and scroll to it. Scoped to the
+// section's own id rather than the heading text alone, because sibling
+// component sections reuse the same headings — every component has a
+// Playground, Matrix, API and Accessibility h3.
+(function () {
+  function slug(s) {
+    return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+  // The heading's own words only. Several h3s carry an inline .h3-hint span,
+  // and textContent would fold "Background" and "Surfaces and fills." into
+  // one string — wrong for the id and worse as link text.
+  function labelOf(h3) {
+    var out = '';
+    for (var i = 0; i < h3.childNodes.length; i++) {
+      if (h3.childNodes[i].nodeType === 3) out += h3.childNodes[i].textContent;
+    }
+    out = out.trim();
+    return out || (h3.textContent || '').trim();
+  }
+  document.querySelectorAll('main > section').forEach(function (section, n) {
+    var base = section.id || 'section-' + (n + 1);
+    section.querySelectorAll('h3').forEach(function (h3) {
+      var label = labelOf(h3);
+      h3.setAttribute('data-label', label);
+      if (h3.id) return;
+      var id = base + '-' + slug(label);
+      var candidate = id;
+      for (var k = 2; document.getElementById(candidate); k++) candidate = id + '-' + k;
+      h3.id = candidate;
+    });
+  });
+})();
+
+// "On this page" right rail. Workbench is one long page rather than per-page
+// routing, so instead of a fixed table of contents this tracks which
+// top-level <section> the reader is in and lists THAT section's own h3s.
+// Generic over any section — Foundations and Verification have h3s too, not
+// only components. Section and heading are both chosen the same way, by
+// scroll position ("the last one whose top has passed the reading line"),
+// rather than with an IntersectionObserver: the observer only reports the
+// elements whose visibility changed, so "most visible among the changed" is
+// not the same question as "which section am I in", and it answered wrongly
+// at every boundary between a short section and a long one.
+(function () {
+  var main = document.querySelector('main');
+  var rail = document.querySelector('.rail-right');
+  var nav = rail ? rail.querySelector('nav') : null;
+  if (!main || !nav) return;
+  var sections = Array.prototype.slice.call(main.querySelectorAll(':scope > section'));
+  if (!sections.length) return;
+
+  // The sticky app bar is 58px; the rest is breathing room so a heading
+  // counts as "current" once it is comfortably below the bar, not the
+  // instant its top edge touches it.
+  var READING_LINE = 96;
+  var active = null;
+
+  function headsOf(section) {
+    return Array.prototype.slice.call(section.querySelectorAll('h3')).filter(function (h) {
+      return h.offsetParent !== null; // skip headings inside hidden panels
+    });
+  }
+  function lastPassed(list) {
+    var current = list[0];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].getBoundingClientRect().top <= READING_LINE) current = list[i];
+    }
+    return current;
+  }
+
+  function render(section) {
+    var heads = headsOf(section);
+    nav.textContent = '';
+    heads.forEach(function (h) {
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.setAttribute('data-target', h.id);
+      a.textContent = h.getAttribute('data-label') || h.textContent;
+      nav.appendChild(a);
+    });
+    rail.hidden = heads.length === 0;
+  }
+
+  function update() {
+    var section = lastPassed(sections);
+    if (section !== active) { active = section; render(active); }
+    var heads = headsOf(active);
+    if (!heads.length) return;
+    var current = lastPassed(heads);
+    nav.querySelectorAll('a').forEach(function (a) {
+      var on = a.getAttribute('data-target') === current.id;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  var queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; update(); });
+  }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  window.addEventListener('hashchange', schedule);
+  update();
+})();
 </script>
+</body>
+</html>
 `;
 
 await mkdir(resolve(here, 'dist'), { recursive: true });

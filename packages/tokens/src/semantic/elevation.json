@@ -1,0 +1,27 @@
+{
+  "$description": "Elevation — the only place a shadow may be defined. Four component CSS files previously wrote raw rgb(0 0 0 / x) shadows inline, which is the same class of error as a hardcoded hex: it cannot be re-themed, and it is wrong in dark mode by construction. A shadow is a light-source model, and a black shadow assumes a light surface. These are semantic, and elevation.dark.json overrides them.\n\nThe levels are named for what is raised, not for how far: a contributor asking 'how much shadow does a menu get' should not have to guess between `lg` and `xl`.",
+
+  "elevation": {
+    "$type": "shadow",
+    "raised": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.0625rem", "blur": "0.125rem", "spread": "0rem", "color": "rgb(13 16 15 / 0.05)" },
+        { "offsetX": "0rem", "offsetY": "0.5rem", "blur": "1.25rem", "spread": "-0.625rem", "color": "rgb(13 16 15 / 0.16)" }
+      ],
+      "$description": "Cards and panels — sitting on the page, not over it. Two layers because one shadow cannot be both a tight contact edge and a soft ambient falloff, and a single-layer shadow is the most reliable tell of an unconsidered system."
+    },
+    "overlay": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.25rem", "blur": "0.375rem", "spread": "-0.125rem", "color": "rgb(13 16 15 / 0.10)" },
+        { "offsetX": "0rem", "offsetY": "0.75rem", "blur": "1.5rem", "spread": "-0.5rem", "color": "rgb(13 16 15 / 0.18)" }
+      ],
+      "$description": "Menus, popovers, dialogs — genuinely above the page and dismissible. Deeper than `raised` because the gap it implies is real: you can click through to what is underneath."
+    },
+    "knob": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.0625rem", "blur": "0.125rem", "spread": "0rem", "color": "rgb(13 16 15 / 0.25)" }
+      ],
+      "$description": "The travelling part of a control — a switch knob, a slider thumb. Single-layer and tight on purpose: it has to read as attached to the track it slides along, not floating over it."
+    }
+  }
+}

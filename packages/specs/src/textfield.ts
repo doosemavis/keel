@@ -1,4 +1,4 @@
-import type { ComponentContract } from './types.js';
+import type { ComponentSpec } from './types.js';
 
 /**
  * TextField folds the label, help text and error message into the control
@@ -9,7 +9,7 @@ import type { ComponentContract } from './types.js';
  * common accessibility defect in production forms. Owning the label here means
  * you cannot render one without it.
  */
-export const textFieldContract = {
+export const textFieldSpec = {
   id: 'text-field',
   name: 'TextField',
   status: 'experimental',
@@ -23,6 +23,7 @@ export const textFieldContract = {
       description: 'Control height, matching Button so the two line up when placed side by side.',
     },
     type: {
+      attribute: 'native',
       values: ['text', 'email', 'password', 'tel', 'url', 'search'],
       defaultValue: 'text',
       description: 'Native input type. Drives the mobile keyboard and browser autofill, so set it accurately.',
@@ -84,4 +85,4 @@ export const textFieldContract = {
   },
 
   related: ['select', 'checkbox'],
-} as const satisfies ComponentContract;
+} as const satisfies ComponentSpec;

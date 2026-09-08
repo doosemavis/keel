@@ -1,0 +1,24 @@
+{
+  "$description": "Dark-theme elevation. Not a tint change — a different lighting model.\n\nOn a light surface a shadow works because the surface is brighter than the shadow. On a near-black canvas there is almost nothing left to darken, so the same values render as an invisible smudge and every card reads as flat. The response is to push opacity far higher than looks reasonable on paper (0.5 and 0.7 against 0.05 and 0.16) and let the shadow do its work as an occlusion cue rather than as a visible grey.\n\nThe tint is neutral black rather than tinted like the neutral ramp: at these opacities a hue shift in the shadow reads as a coloured halo.",
+
+  "elevation": {
+    "$type": "shadow",
+    "raised": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.0625rem", "blur": "0.125rem", "spread": "0rem", "color": "rgb(0 0 0 / 0.5)" },
+        { "offsetX": "0rem", "offsetY": "0.5rem", "blur": "1.25rem", "spread": "-0.625rem", "color": "rgb(0 0 0 / 0.7)" }
+      ]
+    },
+    "overlay": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.25rem", "blur": "0.375rem", "spread": "-0.125rem", "color": "rgb(0 0 0 / 0.6)" },
+        { "offsetX": "0rem", "offsetY": "0.75rem", "blur": "1.5rem", "spread": "-0.5rem", "color": "rgb(0 0 0 / 0.75)" }
+      ]
+    },
+    "knob": {
+      "$value": [
+        { "offsetX": "0rem", "offsetY": "0.0625rem", "blur": "0.1875rem", "spread": "0rem", "color": "rgb(0 0 0 / 0.55)" }
+      ]
+    }
+  }
+}

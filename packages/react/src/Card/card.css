@@ -18,7 +18,7 @@
 
 .keel-Card[data-elevation='raised'] {
   border: var(--keel-border-width-thin) solid transparent;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 20px -10px rgb(0 0 0 / 0.22);
+  box-shadow: var(--keel-elevation-raised);
 }
 
 .keel-Card[data-padding='none'] { padding: 0; }
@@ -45,8 +45,8 @@
   cursor: pointer;
   text-align: start;
   transition:
-    border-color var(--keel-duration-fast) ease,
-    background-color var(--keel-duration-fast) ease;
+    border-color var(--keel-duration-fast) var(--keel-easing-standard),
+    background-color var(--keel-duration-fast) var(--keel-easing-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {
