@@ -27,6 +27,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { luminance, report } from '../../packages/tokens/contrast.lib.js';
+import { utilityClassName } from '../../packages/tokens/utility-classes.lib.js';
 import { specs, propMatrix } from '../../packages/specs/dist/index.js';
 import { RENDERERS } from './renderers.js';
 import { chromeCss, verifyChrome } from './chrome.js';
@@ -124,11 +125,15 @@ function orderedHalves(key) {
   return halves;
 }
 
-function swatchRow([key, meta]) {
+function swatchRow([key, meta], opts = {}) {
   const light = resolved.light[key] ?? '';
   const dark = resolved.dark[key] ?? '';
   const changes = light.toLowerCase() !== dark.toLowerCase();
   const halves = orderedHalves(key);
+  const cls = opts.utilityClass ? utilityClassName(key) : null;
+  const utilityCell = opts.utilityClass
+    ? `<td class="tok-var">${cls ? `<code>.${esc(cls)}</code>` : '<span class="dim">—</span>'}</td>`
+    : '';
   return `<tr class="tok" data-token="${esc(key)}">
   <td class="tok-chip">
     <button class="chip" type="button" data-copy="var(${esc(meta.cssVar)})" title="Copy var(${esc(meta.cssVar)})">
@@ -142,6 +147,7 @@ function swatchRow([key, meta]) {
   </td>
   <td class="tok-name"><code>${esc(key)}</code>${changes ? '' : '<span class="tag tag-quiet" title="Same value in both themes">shared</span>'}</td>
   <td class="tok-var"><code>${esc(meta.cssVar)}</code></td>
+  ${utilityCell}
   <td class="tok-val"><code>${esc(light)}</code></td>
   <td class="tok-val"><code>${esc(dark)}</code></td>
   <td class="tok-desc">${meta.description ? esc(meta.description) : '<span class="dim">—</span>'}</td>
@@ -652,8 +658,8 @@ ${keelCss}
         const rows = entries.filter(([k]) => g.test(k));
         return `<h3>${g.title}<span class="h3-hint">${esc(g.hint)}</span></h3>
       <div class="panel scroll"><table>
-        <thead><tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>
-        <tbody>${rows.map(swatchRow).join('\n')}</tbody>
+        <thead><tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Utility class</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>
+        <tbody>${rows.map((e) => swatchRow(e, { utilityClass: true })).join('\n')}</tbody>
       </table></div>`;
       }).join('\n')}
       <div class="empty" id="tokenEmpty" hidden>No tokens match that filter.</div>
